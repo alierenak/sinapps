@@ -4,7 +4,6 @@ import 'package:flutter_app_project/routes/login.dart';
 import 'package:flutter_app_project/routes/signup.dart';
 import 'package:flutter_app_project/routes/walkthrough.dart';
 
-// MY AWESOME CHANGES
 void main() => runApp(MaterialApp(
   //home: Welcome(),
   initialRoute: '/walkthrough',

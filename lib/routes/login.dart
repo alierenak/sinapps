@@ -191,16 +191,6 @@ class _LoginState extends State<Login> {
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
-
-                      validator: (value) {
-                        if(value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if(value.length < 8) {
-                          return 'Password must be at least 8 characters';
-                        }
-                        return null;
-                      },
                       onSaved: (String value) {
                         pass = value;
                       },
