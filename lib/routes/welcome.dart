@@ -12,11 +12,13 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[700],
       body: SafeArea(
         maintainBottomViewPadding: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 20,),
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0,),
@@ -26,12 +28,11 @@ class _WelcomeState extends State<Welcome> {
                     style: kButtonLight,
                     children: <TextSpan>[
                       TextSpan(
-                        text: "CS310App",
+                        text: "sinapps",
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.red,
                           decorationThickness: 2.0,
-                          decorationStyle: TextDecorationStyle.dashed,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
                         ),
                       ),
                     ],
@@ -42,7 +43,14 @@ class _WelcomeState extends State<Welcome> {
             Spacer(),
             Padding(
               padding: const EdgeInsets.all(40.0),
-              child: Image.network('https://images-na.ssl-images-amazon.com/images/I/417MahKs6fL.png'),
+              child: CircleAvatar(
+                radius: 160,
+                backgroundColor: Colors.black,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage("lib/images/logo.png"),
+                  radius: 280,
+                ),
+              ),
             ),
             Spacer(),
             Padding(
@@ -59,7 +67,11 @@ class _WelcomeState extends State<Welcome> {
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Text(
                           'Signup',
-                          style: kButtonLightTextStyle,
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                            fontSize: 20.0,
+                            letterSpacing: 0,
+                          ),
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
@@ -78,7 +90,11 @@ class _WelcomeState extends State<Welcome> {
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Text(
                           'Login',
-                          style: kButtonDarkTextStyle,
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontSize: 20.0,
+                            letterSpacing: 0,
+                          ),
                         ),
                       ),
                       style: OutlinedButton.styleFrom(

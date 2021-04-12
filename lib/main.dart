@@ -26,7 +26,7 @@ void main() async {
   }
 
   Widget app = MaterialApp(
-    title: 'hackim',
+    title: 'sinapp',
     home: _defaultHome,
     routes: {
       '/walkthrough': (context) => WalkThrough(),

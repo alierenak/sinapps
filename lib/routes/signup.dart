@@ -83,7 +83,7 @@ class _SignUpState extends State<SignUp> {
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text(
-          'sinapp',
+          'sinapps',
           style: kAppBarTitleTextStyle,
         ),
         //backgroundColor: AppColors.secondary,
@@ -92,313 +92,317 @@ class _SignUpState extends State<SignUp> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-      child:Container(
-        //flex: 1,
-        margin: EdgeInsets.all(40.0),
-        padding: EdgeInsets.all(25.0),
+        child:Container(
+          //flex: 1,
+          margin: EdgeInsets.all(40.0),
+          padding: EdgeInsets.all(25.0),
 
-        decoration: BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
             //border: Border.all(width: 6),
             borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget> [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/logo.png'),
-                        radius: 60.0,
-                      ),
-                    ]
-                  ),
-                  SizedBox(height: 12.0),
-
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "Sign Up",
-                          style: TextStyle(
-                            //color: AppColors.secondary,
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w900,
-                            fontSize: 24.0,
-                            letterSpacing: -0.7,
-                          )
-                        )
-                      )
-                    ]
-                  ),
-                  SizedBox(height: 28.0),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                            fillColor: AppColors.captionColor,
-                            filled: true,
-                            hintText: 'Fullname',
-                            //labelText: 'Username',
-                            labelStyle: kLabelLightTextStyle,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                            ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget> [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: AssetImage('lib/images/logo.png'),
+                            radius: 60.0,
                           ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Please enter your fullname';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            fullname = value;
-                          },
-                        ),
-                      ),
+                        ],
+                    ),
+                    SizedBox(height: 12.0),
 
-                    ],
-                  ),
+                    Row (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RichText(
+                              text: TextSpan(
+                                  text: "Sign Up",
+                                  style: TextStyle(
+                                    //color: AppColors.secondary,
+                                    color: Colors.grey[800],
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 24.0,
+                                    letterSpacing: -0.7,
+                                  )
+                              )
+                          )
+                        ]
+                    ),
+                    SizedBox(height: 28.0),
 
-                  SizedBox(height: 12.0),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                            fillColor: AppColors.captionColor,
-                            filled: true,
-                            hintText: 'E-mail',
-                            //labelText: 'Username',
-                            labelStyle: kLabelLightTextStyle,
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              fillColor: AppColors.captionColor,
+                              filled: true,
+                              hintText: 'Fullname',
+                              //labelText: 'Username',
+                              labelStyle: kLabelLightTextStyle,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
-                              //borderSide: BorderSide(color: AppColors.captionColor, width:0.0),
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                              ),
                             ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if(value.isEmpty) {
+                                return 'Please enter your fullname';
+                              }
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              fullname = value;
+                            },
                           ),
-                          keyboardType: TextInputType.emailAddress,
-
-                          validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Please enter your e-mail';
-                            }
-                            if(!EmailValidator.validate(value)) {
-                              return 'The e-mail address is not valid';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            mail = value;
-                          },
                         ),
-                      ),
-                     ]
+
+                      ],
                     ),
-                      SizedBox(height: 12.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                            fillColor: AppColors.captionColor,
-                            filled: true,
-                            hintText: 'Username',
-                            //labelText: 'Username',
-                            labelStyle: kLabelLightTextStyle,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+
+                    SizedBox(height: 12.0),
+
+                    Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: TextFormField(
+
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                fillColor: AppColors.captionColor,
+                                filled: true,
+                                hintText: 'E-mail',
+                                //labelText: 'Username',
+                                labelStyle: kLabelLightTextStyle,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  //borderSide: BorderSide(color: AppColors.captionColor, width:0.0),
+                                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+
+                              validator: (value) {
+                                if(value.isEmpty) {
+                                  return 'Please enter your e-mail';
+                                }
+                                if(!EmailValidator.validate(value)) {
+                                  return 'The e-mail address is not valid';
+                                }
+                                return null;
+                              },
+                              onSaved: (String value) {
+                                mail = value;
+                              },
                             ),
                           ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Please enter your username';
-                            }
-                            if(value.length < 4) {
-                              return 'Username is too short';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            username = value;
-                          },
-                        ),
-                      ),
-
-                    ],
-                  ),
-
-                  SizedBox(height: 12.0),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                            fillColor: AppColors.captionColor,
-                            filled: true,
-                            hintText: 'Password',
-                            //labelText: 'Username',
-                            labelStyle: kLabelLightTextStyle,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                        ]
+                    ),
+                    SizedBox(height: 12.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              fillColor: AppColors.captionColor,
+                              filled: true,
+                              hintText: 'Username',
+                              //labelText: 'Username',
+                              labelStyle: kLabelLightTextStyle,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                              ),
                             ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if(value.isEmpty) {
+                                return 'Please enter your username';
+                              }
+                              if(value.length < 4) {
+                                return 'Username is too short';
+                              }
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              username = value;
+                            },
                           ),
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-
-                          validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if(value.length < 8) {
-                              return 'Password must be at least 8 characters';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            pass = value;
-                          },
                         ),
-                      ),
-                      SizedBox(width: 8.0,),
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                            fillColor: AppColors.captionColor,
-                            filled: true,
-                            hintText: 'Password (Repeat)',
-                            //labelText: 'Username',
-                            labelStyle: kLabelLightTextStyle,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+
+                      ],
+                    ),
+
+                    SizedBox(height: 12.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              fillColor: AppColors.captionColor,
+                              filled: true,
+                              hintText: 'Password',
+                              //labelText: 'Username',
+                              labelStyle: kLabelLightTextStyle,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                              ),
                             ),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            enableSuggestions: false,
+                            autocorrect: false,
+
+                            validator: (value) {
+                              if(value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              if(value.length < 8) {
+                                return 'Password must be at least 8 characters';
+                              }
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              pass = value;
+                            },
                           ),
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-
-                          validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if(value.length < 8) {
-                              return 'Password must be at least 8 characters';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            pass2 = value;
-                          },
                         ),
-                      ),
-                    ],
-                  ),
+                        SizedBox(width: 8.0,),
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              fillColor: AppColors.captionColor,
+                              filled: true,
+                              hintText: 'Password (Repeat)',
+                              //labelText: 'Username',
+                              labelStyle: kLabelLightTextStyle,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                              ),
+                            ),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            enableSuggestions: false,
+                            autocorrect: false,
 
-                  SizedBox(height: 12,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                            validator: (value) {
+                              if(value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              if(value.length < 8) {
+                                return 'Password must be at least 8 characters';
+                              }
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              pass2 = value;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
 
-                    children: <Widget>[
-                      Container(
-                        //padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        //margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                        height: 40.0,
-                        width: 200.0,
-                        child: OutlinedButton(
+                    SizedBox(height: 30,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: <Widget>[
+                        Container(
+                          //padding: const EdgeInsets.symmetric(vertical: 2.0),
                           //margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                          //width:0.8,
-                          style: OutlinedButton.styleFrom(
-                            //backgroundColor: AppColors.secondary,
-                            backgroundColor: Colors.grey[800],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                          height: 40.0,
+                          width: 200.0,
+                          child: OutlinedButton(
+                            //margin: const EdgeInsets.symmetric(horizontal: 0.0),
+                            //width:0.8,
+                            style: OutlinedButton.styleFrom(
+                              //backgroundColor: AppColors.secondary,
+                              backgroundColor: Colors.grey[800],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side: BorderSide(width: 2, color: Colors.grey[800]),
                             ),
-                            side: BorderSide(width: 2, color: AppColors.secondary),
-                          ),
-                          onPressed: () {
+                            onPressed: () {
 
-                            if(_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
-                              if (pass != pass2) {
-                                showAlertDialog("Action", 'Passwords are different');
+                              if(_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                if (pass != pass2) {
+                                  showAlertDialog("Action", 'Passwords are different');
+                                }
+                                else {
+                                  signUpUser();
+                                }
+                                //showAlertDialog("Action", 'Button clicked');
+                                setState(() {
+                                  attemptCount += 1;
+                                });
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(content: Text('Logging in')));
                               }
-                              else {
-                                signUpUser();
-                              }
-                              //showAlertDialog("Action", 'Button clicked');
-                              setState(() {
-                                attemptCount += 1;
-                              });
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text('Logging in')));
-                            }
+                            },
 
-                          },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
 
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-
-                            child: Text(
-                              'Sign-Up',
-                              style: kButtonDarkTextStyle,
+                              child: Text(
+                                'Sign-Up',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 20.0,
+                                  letterSpacing: 0,
+                                ),
+                              ),
                             ),
-                          ),
-                          //style: OutlinedButton.styleFrom(
+                            //style: OutlinedButton.styleFrom(
                             //backgroundColor: AppColors.secondary,
-                          //),
+                            //),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

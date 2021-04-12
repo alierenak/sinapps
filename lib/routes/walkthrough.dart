@@ -13,16 +13,24 @@ class WalkThrough extends StatefulWidget {
 class _WalkThroughState extends State<WalkThrough> {
 
   final controller = PageController(initialPage: 0);
-  var AppBarTitles = ["WELCOME", "INTRO", "PROFILES"];
-  var PageTitles = ["Awesome CS310 app", "Signup easily", "Create your profile"];
-  var ImageURLs = ["https://adtechresources.com/wp-content/uploads/2020/02/Mobile-Application.jpeg",
-    "https://cdn.pttrns.com/764/8981_f.jpg", "https://cdn.pttrns.com/614/7772_f.jpg",];
-  var ImageCaptions = ["Your personal course material","Just use your SU-Net account",
-    "Update your flutter knowledge"];
+  var AppBarTitles = ["WELCOME", "SIGNUP","LOGIN",  "GET STARTED"];
+  var PageTitles = ["Welcome to sinapps",  "Signup easily","Fast and quick login", "Create your profile"];
+  var ImageURLs = ["lib/images/logo.png",
+    "lib/images/signup.png",
+    "https://cdn.pttrns.com/614/7772_f.jpg",
+    "lib/images/logo.png"
+  ];
+  var ImageCaptions = ["A social media app for medics all around the globe", "A simple form to signup","Just enter your name and password to login", "Start your experience"];
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(00.0),
+        child: AppBar(
+          backgroundColor: Colors.grey[800],
+        ),
+      ),
       body: PageView(
         pageSnapping: true,
         controller: controller,
@@ -44,7 +52,7 @@ class _WalkThroughState extends State<WalkThrough> {
                       //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
-                          image: NetworkImage(ImageURLs[0]),
+                          image: AssetImage("lib/images/doctors.jpg"),
                           fit: BoxFit.fill
                       ),
                     ),
@@ -62,18 +70,22 @@ class _WalkThroughState extends State<WalkThrough> {
                     Icon(
                       Icons.circle,
                       color: Colors.grey[700],
+                      size: 20,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                   ]
               ),
@@ -99,14 +111,19 @@ class _WalkThroughState extends State<WalkThrough> {
                           height: 25,
                       ),
 
-                      Text(
-                        ImageCaptions[0],
-                        style: TextStyle(
-                    color: AppColors.primary,
-                    fontSize: 26.0,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 0,
-                  ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                            ImageCaptions[0],
+                          textAlign: TextAlign.center,
+                            style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 26.0,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0,
+                            ),
+                          ),
+                        
                       ),
                     ],
                 )
@@ -129,7 +146,7 @@ class _WalkThroughState extends State<WalkThrough> {
                       //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
-                          image: NetworkImage(ImageURLs[1]),
+                          image: AssetImage("lib/images/signup.png"),
                           fit: BoxFit.fill
                       ),
                     ),
@@ -147,18 +164,22 @@ class _WalkThroughState extends State<WalkThrough> {
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[700],
+                      size: 20,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                   ]
               ),
@@ -184,14 +205,21 @@ class _WalkThroughState extends State<WalkThrough> {
                         height: 25,
                       ),
 
-                      Text(
-                        ImageCaptions[1],
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 0,
-                        ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+
+                        child:
+                          Text(
+                            ImageCaptions[1],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.w300,
+                              letterSpacing: 0,
+                            ),
+                          ),
+
                       ),
                     ],
                   )
@@ -214,7 +242,7 @@ class _WalkThroughState extends State<WalkThrough> {
                       //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
-                          image: NetworkImage(ImageURLs[2]),
+                          image: AssetImage("lib/images/login.png"),
                           fit: BoxFit.fill
                       ),
                     ),
@@ -232,18 +260,22 @@ class _WalkThroughState extends State<WalkThrough> {
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[700],
+                      size: 20,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                   ]
               ),
@@ -269,13 +301,18 @@ class _WalkThroughState extends State<WalkThrough> {
                         height: 25,
                       ),
 
-                      Text(
-                        ImageCaptions[2],
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 0,
+                      Padding(
+                        padding: EdgeInsets.all(10),
+
+                        child: Text(
+                          ImageCaptions[2],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 26.0,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0,
+                          ),
                         ),
                       ),
                     ],
@@ -299,7 +336,7 @@ class _WalkThroughState extends State<WalkThrough> {
                       //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
-                          image: NetworkImage(ImageURLs[2]),
+                          image: AssetImage("lib/images/getstarted.jpg"),
                           fit: BoxFit.fill
                       ),
                     ),
@@ -317,18 +354,22 @@ class _WalkThroughState extends State<WalkThrough> {
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[350],
+                      size: 15,
                     ),
                     Icon(
                       Icons.circle,
                       color: Colors.grey[700],
+                      size: 20,
                     ),
                   ]
               ),
@@ -341,7 +382,7 @@ class _WalkThroughState extends State<WalkThrough> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        PageTitles[2],
+                        PageTitles[3],
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 32.0,
@@ -354,26 +395,30 @@ class _WalkThroughState extends State<WalkThrough> {
                         height: 25,
                       ),
 
-                      Text(
-                        ImageCaptions[2],
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 0,
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          ImageCaptions[3],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 26.0,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0,
+                          ),
                         ),
                       ),
 
                       SizedBox(
-                        height: 25,
+                        height: 200,
                       ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 180,
-                            height: 40,
+                            width: 300,
+                            height: 60,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: Colors.grey[750],
