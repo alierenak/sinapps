@@ -14,13 +14,14 @@ class _WalkThroughState extends State<WalkThrough> {
 
   final controller = PageController(initialPage: 0);
   var AppBarTitles = ["WELCOME", "SIGNUP","LOGIN",  "GET STARTED"];
-  var PageTitles = ["Welcome to sinapps",  "Signup easily","Fast and quick login", "Create your profile"];
+  var PageTitles = ["Welcome to ",  "Signup easily","Fast and quick login", "Create your profile"];
   var ImageURLs = ["lib/images/logo.png",
     "lib/images/signup.png",
     "https://cdn.pttrns.com/614/7772_f.jpg",
     "lib/images/logo.png"
   ];
-  var ImageCaptions = ["A social media app for medics all around the globe", "A simple form to signup","Just enter your name and password to login", "Start your experience"];
+  var ImageCaptions = ["A social media app for health professionals and students, all around the globe!", "A simple form to signup and create your account.",
+    "Just enter your username and password to login.", "Join the community now!"];
 
   @override
   Widget build(BuildContext context){
@@ -97,14 +98,30 @@ class _WalkThroughState extends State<WalkThrough> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        PageTitles[0],
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 32.0,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            PageTitles[0],
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "sinapps",
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 40.0,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
 
                       SizedBox(
@@ -410,14 +427,15 @@ class _WalkThroughState extends State<WalkThrough> {
                       ),
 
                       SizedBox(
-                        height: 200,
+                        height: 150,
                       ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: 300,
+                            width: 250,
                             height: 60,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
@@ -430,8 +448,9 @@ class _WalkThroughState extends State<WalkThrough> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                                 child: Text(
-                                  "Welcome Page",
+                                  "Explore",
                                   style: kButtonLight,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                               onPressed: () {
