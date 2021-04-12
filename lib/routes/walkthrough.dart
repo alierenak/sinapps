@@ -1,17 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; //Kaan Atmaca
+import 'package:flutter/material.dart';
 import 'package:flutter_app_project/utils/colors.dart';
 import 'package:flutter_app_project/utils/styles.dart';
-import 'package:flutter_app_project/routes/welcome.dart';
-import 'package:flutter_app_project/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/*
-void main() {
-  runApp(MaterialApp(
-    home: WalkThrough(),
-  ));
-}
-*/
 
 class WalkThrough extends StatefulWidget {
   @override
@@ -19,6 +11,7 @@ class WalkThrough extends StatefulWidget {
 }
 
 class _WalkThroughState extends State<WalkThrough> {
+
   final controller = PageController(initialPage: 0);
   var AppBarTitles = ["WELCOME", "INTRO", "PROFILES"];
   var PageTitles = ["Awesome CS310 app", "Signup easily", "Create your profile"];
@@ -36,34 +29,19 @@ class _WalkThroughState extends State<WalkThrough> {
         scrollDirection: Axis.horizontal,
         children:[
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 1,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    PageTitles[0],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
-              ),
+              //SizedBox(height: 1,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 280,
-                    height: 280,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height/2.7,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
                           image: NetworkImage(ImageURLs[0]),
@@ -73,20 +51,8 @@ class _WalkThroughState extends State<WalkThrough> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    ImageCaptions[0],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 25,
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -111,36 +77,56 @@ class _WalkThroughState extends State<WalkThrough> {
                     ),
                   ]
               ),
+              SizedBox(
+                height: 25,
+              ),
+              SafeArea(
+                  child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        PageTitles[0],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0,
+                        ),
+                      ),
+
+                      SizedBox(
+                          height: 25,
+                      ),
+
+                      Text(
+                        ImageCaptions[0],
+                        style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 26.0,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 0,
+                  ),
+                      ),
+                    ],
+                )
+              ),
             ],
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 1,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(  PageTitles[1],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
-              ),
+              //SizedBox(height: 1,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 280,
-                    height: 280,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height/2.7,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
                           image: NetworkImage(ImageURLs[1]),
@@ -150,74 +136,82 @@ class _WalkThroughState extends State<WalkThrough> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    ImageCaptions[1],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 25,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[700],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                  ]
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              SafeArea(
+                  child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        PageTitles[1],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0,
+                        ),
+                      ),
 
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[700],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                ],
+                      SizedBox(
+                        height: 25,
+                      ),
+
+                      Text(
+                        ImageCaptions[1],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
+                  )
               ),
             ],
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 1,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(  PageTitles[2],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
-              ),
+              //SizedBox(height: 1,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 280,
-                    height: 280,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height/2.7,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
                           image: NetworkImage(ImageURLs[2]),
@@ -227,74 +221,82 @@ class _WalkThroughState extends State<WalkThrough> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    ImageCaptions[2],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 25,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[700],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[700],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                  ]
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              SafeArea(
+                  child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        PageTitles[2],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 25,
+                      ),
+
+                      Text(
+                        ImageCaptions[2],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
+                  )
               ),
             ],
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 1,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    PageTitles[0],
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ],
-              ),
+            children: <Widget>[
+              //SizedBox(height: 1,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 280,
-                    height: 280,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height/2.7,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      //shape: BoxShape.circle,
                       border: Border.all(width: 2,),
                       image: DecorationImage(
                           image: NetworkImage(ImageURLs[2]),
@@ -304,55 +306,98 @@ class _WalkThroughState extends State<WalkThrough> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 180,
-                    height: 40,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.grey[750],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        side: BorderSide(width: 2, color: AppColors.primary),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                        child: Text(
-                          "Welcome Page",
-                          style: kButtonLight,
-                        ),
-                      ),
-                      onPressed: () {
-                       Navigator.pushNamed(context, '/welcome');
-                      },
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 25,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[350],
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: Colors.grey[700],
-                  ),
-                ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[350],
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: Colors.grey[700],
+                    ),
+                  ]
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              SafeArea(
+                  child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        PageTitles[2],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 25,
+                      ),
+
+                      Text(
+                        ImageCaptions[2],
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 0,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 25,
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 180,
+                            height: 40,
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.grey[750],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                side: BorderSide(width: 2, color: AppColors.primary),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                child: Text(
+                                  "Welcome Page",
+                                  style: kButtonLight,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/welcome');
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
               ),
             ],
           ),
