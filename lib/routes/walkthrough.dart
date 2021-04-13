@@ -427,7 +427,7 @@ class _WalkThroughState extends State<WalkThrough> {
                       ),
 
                       SizedBox(
-                        height: 150,
+                        height: 200,
                       ),
 
                       Row(

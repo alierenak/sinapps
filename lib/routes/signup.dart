@@ -190,7 +190,6 @@ class _SignUpState extends State<SignUp> {
                           Expanded(
                             flex: 1,
                             child: TextFormField(
-
                               decoration: InputDecoration(
                                 contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                                 fillColor: AppColors.captionColor,

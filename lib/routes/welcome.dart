@@ -13,15 +13,27 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[700],
-      body: SafeArea(
-        maintainBottomViewPadding: false,
+        body:Container(
+       margin: EdgeInsets.symmetric(vertical: 80, horizontal: 18),
+       padding: EdgeInsets.all(50.0),
+        decoration: BoxDecoration(
+        color: Colors.white,
+        //border: Border.all(width: 6),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+        BoxShadow(
+        color: Colors.black.withOpacity(0.1),
+        spreadRadius: 5,
+        blurRadius: 7,
+        offset: Offset(0, 3),
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20,),
+            SizedBox(height: 10,),
             Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0,),
                 child: RichText(
                   text: TextSpan(
                     text: "Welcome to ",
@@ -38,48 +50,20 @@ class _WelcomeState extends State<Welcome> {
                     ],
                   ),
                 ),
-              ),
             ),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(40.0),
+            CircleAvatar(
+              radius: 180,
+              backgroundColor: Colors.black,
               child: CircleAvatar(
-                radius: 160,
-                backgroundColor: Colors.black,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage("lib/images/logo.png"),
-                  radius: 280,
-                ),
+                backgroundImage: AssetImage("lib/images/logo.png"),
+                radius: 200,
               ),
             ),
+
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          'Signup',
-                          style: TextStyle(
-                            color: Colors.grey[900],
-                            fontSize: 20.0,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: AppColors.secondary,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.0,),
+            Row(
+                children: [
                   Expanded(
                     flex: 1,
                     child: OutlinedButton(
@@ -104,10 +88,39 @@ class _WelcomeState extends State<Welcome> {
                   ),
                 ],
               ),
-            ),
+           SizedBox(height: 10,),
+           Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          'Signup',
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                            fontSize: 20.0,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: AppColors.secondary,
+                      ),
+                    ),
+                  ),
+                 //SizedBox(width: 8.0,),
+                ],
+              ),
+            //SizedBox(height: 5,),
           ],
         ),
-      ),
+    ),
+
     );
   }
 }
