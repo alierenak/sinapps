@@ -14,8 +14,8 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       backgroundColor: Colors.grey[700],
         body:Container(
-       margin: EdgeInsets.symmetric(vertical: 80, horizontal: 18),
-       padding: EdgeInsets.all(50.0),
+       margin: EdgeInsets.symmetric(vertical: 50, horizontal: 26),
+        padding: EdgeInsets.all(40.0),
         decoration: BoxDecoration(
         color: Colors.white,
         //border: Border.all(width: 6),
