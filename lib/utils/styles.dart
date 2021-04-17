@@ -22,7 +22,14 @@ final kButtonLightTextStyle = TextStyle(
 
 final kButtonLight = TextStyle(
   color: AppColors.primary,
-  fontSize: 20,
+  fontSize: 30,
+  letterSpacing: 0,
+);
+
+final kHeaderLight = TextStyle(
+  color: AppColors.primary,
+  fontSize: 32.0,
+  fontWeight: FontWeight.w800,
   letterSpacing: 0,
 );
 

@@ -13,15 +13,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String mail;
-  String pass;
-  String pass2;
   String username;
+  String pass;
   int attemptCount;
   final _formKey = GlobalKey<FormState>();
   Future<void> signUpUser() async {
     final url = Uri.parse('http://altop.co/cs310/api.php');
     var body = {
-      'call': 'signup',
+      'call': 'login',
       'mail': mail,
       'pass': pass,
       'username': username
@@ -75,23 +74,24 @@ class _LoginState extends State<Login> {
     );
   }
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text(
-          'hackim',
+          'sinapps',
           style: kAppBarTitleTextStyle,
         ),
-        backgroundColor: AppColors.secondary,
+        backgroundColor: Colors.grey[800],
         centerTitle: true,
         elevation: 0.0,
       ),
       body:SingleChildScrollView(
         child: Container(
           //flex: 1,
-          margin: EdgeInsets.all(25.0),
-          padding: EdgeInsets.all(15.0),
+          margin: EdgeInsets.all(40.0),
+          padding: EdgeInsets.all(25.0),
 
           decoration: BoxDecoration(
             color: Colors.white,
@@ -116,18 +116,18 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: <Widget> [
                     CircleAvatar(
-                      backgroundImage: AssetImage('lib/assets/PHOTO-2021-04-10-22-54-09.jpg'),
-                      radius: 80.0,
+                      backgroundImage: AssetImage('lib/images/logo.png'),
+                      radius: 60.0,
                     ),
-                    SizedBox(height: 16.0),
+                    SizedBox(height: 12.0),
 
                     RichText(
                         text: TextSpan(
                             text: "Log In",
                             style: TextStyle(
-                              color: AppColors.secondary,
+                              color: Colors.grey[800],
                               fontWeight: FontWeight.w900,
-                              fontSize: 30.0,
+                              fontSize: 24.0,
                               letterSpacing: -0.7,
                             )
                         )
@@ -173,7 +173,7 @@ class _LoginState extends State<Login> {
                       },
                     ),
 
-                    SizedBox(height: 16.0),
+                    SizedBox(height: 12.0),
 
                     TextFormField(
                       decoration: InputDecoration(
@@ -191,13 +191,23 @@ class _LoginState extends State<Login> {
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
+
+                      validator: (value) {
+                        if(value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if(value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
                       onSaved: (String value) {
                         pass = value;
                       },
                     ),
-                    SizedBox(width: 8.0,),
 
-                    SizedBox(height: 8,),
+
+                    SizedBox(height: 30.0,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -212,22 +222,17 @@ class _LoginState extends State<Login> {
                             //margin: const EdgeInsets.symmetric(horizontal: 0.0),
                             //width:0.8,
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.secondary,
+                              backgroundColor: Colors.grey[800],
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
-                              side: BorderSide(width: 2, color: AppColors.secondary),
+                              side: BorderSide(width: 2, color: Colors.grey[800]),
                             ),
                             onPressed: () {
 
                               if(_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                if (pass != pass2) {
-                                  showAlertDialog("Action", 'Passwords are different');
-                                }
-                                else {
-                                  signUpUser();
-                                }
+
                                 //showAlertDialog("Action", 'Button clicked');
                                 setState(() {
                                   attemptCount += 1;
@@ -244,7 +249,11 @@ class _LoginState extends State<Login> {
 
                               child: Text(
                                 'Log-In',
-                                style: kButtonLightTextStyle,
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 20.0,
+                                  letterSpacing: 0,
+                                ),
                               ),
                             ),
                             //style: OutlinedButton.styleFrom(
