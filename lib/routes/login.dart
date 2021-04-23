@@ -7,6 +7,7 @@ import 'package:flutter_app_project/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_project/routes/feedpage.dart';
 import 'package:flutter_app_project/routes/profilepage.dart';
+import 'package:flutter_app_project/routes/bottomNavBar.dart';
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -224,7 +225,7 @@ class _LoginState extends State<Login> {
                               side: BorderSide(width: 2, color: Colors.grey[800]),
                             ),
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
 
                               if(_formKey.currentState.validate()) {
                                 _formKey.currentState.save();

@@ -23,7 +23,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return new MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
