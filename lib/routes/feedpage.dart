@@ -21,6 +21,7 @@ class _FeedPageState extends State<FeedPage>{
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
+
             toolbarHeight: 0,
             backgroundColor: AppColors.primary,
           ),
@@ -97,6 +98,7 @@ class _FeedPageState extends State<FeedPage>{
         ),
       ),
     );
+
 
   }
 }
