@@ -29,16 +29,18 @@ class _FeedPageState extends State<FeedPage>{
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-        home: SafeArea(
-          top: false,
-          bottom: false,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                "sinapps",
-              ),
+    return MaterialApp(
+      home: SafeArea(
+        top: false,
+        bottom: false,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "sinapps",
             ),
+
+
+      
             body: bodyView[currentPage],
             bottomNavigationBar: BottomNavigationBar(
               type : BottomNavigationBarType.fixed,
@@ -74,6 +76,7 @@ class _FeedPageState extends State<FeedPage>{
               ),
             ),
       );
+
   }
 }
 
