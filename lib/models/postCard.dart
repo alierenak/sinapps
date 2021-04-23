@@ -14,7 +14,7 @@ class PostCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.fromLTRB(0, 8.0, 0.0, 8.0),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -30,6 +30,7 @@ class PostCard extends StatelessWidget {
 
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text(
                   post.date,
@@ -61,6 +62,24 @@ class PostCard extends StatelessWidget {
                 SizedBox(width: 8.0),
 
                 Icon(
+                  Icons.thumb_down,
+                  size: 16.0,
+                  color: AppColors.third,
+                ),
+
+                Text(
+                  '${post.dislikes}',
+                  style: TextStyle(
+                    fontFamily: 'BrandonText',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textColor,
+                  ),
+                ),
+
+                SizedBox(width: 8.0),
+
+                Icon(
                   Icons.comment,
                   size: 16.0,
                 ),
@@ -75,12 +94,15 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(width: 16.0),
+
 
                 IconButton(
+                  padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
+                  alignment: Alignment.bottomLeft,
+                  splashRadius: 4.0,
                   icon: Icon(
                     Icons.delete,
-                    size: 16.0,
+                    size: 20.0,
                     color: Colors.red,
                   ),
                   onPressed: delete,
