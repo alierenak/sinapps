@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_project/utils/colors.dart';
 import 'package:flutter_app_project/utils/styles.dart';
 import 'package:flutter_app_project/main.dart';
-
+//hello world
 class Welcome extends StatefulWidget {
   @override
   _WelcomeState createState() => _WelcomeState();
@@ -14,7 +14,7 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       backgroundColor: Colors.grey[700],
         body:Container(
-       margin: EdgeInsets.symmetric(vertical: 50, horizontal: 26),
+        margin: EdgeInsets.symmetric(vertical: 50, horizontal: 26),
         padding: EdgeInsets.all(40.0),
         decoration: BoxDecoration(
         color: Colors.white,

@@ -5,6 +5,7 @@ import 'package:flutter_app_project/utils/colors.dart';
 import 'package:flutter_app_project/utils/styles.dart';
 import 'package:flutter_app_project/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_app_project/routes/feedpage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -73,8 +74,8 @@ class _LoginState extends State<Login> {
         }
     );
   }
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
@@ -89,13 +90,10 @@ class _LoginState extends State<Login> {
       ),
       body:SingleChildScrollView(
         child: Container(
-          //flex: 1,
           margin: EdgeInsets.all(40.0),
           padding: EdgeInsets.all(25.0),
-
           decoration: BoxDecoration(
             color: Colors.white,
-            //border: Border.all(width: 6),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -110,7 +108,6 @@ class _LoginState extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               Form(
                 key: _formKey,
                 child: Column(
@@ -166,8 +163,6 @@ class _LoginState extends State<Login> {
                         }
                         return null;
                       },
-
-
                       onSaved: (String value) {
                         username = value;
                       },
@@ -229,15 +224,13 @@ class _LoginState extends State<Login> {
                               side: BorderSide(width: 2, color: Colors.grey[800]),
                             ),
                             onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => FeedPage()));
 
                               if(_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-
-                                //showAlertDialog("Action", 'Button clicked');
                                 setState(() {
                                   attemptCount += 1;
                                 });
-
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(content: Text('Logging in')));
                               }
