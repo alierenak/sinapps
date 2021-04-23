@@ -32,7 +32,7 @@ class _FeedPageState extends State<FeedPage>{
                   margin: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[700],
+                    color: Colors.grey[300],
                   ),
                   height: 400,
                 ),
@@ -41,7 +41,7 @@ class _FeedPageState extends State<FeedPage>{
                   margin: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[700],
+                    color: Colors.grey[300],
                   ),
                   height: 400,
                   child: Padding(
@@ -78,7 +78,7 @@ class _FeedPageState extends State<FeedPage>{
                   margin: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[700],
+                    color: Colors.grey[300],
                   ),
                   height: 400,
                 ),
@@ -87,7 +87,7 @@ class _FeedPageState extends State<FeedPage>{
                   margin: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[700],
+                    color: Colors.grey[300],
                   ),
                   height: 400,
                 ),

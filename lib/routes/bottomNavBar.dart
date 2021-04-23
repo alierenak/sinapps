@@ -39,7 +39,7 @@ class _BottomBarState extends State<BottomBar>{
           bottomNavigationBar: BottomNavigationBar(
             //backgroundColor: AppColors.secondary,
             fixedColor: Colors.grey[800],
-            //type : BottomNavigationBarType.fixed,
+            type : BottomNavigationBarType.fixed,
             currentIndex: currentPage,
             iconSize: 35,
             onTap: changePage,
