@@ -38,6 +38,7 @@ class _FeedPageState extends State<FeedPage>{
             title: Text(
               "sinapps",
             ),
+
           ),
           body: bodyView[currentPage],
           bottomNavigationBar: BottomNavigationBar(
@@ -74,5 +75,7 @@ class _FeedPageState extends State<FeedPage>{
         ),
       ),
     );
+
   }
 }
+
