@@ -39,42 +39,43 @@ class _FeedPageState extends State<FeedPage>{
               "sinapps",
             ),
 
-          ),
-          body: bodyView[currentPage],
-          bottomNavigationBar: BottomNavigationBar(
-            type : BottomNavigationBarType.fixed,
-            currentIndex: currentPage,
-            iconSize: 35,
-            onTap: changePage,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: '',
+
+      
+            body: bodyView[currentPage],
+            bottomNavigationBar: BottomNavigationBar(
+              type : BottomNavigationBarType.fixed,
+              currentIndex: currentPage,
+              iconSize: 35,
+              onTap: changePage,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: '',
+                ),
+              ],
+              //  onTap: (index) => onSelectTab(
+                //  TabItem.values[index],
+               // ),
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: '',
-              ),
-            ],
-            //  onTap: (index) => onSelectTab(
-            //  TabItem.values[index],
-            // ),
-          ),
-        ),
-      ),
-    );
+            ),
+      );
 
   }
 }
