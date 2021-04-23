@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_project/routes/login.dart';
+import 'package:flutter_app_project/routes/notificationpage.dart';
 import 'package:flutter_app_project/routes/welcome.dart';
-import 'package:flutter_app_project/routes/login.dart';
 import 'package:flutter_app_project/routes/signup.dart';
 import 'package:flutter_app_project/routes/walkthrough.dart';
 import 'package:flutter_app_project/routes/profilepage.dart';
@@ -27,7 +27,7 @@ class _BottomBarState extends State<BottomBar>{
     FeedPage(),
     FeedPage(),
     FeedPage(),
-    FeedPage(),
+    Noti(),
     Profile(),
   ];
 
