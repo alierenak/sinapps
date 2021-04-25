@@ -91,11 +91,27 @@ class _EditProfileState extends State<EditProfile> {
               "Profile Visibility",
               style: TextStyle(color: Colors.grey),
             )),
-        ToggleButtons(children: [
+        ToggleButtons(
+          selectedColor: Colors.black,
+          fillColor: Colors.grey[500],
+          children: [
           Icon(Icons.lock),
           Icon(Icons.lock_open),
           ],
-    isSelected: _selections)
+
+          onPressed: (int index) {
+            setState(() {
+              for (int buttonIndex = 0; buttonIndex < _selections.length; buttonIndex++) {
+                if (buttonIndex == index) {
+                  _selections[buttonIndex] = true;
+                } else {
+                  _selections[buttonIndex] = false;
+                }
+              }
+            });
+          },
+          isSelected: _selections,
+        )
       ],
     );
   }
@@ -152,14 +168,23 @@ class _EditProfileState extends State<EditProfile> {
                     backgroundImage: AssetImage(profUser.photoUrl),
                   ),
                 ),
+
+                  TextButton(
+                    child: Text('Change Profile Photo'),
+                    onPressed: () {
+                      print("ProfilePhotoChangeButton Pressed");
+                    },
+                  ),
+
+
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(4.0),
                   child: Column(
                     children: <Widget>[
                       buildDisplayNameField(),
                       buildDisplayUsernameField(),
                       buildBioField(),
-                      SizedBox(height: 60,),
+                      SizedBox(height: 25,),
                       buildPrivateField(),
                     ],
                   ),
