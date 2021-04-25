@@ -39,163 +39,181 @@ class _AddPostState extends State<AddPost> {
         ),
         body: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 2),
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              height: 400,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          'Post',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'BrandonText',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                    ],
-                  ),
-                  Container(
-                    height: 60,
-                    color: Colors.black54,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Container(
-                            height: 36.0,
-                            width: 36.0,
-                            color: Colors.black26,
-                            child: IconButton(
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.photo_outlined,
-                                size: 18.0,
+            SingleChildScrollView(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2),
+                  borderRadius: BorderRadius.circular(6),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                height: 300,
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          Expanded(
+                            flex: 1,
+                            child: TextField(
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 16,
+                                fontFamily: 'BrandonText',
+                                fontWeight: FontWeight.w600,
                               ),
-                              onPressed: () {
-                                AddPost();
-                              },
+                              maxLength: 260,
+                              minLines: 8,
+                              maxLines: 16,
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                fillColor: AppColors.captionColor,
+                                filled: true,
+                                hintText: 'Whats going on...',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.text,
                             ),
                           ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: Container(
-                            height: 36.0,
-                            width: 36.0,
-                            color: Colors.black26,
-                            child: IconButton(
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.add_location,
-                                size: 18.0,
-                              ),
-                              onPressed: () {
-                                AddPost();
-                              },
-                            ),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: Container(
-                            height: 36.0,
-                            width: 36.0,
-                            color: Colors.black26,
-                            child: IconButton(
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.link,
-                                size: 18.0,
-                              ),
-                              onPressed: () {
-                                AddPost();
-                              },
-                            ),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: Container(
-                            height: 36.0,
-                            width: 36.0,
-                            color: Colors.black26,
-                            child: IconButton(
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.poll,
-                                size: 18.0,
-                              ),
-                              onPressed: () {
-                                AddPost();
-                              },
-                            ),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: Container(
-                            height: 36.0,
-                            width: 36.0,
-                            color: Colors.black26,
-                            child: IconButton(
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.gif,
-                                size: 18.0,
-                              ),
-                              onPressed: () {
-                                AddPost();
-                              },
-                            ),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 36.0,
-                            width: 90.0,
-                            color: AppColors.primary,
-                            child: IconButton(
-                              alignment: Alignment.center,
-                              color: Colors.grey[300],
-                              icon: Icon(
-                                Icons.add,
-                                size: 24.0,
-                                color: Colors.black54,
-                              ),
-                              onPressed: () {
-                                AddPost();
-                              },
-                            ),
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                ],
+                    Container(
+                      height: 60,
+                      color: Colors.black54,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Container(
+                              height: 36.0,
+                              width: 36.0,
+                              color: Colors.black26,
+                              child: IconButton(
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.photo_outlined,
+                                  size: 18.0,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                              height: 36.0,
+                              width: 36.0,
+                              color: Colors.black26,
+                              child: IconButton(
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.add_location,
+                                  size: 18.0,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                              height: 36.0,
+                              width: 36.0,
+                              color: Colors.black26,
+                              child: IconButton(
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.link,
+                                  size: 18.0,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                              height: 36.0,
+                              width: 36.0,
+                              color: Colors.black26,
+                              child: IconButton(
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.poll,
+                                  size: 18.0,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                              height: 36.0,
+                              width: 36.0,
+                              color: Colors.black26,
+                              child: IconButton(
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.gif,
+                                  size: 18.0,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 36.0,
+                              width: 90.0,
+                              color: AppColors.primary,
+                              child: IconButton(
+                                alignment: Alignment.center,
+                                color: Colors.grey[300],
+                                icon: Icon(
+                                  Icons.add,
+                                  size: 24.0,
+                                  color: Colors.black54,
+                                ),
+                                onPressed: () {
+                                  AddPost();
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

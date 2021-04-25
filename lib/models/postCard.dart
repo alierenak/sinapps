@@ -21,7 +21,7 @@ class PostCard extends StatelessWidget {
           children: <Widget>[
             Row(
 
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
@@ -33,11 +33,9 @@ class PostCard extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(width: 10.0),
-
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       post.username,
@@ -49,7 +47,6 @@ class PostCard extends StatelessWidget {
 
                   ],
                 ),
-                SizedBox(width: 50,),
                 Text(
                   post.date,
                   style: TextStyle(

@@ -187,8 +187,8 @@ class _ProfileState extends State<Profile> {
                   Column(
                     children: [
                       Container(
-                        width: 130,
-                        height: 28,
+                        width: 90,
+                        height: 40,
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.grey[750],
@@ -248,8 +248,8 @@ class _ProfileState extends State<Profile> {
                   Column(
                     children: [
                       Container(
-                        width: 130,
-                        height: 28,
+                        width: 90,
+                        height: 40,
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.grey[750],
