@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_project/routes/bottomNavigator.dart';
 import 'package:flutter_app_project/utils/colors.dart';
 import 'package:flutter_app_project/utils/styles.dart';
 import 'package:flutter_app_project/main.dart';
@@ -48,6 +49,9 @@ class _LoginState extends State<Login> {
     else {
       print(response.statusCode);
     }
+
+    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavi()));
+
   }
   Future<void> showAlertDialog(String title, String message) async {
     return showDialog<void>(
