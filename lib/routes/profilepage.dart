@@ -5,7 +5,11 @@ import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/PostCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
+
+import 'package:sinapps/models/littlePostCard.dart';
+
 import 'package:sinapps/routes/settingspage.dart';
+
 
 class Profile extends StatefulWidget {
   @override
@@ -14,14 +18,23 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final controller = PageController(initialPage: 0);
-  int postCount = 0;
+
   user profUser = user(mail: 'mertture@sabanciuniv.edu', username: 'mertture0', fullname: 'Mert Türe',
       followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/cat.jpg');
   //final String currentUserId = profUser.username;
   List<Post> posts = [
     Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
     Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
-    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 )
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+    Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
   ];
 
   @override
@@ -219,7 +232,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${profUser.posts}',
+                        '${posts.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -310,18 +323,39 @@ class _ProfileState extends State<Profile> {
                               ]
 
                           ),
-                          SizedBox(height: 20.0),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                          //SizedBox(height: 20.0),
+                          /*Container(
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             width:double.infinity,
                             child: SingleChildScrollView(
                               child: Column(
-                                children: posts.map((post) => PostCard(
+
+                                children: posts.map((post) => littlePostCard(
                                     post: post,
                                 )).toList(),
 
                               ),
                             ),
+
+                          ),*/
+                          //padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                          //SizedBox(height: 20.0),
+                          GridView.count(
+                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                            crossAxisCount: 3,
+                            children: posts.map((post) {
+                              return Container(
+                                margin: EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                    image: DecorationImage(
+                                      image: AssetImage(post.photoUrl),
+                                      fit: BoxFit.fill,
+                                    ),
+
+                                  ),
+                                  height: 150.0);
+                            }).toList(),
 
                           ),
                         ]
@@ -351,9 +385,9 @@ class _ProfileState extends State<Profile> {
                               ]
 
                           ),
-                          SizedBox(height: 20.0),
+
                           Container(
-                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                             width:double.infinity,
                             child: SingleChildScrollView(
                               child: Column(
