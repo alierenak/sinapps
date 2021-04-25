@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aa515b71-a1d7-452f-9374-57e930e87f14" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/android/app/google-services.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Runner/GoogleService-Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/cat.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/doctors.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/getstarted.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/login.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images/signup.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/notif.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/notifCard.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/post.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/postCard.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/user.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/addpage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/bottomNavBar.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/explorepage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/feedpage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/login.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/notificationpage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/profilepage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/searchview.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/signup.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/walkthrough.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/welcome.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/colors.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/preferences.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/styles.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1raoRNiN5MrZj4Le0tsPB33PzKD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/android/app" />
+      <recent name="$PROJECT_DIR$/ios/Runner" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aa515b71-a1d7-452f-9374-57e930e87f14" name="Default Changelist" comment="" />
+      <created>1619223552749</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619223552749</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1398" height="86" key="GridCell.Tab.0.bottom" timestamp="1619294102778">
+      <screen x="-250" y="-1055" width="1920" height="1055" />
+    </state>
+    <state width="1398" height="86" key="GridCell.Tab.0.bottom/0.25.1440.810/-250.-1055.1920.1055@-250.-1055.1920.1055" timestamp="1619294102778" />
+    <state width="1398" height="162" key="GridCell.Tab.0.bottom/0.25.1440.810/-250.-1055.1920.1055@0.25.1440.810" timestamp="1619293840063" />
+    <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.25.1440.816/-250.-1055.1920.1055@0.25.1440.816" timestamp="1619292442591" />
+    <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.25.1440.817/-250.-1055.1920.1055@0.25.1440.817" timestamp="1619292546479" />
+    <state width="1398" height="86" key="GridCell.Tab.0.center" timestamp="1619294102777">
+      <screen x="-250" y="-1055" width="1920" height="1055" />
+    </state>
+    <state width="1398" height="86" key="GridCell.Tab.0.center/0.25.1440.810/-250.-1055.1920.1055@-250.-1055.1920.1055" timestamp="1619294102777" />
+    <state width="1398" height="162" key="GridCell.Tab.0.center/0.25.1440.810/-250.-1055.1920.1055@0.25.1440.810" timestamp="1619293840063" />
+    <state width="1398" height="212" key="GridCell.Tab.0.center/0.25.1440.816/-250.-1055.1920.1055@0.25.1440.816" timestamp="1619292442590" />
+    <state width="1398" height="212" key="GridCell.Tab.0.center/0.25.1440.817/-250.-1055.1920.1055@0.25.1440.817" timestamp="1619292546478" />
+    <state width="1398" height="86" key="GridCell.Tab.0.left" timestamp="1619294102777">
+      <screen x="-250" y="-1055" width="1920" height="1055" />
+    </state>
+    <state width="1398" height="86" key="GridCell.Tab.0.left/0.25.1440.810/-250.-1055.1920.1055@-250.-1055.1920.1055" timestamp="1619294102777" />
+    <state width="1398" height="162" key="GridCell.Tab.0.left/0.25.1440.810/-250.-1055.1920.1055@0.25.1440.810" timestamp="1619293840062" />
+    <state width="1398" height="212" key="GridCell.Tab.0.left/0.25.1440.816/-250.-1055.1920.1055@0.25.1440.816" timestamp="1619292442590" />
+    <state width="1398" height="212" key="GridCell.Tab.0.left/0.25.1440.817/-250.-1055.1920.1055@0.25.1440.817" timestamp="1619292546478" />
+    <state width="1398" height="86" key="GridCell.Tab.0.right" timestamp="1619294102777">
+      <screen x="-250" y="-1055" width="1920" height="1055" />
+    </state>
+    <state width="1398" height="86" key="GridCell.Tab.0.right/0.25.1440.810/-250.-1055.1920.1055@-250.-1055.1920.1055" timestamp="1619294102777" />
+    <state width="1398" height="162" key="GridCell.Tab.0.right/0.25.1440.810/-250.-1055.1920.1055@0.25.1440.810" timestamp="1619293840063" />
+    <state width="1398" height="212" key="GridCell.Tab.0.right/0.25.1440.816/-250.-1055.1920.1055@0.25.1440.816" timestamp="1619292442590" />
+    <state width="1398" height="212" key="GridCell.Tab.0.right/0.25.1440.817/-250.-1055.1920.1055@0.25.1440.817" timestamp="1619292546478" />
+    <state width="600" height="428" key="javadoc.popup" timestamp="1619264264602">
+      <screen x="0" y="25" width="1440" height="875" />
+    </state>
+    <state width="600" height="428" key="javadoc.popup/0.25.1440.875/-250.-1055.1920.981@0.25.1440.875" timestamp="1619264264602" />
+    <state x="385" y="215" width="670" height="676" key="search.everywhere.popup" timestamp="1619265519196">
+      <screen x="0" y="25" width="1440" height="875" />
+    </state>
+    <state x="385" y="215" width="670" height="676" key="search.everywhere.popup/0.25.1440.875/-250.-1055.1920.981@0.25.1440.875" timestamp="1619265519196" />
+  </component>
+</project>

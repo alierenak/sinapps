@@ -1,0 +1,29 @@
+{
+  "name": "libphonenumber",
+  "version": "0.0.1",
+  "summary": "Simple implementation of libphonenumber",
+  "description": "Simple implementation of libphonenumber",
+  "homepage": "http://example.com",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "libPhoneNumber-iOS": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "8.0"
+  }
+}
