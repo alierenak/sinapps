@@ -8,48 +8,50 @@ class Noti extends StatefulWidget {
   _NotiState createState() => _NotiState();
 }
 
+
 List<NotifPost> notifs = [
   NotifPost(
       name: "Berfin Sürücü",
-      photo: "lib/images/cat.jpg",
-      date: "5 m",
+      photo: "lib/images/berf.jpeg",
+      date: "5m",
       text: "liked your photo."),
   NotifPost(
       name: "Ali Eren Ak",
-      photo: "lib/images/cat.jpg",
-      date: " 15 h",
+      photo: "lib/images/ali.jpeg",
+      date: " 15h",
       text: "started to following you!"),
   NotifPost(
       name: "Mert Türe",
-      photo: "lib/images/cat.jpg",
+      photo: "lib/images/mert.jpeg",
       date: "2d",
       text: "liked your comment."),
   NotifPost(
       name: "Kaan Atmaca",
-      photo: "lib/images/cat.jpg",
-      date: "1y",
+      photo: "lib/images/kaan.jpeg",
+      date: "5d",
       text: "commented on your post."),
   NotifPost(
       name: "Kaan Atmaca",
-      photo: "lib/images/cat.jpg",
-      date: "1y",
+      photo: "lib/images/kaan.jpeg",
+      date: "2m",
       text: "sent a message"),
   NotifPost(
       name: "Berfin Sürücü",
-      photo: "lib/images/cat.jpg",
-      date: "1y",
+      photo: "lib/images/berf.jpeg",
+      date: "6m",
       text: "sent a message"),
   NotifPost(
       name: "Ali Eren Ak",
-      photo: "lib/images/cat.jpg",
-      date: "1y",
+      photo: "lib/images/ali.jpeg",
+      date: "8m",
       text: "sent following request"),
   NotifPost(
       name: "Mert Türe",
-      photo: "lib/images/cat.jpg",
+      photo: "lib/images/mert.jpeg",
       date: "1y",
       text: "liked your photo"),
 ];
+
 
 class _NotiState extends State<Noti> {
   @override

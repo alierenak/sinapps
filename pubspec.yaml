@@ -32,14 +32,10 @@ dependencies:
   email_validator: ^2.0.1
   shared_preferences: ^2.0.5
   async: ^2.5.0
-
+  #location: ^2.5.0
   intl_phone_number_input: ^0.7.0+1
   material_floating_search_bar: ^0.2.6
-
-
   #cached_network_image: ^3.0.0
-
-
   flutter_svg: ^0.18.0
 
 
