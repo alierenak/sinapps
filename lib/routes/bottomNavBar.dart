@@ -7,6 +7,7 @@ import 'package:sinapps/routes/walkthrough.dart';
 import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/routes/addpage.dart';
 
 
 class BottomBar extends StatefulWidget {
@@ -26,7 +27,7 @@ class _BottomBarState extends State<BottomBar>{
   final List<Widget> bodyView = [
     FeedPage(),
     FeedPage(),
-    FeedPage(),
+    AddPost(),
     Noti(),
     Profile(),
   ];

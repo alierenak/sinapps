@@ -96,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundImage: AssetImage('lib/images/logo.png'),
-                            radius: 100.0,
+                            radius: 80.0,
                           ),
                         ],
                     ),
@@ -235,7 +235,7 @@ class _SignUpState extends State<SignUp> {
                           //padding: const EdgeInsets.symmetric(vertical: 2.0),
                           //margin: const EdgeInsets.symmetric(horizontal: 0.0),
                           height: 40.0,
-                          width: 200.0,
+                          width: 150.0,
                           child: OutlinedButton(
                             //margin: const EdgeInsets.symmetric(horizontal: 0.0),
                             //width:0.8,
