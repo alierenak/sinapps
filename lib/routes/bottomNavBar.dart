@@ -6,7 +6,9 @@ import 'package:flutter_app_project/routes/signup.dart';
 import 'package:flutter_app_project/routes/walkthrough.dart';
 import 'package:flutter_app_project/routes/profilepage.dart';
 import 'package:flutter_app_project/routes/feedpage.dart';
+import 'package:flutter_app_project/routes/addpage.dart';
 import 'package:flutter_app_project/utils/colors.dart';
+import 'package:flutter_app_project/service/locationservice.dart';
 
 
 class BottomBar extends StatefulWidget {
@@ -26,7 +28,7 @@ class _BottomBarState extends State<BottomBar>{
   final List<Widget> bodyView = [
     FeedPage(),
     FeedPage(),
-    FeedPage(),
+    AddPage(),
     Noti(),
     Profile(),
   ];

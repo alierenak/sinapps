@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app_project/routes/login.dart';
 import 'package:flutter_app_project/utils/colors.dart';
 import 'package:flutter_app_project/routes/profilepage.dart';
+import 'package:location/location.dart';
 
 
 class FeedPage extends StatefulWidget {
@@ -22,7 +23,6 @@ class _FeedPageState extends State<FeedPage>{
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
-
             toolbarHeight: 0,
             backgroundColor: AppColors.primary,
           ),
