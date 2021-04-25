@@ -64,12 +64,43 @@ class _AddPostState extends State<AddPost> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            style: TextStyle(
+                              color: AppColors.textColor,
+                              fontSize: 14,
+                              fontFamily: 'BrandonText',
+                              fontWeight: FontWeight.w600,
+                            ),
+                            minLines: 1,
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              fillColor: AppColors.captionColor,
+                              filled: true,
+                              hintText: 'Caption',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                           Expanded(
                             flex: 1,
                             child: TextField(
                               style: TextStyle(
                                 color: AppColors.textColor,
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontFamily: 'BrandonText',
                                 fontWeight: FontWeight.w600,
                               ),
