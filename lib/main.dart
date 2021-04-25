@@ -19,13 +19,16 @@ void main() async {
   // Firebase initialization
   // await Firebase.initializeApp();
 
-  if (prefs.getBool('initialRun')!=Null) {
+  if (prefs.getBool('initialRun')==null) {
     await setDefaultPreferences(prefs);
     _defaultHome = WalkThrough();
-  } else if (prefs.getBool('isLogged')!=false) {
+  }
+  /*
+    else if (prefs.getBool('isLogged')!=false) {
     //TODO: If user is logged in no need to show Welcome -> check !!
     _defaultHome = Login();
   }
+   */
 
   Widget app = MaterialApp(
     title: 'sinapps',

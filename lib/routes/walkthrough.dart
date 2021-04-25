@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:sinapps/routes/welcome.dart';
 
 class WalkThrough extends StatefulWidget {
   @override
@@ -454,7 +453,8 @@ class _WalkThroughState extends State<WalkThrough> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, '/welcome');
+                                Navigator.pushReplacement(
+                                    context, MaterialPageRoute(builder: (BuildContext context) => Welcome()));
                               },
                             ),
                           ),

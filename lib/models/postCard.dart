@@ -48,7 +48,7 @@ class PostCard extends StatelessWidget {
 
                   ],
                 ),
-                SizedBox(width: 80,),
+                SizedBox(width: 50,),
                 Text(
                   post.date,
                   style: TextStyle(
