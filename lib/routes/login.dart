@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:sinapps/routes/bottomNavBar.dart';
@@ -17,10 +18,12 @@ class _LoginState extends State<Login> {
   String initialCountry = 'TR';
   PhoneNumber number = PhoneNumber(isoCode: 'TR');
 
+
   final _formKey = GlobalKey<FormState>();
   /*
   I do not know what it exactly for but I guess we do not need for Firebase Auth
     Future<void> showAlertDialog(String title, String message) async {
+
     return showDialog<void>(
         context: context,
         barrierDismissible: false, //User must tap button
