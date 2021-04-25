@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_project/routes/login.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/routes/profilepage.dart';
+import 'package:sinapps/routes/login.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/routes/profilepage.dart';
 
 
 class FeedPage extends StatefulWidget {

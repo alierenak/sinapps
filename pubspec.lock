@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -106,21 +113,28 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "1.1.2"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.1"
+    version: "0.12.2"
   http_parser:
     dependency: transitive
     description:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "3.1.4"
+  intl_phone_number_input:
+    dependency: "direct main"
+    description:
+      name: intl_phone_number_input
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0+1"
   js:
     dependency: transitive
     description:
@@ -128,6 +142,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  libphonenumber:
+    dependency: transitive
+    description:
+      name: libphonenumber
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  libphonenumber_platform_interface:
+    dependency: transitive
+    description:
+      name: libphonenumber_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
+  libphonenumber_plugin:
+    dependency: transitive
+    description:
+      name: libphonenumber_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
+  libphonenumber_web:
+    dependency: transitive
+    description:
+      name: libphonenumber_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+1"
   matcher:
     dependency: transitive
     description:
@@ -183,7 +225,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   pedantic:
     dependency: transitive
     description:
@@ -331,4 +373,4 @@ packages:
     version: "0.2.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0"
+  flutter: ">=2.0.0"

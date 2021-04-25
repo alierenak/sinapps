@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/models/notif.dart';
-import 'package:flutter_app_project/utils/colors.dart';
+import 'package:sinapps/models/notif.dart';
+import 'package:sinapps/utils/colors.dart';
 
 class NotifCard extends StatelessWidget {
   final NotifPost notification;

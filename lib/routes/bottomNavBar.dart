@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/routes/login.dart';
-import 'package:flutter_app_project/routes/notificationpage.dart';
-import 'package:flutter_app_project/routes/welcome.dart';
-import 'package:flutter_app_project/routes/signup.dart';
-import 'package:flutter_app_project/routes/walkthrough.dart';
-import 'package:flutter_app_project/routes/profilepage.dart';
-import 'package:flutter_app_project/routes/feedpage.dart';
-import 'package:flutter_app_project/utils/colors.dart';
+import 'package:sinapps/routes/login.dart';
+import 'package:sinapps/routes/notificationpage.dart';
+import 'package:sinapps/routes/welcome.dart';
+import 'package:sinapps/routes/signup.dart';
+import 'package:sinapps/routes/walkthrough.dart';
+import 'package:sinapps/routes/profilepage.dart';
+import 'package:sinapps/routes/feedpage.dart';
+import 'package:sinapps/utils/colors.dart';
 
 
 class BottomBar extends StatefulWidget {

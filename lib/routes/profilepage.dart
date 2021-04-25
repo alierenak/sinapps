@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
+import 'package:sinapps/main.dart';
+import 'package:sinapps/models/user.dart';
+import 'package:sinapps/models/post.dart';
+import 'package:sinapps/models/PostCard.dart';
 
 class Profile extends StatefulWidget {
   @override
