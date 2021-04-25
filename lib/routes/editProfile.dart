@@ -87,6 +87,7 @@ class _EditProfileState extends State<EditProfile> {
       ],
     );
   }
+
   Column buildPrivateField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,6 +107,7 @@ class _EditProfileState extends State<EditProfile> {
       ],
     );
   }
+
   Column buildBioField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,12 +167,13 @@ class _EditProfileState extends State<EditProfile> {
                       buildDisplayNameField(),
                       buildDisplayUsernameField(),
                       buildBioField(),
+                      SizedBox(height: 60,),
                       buildPrivateField(),
                     ],
                   ),
                 ),
 
-                RaisedButton(
+                FlatButton(
                   onPressed: () => print('update profile data'),
                   color: Colors.grey[800],
                   child: Text(

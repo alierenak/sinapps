@@ -34,6 +34,8 @@ dependencies:
   shared_preferences: ^2.0.5
   async: ^2.5.0
   cached_network_image: ^3.0.0
+  provider: ^3.0.0
+  location: ^2.3.5
 
 dev_dependencies:
   flutter_test:

@@ -4,7 +4,7 @@ import 'package:flutter_app_project/utils/colors.dart';
 import 'post.dart';
 
 class PostCard extends StatelessWidget {
-
+  final PageController controller = PageController(initialPage: 0);
   final Post post;
   final Function delete;
   PostCard({ this.post, this.delete });
@@ -13,11 +13,11 @@ class PostCard extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+      margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: Padding(
         padding: EdgeInsets.all(14.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
               Row(
 
@@ -33,7 +33,7 @@ class PostCard extends StatelessWidget {
                       ],
                     ),
 
-                    SizedBox(width: 20.0),
+                    SizedBox(width: 10.0),
 
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -47,9 +47,17 @@ class PostCard extends StatelessWidget {
                               overflow: TextOverflow.clip,
                             ),
 
-                        SizedBox(height: 8.0),
-
                           ],
+                    ),
+                    SizedBox(width: 80,),
+                    Text(
+                      post.date,
+                      style: TextStyle(
+                        fontFamily: 'BrandonText',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textColor,
+                      ),
                     ),
                 ],
               ),
@@ -62,70 +70,79 @@ class PostCard extends StatelessWidget {
                   Text(
                     post.text,
                     style: TextStyle(
+                      color: AppColors.textColor1,
+                      fontSize: 24,
                       fontFamily: 'BrandonText',
-                      fontSize: 18.0,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.textColor,
                     ),
                     overflow: TextOverflow.clip,
                   ),
                 ],
               ),
-
-
-
-
-
-
             SizedBox(height: 12.0),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                Container(
-                  width: MediaQuery.of(context).size.width/1.2,
-                  height: MediaQuery.of(context).size.width/1.8,//MediaQuery.of(context).size.height/2.7,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4.0),
-                      border: Border.all(width: 1,),
-                      color: Colors.grey[200],
-                      image: DecorationImage(
-                          image: AssetImage(post.photoUrl),
-                          fit: BoxFit.fill
+            Container(
+              height: 200,
+              child: PageView(
+                controller: controller,
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      Text(
+                        "Thank you, I thank you for your time. Is it a good way? ma"
+                          "xHeight I will never know how much information will be"
+                          " loaded dynamically. where i should locate the scroll, i am g"
+                          "etting this problem:",
+                        style: TextStyle(
+                          color: AppColors.textColor1,
+                          fontSize: 20,
+                          fontFamily: 'BrandonText',
+                          fontWeight: FontWeight.w300,
+                        ),
+                        overflow: TextOverflow.clip,
                       ),
-                    ),
-                ),
-              ],
 
 
+                    ],
+                  ),
+        Container(
+          width: MediaQuery.of(context).size.width/1.2,
+          height: MediaQuery.of(context).size.width/1.8,//MediaQuery.of(context).size.height/2.7,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4.0),
+            border: Border.all(width: 1,),
+            color: Colors.grey[200],
+            image: DecorationImage(
+                image: AssetImage(post.photoUrl),
+                fit: BoxFit.fill
             ),
+          ),
+        ),
+          ],
+
+
+              ),
+            ),
+
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  post.date,
-                  style: TextStyle(
-                    fontFamily: 'BrandonText',
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor,
-                  ),
-                ),
 
                 SizedBox(width: 8.0),
 
                 Icon(
                   Icons.thumb_up,
-                  size: 16.0,
+                  size: 26.0,
                   color: AppColors.primary,
                 ),
                 Text(
                   '${post.likes}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 16.0,
+                    fontSize: 22.0,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor,
                   ),
@@ -135,15 +152,15 @@ class PostCard extends StatelessWidget {
 
                 Icon(
                   Icons.thumb_down,
-                  size: 16.0,
-                  color: AppColors.third,
+                  size: 26.0,
+                  color: AppColors.secondary,
                 ),
 
                 Text(
                   '${post.dislikes}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 16.0,
+                    fontSize: 22.0,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor,
                   ),
@@ -153,21 +170,21 @@ class PostCard extends StatelessWidget {
 
                 Icon(
                   Icons.comment,
-                  size: 16.0,
+                  size: 26.0,
                 ),
 
                 Text(
                   '${post.comments}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 16.0,
+                    fontSize: 22.0,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor,
                   ),
                 ),
 
 
-
+/*
                 IconButton(
                   padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
                   alignment: Alignment.bottomLeft,
@@ -179,7 +196,7 @@ class PostCard extends StatelessWidget {
                   ),
                   onPressed: delete,
                 )
-
+*/
               ],
             ),
           ],
