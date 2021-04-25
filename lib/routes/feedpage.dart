@@ -11,9 +11,9 @@ class FeedPage extends StatefulWidget {
 }
 
 List<Post> posts = [
-  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
-  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
-  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 )
+  Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post12.jpeg", location:'Istanbul-Acıbadem', text:'We have empty beds in ER', date: '23 April 2021', likes:32, dislikes: 7, comments:12),
+  Post( username: 'surucux', userUrl:"lib/images/berf.jpeg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '22 January 2021', likes:35, dislikes: 5, comments:27 ),
+  Post( username: 'atmaca', userUrl:"lib/images/kaan.jpeg", photoUrl:"lib/images/post10.jpeg", location:'Istanbul-Acıbadem', text:'Cool features about the foot structure', date: '7 January 2021', likes:23, dislikes: 8, comments:12 )
 ];
 
 class _FeedPageState extends State<FeedPage>{
