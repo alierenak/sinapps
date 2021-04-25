@@ -33,11 +33,20 @@ class _FeedPageState extends State<FeedPage>{
                 fontSize: 24.0,
                 fontWeight: FontWeight.w600,
               ),
-
             ),
             centerTitle: true,
             backgroundColor: Colors.grey[800],
             elevation: 0.0,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  color: Colors.grey[300],
+                  icon: Icon(Icons.messenger_rounded),
+                  onPressed: () {
+                    FeedPage();
+                  },
+                ),
+              ]
           ),
 
           body: Container(
