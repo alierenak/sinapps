@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_project/routes/login.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/routes/profilepage.dart';
-import 'package:location/location.dart';
-
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/models/post.dart';
+import 'package:sinapps/models/PostCard.dart';
 
 class FeedPage extends StatefulWidget {
   @override
   _FeedPageState createState() => _FeedPageState();
 }
 
+List<Post> posts = [
+  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/SuIC.jpg", location:'Istanbul-Acıbadem', text:'Wanna swap shifts?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/googleCampus.jpg", location:'Istanbul-Acıbadem', text:'I am going to Google Campus. Does anyone want to come?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 ),
+  Post( username: 'mertture0', userUrl:"lib/images/cat.jpg", photoUrl:"lib/images/cat.jpg", location:'Istanbul-Acıbadem', text:'How old is this cat?', date: '23 April 2021', likes:9, dislikes: 3, comments:3 )
+];
 
 class _FeedPageState extends State<FeedPage>{
   @override
@@ -23,83 +26,39 @@ class _FeedPageState extends State<FeedPage>{
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 0,
-            backgroundColor: AppColors.primary,
+            title: Text(
+              "Home",
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[300],
-                  ),
-                  height: 400,
-                ),
 
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[300],
-                  ),
-                  height: 400,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              minRadius: 30,
-                            ),
-                            SizedBox(width: 30,),
-                            Text(
-                              "UserName",
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 30,),
-                        Column(
-                          children: [
-                            Text(
-                                "This is supposed to show a rounded-edged container with a "
-                                    "green left border 3px wide, and the child Text This is a Container."
-                                    "However, it just shows a rounded-edged container with an invisible child and an invisible left border."
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[300],
-                  ),
-                  height: 400,
-                ),
-
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[300],
-                  ),
-                  height: 400,
-                ),
-              ],
+          body: Container(
+            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+            width:double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: posts.map((post) => PostCard(
+                    post: post,
+                    delete: () {
+                      setState(() {
+                        posts.remove(post);
+                      });
+                    }
+                )).toList(),
+              ),
             ),
           ),
-
         ),
       ),
     );
-
 
   }
 }

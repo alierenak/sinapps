@@ -1,15 +1,7 @@
-import 'dart:convert';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_project/models/notif.dart';
-import 'package:flutter_app_project/models/notifCard.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
+import 'package:sinapps/models/notif.dart';
+import 'package:sinapps/models/notifCard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
 
 class Noti extends StatefulWidget {
   @override
@@ -41,7 +33,7 @@ List<NotifPost> notifs = [
       name: "Kaan Atmaca",
       photo: "lib/images/cat.jpg",
       date: "1y",
-      text: "dm'den sana yürüdü"),
+      text: "sent a message"),
   NotifPost(
       name: "Berfin Sürücü",
       photo: "lib/images/cat.jpg",
@@ -64,21 +56,22 @@ class _NotiState extends State<Noti> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.indigo[50],
+          backgroundColor: Colors.grey[350],
           appBar: AppBar(
             centerTitle: true,
-            backgroundColor: Colors.indigo[200],
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
             title: Text(
               'Notifications',
               style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 27,
+                color: Colors.grey[300],
+                fontSize: 24,
                 fontFamily: 'BrandonText',
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
               ),
             ),
             leading: IconButton(
-              color: Colors.grey[800],
+              color: Colors.grey[300],
               icon: Icon(Icons.refresh_sharp),
               onPressed: () {
                 Noti();
@@ -88,13 +81,14 @@ class _NotiState extends State<Noti> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 5,),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: notifs
                         .map((notification) => NotifCard(
-                              notification: notification,
-                            ))
+                      notification: notification,
+                    ))
                         .toList(),
                   ),
                 ),

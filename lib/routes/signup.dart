@@ -1,54 +1,24 @@
-import 'dart:convert';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
 class _SignUpState extends State<SignUp> {
-  String mail;
+
+  final TextEditingController controller = TextEditingController();
+  String initialCountry = 'TR';
+  PhoneNumber number = PhoneNumber(isoCode: 'TR');
+
   String pass;
   String pass2;
-  String username;
-  String fullname;
-  int attemptCount;
-  final _formKey = GlobalKey<FormState>();
-  Future<void> signUpUser() async {
-    final url = Uri.parse('http://altop.co/cs310/api.php');
-    var body = {
-      'call': 'signup',
-      'mail': mail,
-      'pass': pass,
-      'username': username
-    };
-    final response = await http.post(
-      Uri.http(url.authority, url.path),
-      headers: <String, String> {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      },
-      body: body,
-      encoding: Encoding.getByName("utf-8"),
-    );
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      //Successful transmission
-      Map<String, dynamic> jsonMap = json.decode(response.body);
 
-      for (var entry in jsonMap.entries) {
-        print('Key: ' +entry.key);
-        print('Value: ' +entry.value);
-      }
-    }
-    else {
-      print(response.statusCode);
-    }
-  }
-  Future<void> showAlertDialog(String title, String message) async {
+  final _formKey = GlobalKey<FormState>();
+
+    Future<void> showAlertDialog(String title, String message) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false, //User must tap button
@@ -74,20 +44,21 @@ class _SignUpState extends State<SignUp> {
         }
     );
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       //backgroundColor: AppColors.secondary,
 
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.grey[700],
       appBar: AppBar(
         title: Text(
-          'sinapps',
+          '',
           style: kAppBarTitleTextStyle,
         ),
         //backgroundColor: AppColors.secondary,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[700],
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -125,141 +96,61 @@ class _SignUpState extends State<SignUp> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundImage: AssetImage('lib/images/logo.png'),
-                            radius: 60.0,
+                            radius: 100.0,
                           ),
                         ],
                     ),
-                    SizedBox(height: 12.0),
-
-                    Row (
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RichText(
-                              text: TextSpan(
-                                  text: "Sign Up",
-                                  style: TextStyle(
-                                    //color: AppColors.secondary,
-                                    color: Colors.grey[800],
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 24.0,
-                                    letterSpacing: -0.7,
-                                  )
-                              )
-                          )
-                        ]
-                    ),
                     SizedBox(height: 28.0),
-
                     Row(
                       children: [
                         Expanded(
                           flex: 1,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                              fillColor: AppColors.captionColor,
-                              filled: true,
-                              hintText: 'Fullname',
-                              //labelText: 'Username',
-                              labelStyle: kLabelLightTextStyle,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          child: InternationalPhoneNumberInput(onInputChanged: (PhoneNumber number) {
+                              print(number.phoneNumber);
+                              },
+                              onInputValidated: (bool value) {
+                              print(value);
+                              },
+                              selectorConfig: SelectorConfig(
+                                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                               ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if(value.isEmpty) {
-                                return 'Please enter your fullname';
-                              }
-                              return null;
-                            },
-                            onSaved: (String value) {
-                              fullname = value;
-                            },
-                          ),
-                        ),
-
-                      ],
-                    ),
-
-                    SizedBox(height: 12.0),
-
-                    Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: TextFormField(
-                              decoration: InputDecoration(
+                              ignoreBlank: false,
+                              autoFocus: true,
+                              autoValidateMode: AutovalidateMode.disabled,
+                              selectorTextStyle: TextStyle(color: AppColors.textColor),
+                              initialValue: number,
+                              textFieldController: controller,
+                              formatInput: false,
+                              inputDecoration: InputDecoration(
                                 contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                                 fillColor: AppColors.captionColor,
                                 filled: true,
-                                hintText: 'E-mail',
-                                //labelText: 'Username',
+                                hintText: 'Phone Number',
                                 labelStyle: kLabelLightTextStyle,
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
-                                  //borderSide: BorderSide(color: AppColors.captionColor, width:0.0),
                                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                                 ),
                               ),
-                              keyboardType: TextInputType.emailAddress,
-
-                              validator: (value) {
-                                if(value.isEmpty) {
-                                  return 'Please enter your e-mail';
-                                }
-                                if(!EmailValidator.validate(value)) {
-                                  return 'The e-mail address is not valid';
-                                }
-                                return null;
-                              },
-                              onSaved: (String value) {
-                                mail = value;
-                              },
-                            ),
-                          ),
-                        ]
-                    ),
-                    SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            decoration: InputDecoration(
+                            searchBoxDecoration: InputDecoration(
                               contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                               fillColor: AppColors.captionColor,
                               filled: true,
-                              hintText: 'Username',
-                              //labelText: 'Username',
+                              hintText: 'Search by country name or dial code',
                               labelStyle: kLabelLightTextStyle,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
                               ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if(value.isEmpty) {
-                                return 'Please enter your username';
-                              }
-                              if(value.length < 4) {
-                                return 'Username is too short';
-                              }
-                              return null;
-                            },
-                            onSaved: (String value) {
-                              username = value;
+                              onSaved: (PhoneNumber number) {
+                                print('On Saved: $number');
                             },
                           ),
                         ),
-
                       ],
                     ),
-
                     SizedBox(height: 12.0),
-
                     Row(
                       children: [
                         Expanded(
@@ -364,12 +255,8 @@ class _SignUpState extends State<SignUp> {
                                   showAlertDialog("Action", 'Passwords are different');
                                 }
                                 else {
-                                  signUpUser();
+                                  // Future<bool> isRegistered = register(fullname, mail, username, pass);
                                 }
-                                //showAlertDialog("Action", 'Button clicked');
-                                setState(() {
-                                  attemptCount += 1;
-                                });
 
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(content: Text('Logging in')));

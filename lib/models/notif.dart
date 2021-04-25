@@ -1,4 +1,4 @@
-import 'package:flutter_app_project/models/notif.dart';
+import 'package:sinapps/models/notif.dart';
 
 class NotifPost{
 
