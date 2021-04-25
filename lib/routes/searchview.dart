@@ -125,6 +125,22 @@ class _SearchPageState extends State<SearchPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          centerTitle: true,
+        automaticallyImplyLeading: false,
+          backgroundColor: Colors.grey[800],
+          elevation: 0.0,
+          title: Text(
+            'Search',
+            style: TextStyle(
+              color: Colors.grey[300],
+              fontSize: 24,
+              fontFamily: 'BrandonText',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+      ),
+
       body: FloatingSearchBar(
         automaticallyImplyBackButton: false,
         controller: controller,
@@ -138,7 +154,7 @@ class _SearchPageState extends State<SearchPage>{
         // search terms shows up in cool way :)
         physics: BouncingScrollPhysics(),
         title: Text(
-          selectedTerm ?? 'Explore other Sinappes!',
+          selectedTerm ?? 'Enter to search',
           style: Theme.of(context).textTheme.headline6,
         ),
         hint: 'Start typing...',
@@ -268,7 +284,7 @@ class SearchResultsListView extends StatelessWidget {
               size: 64,
             ),
             Text(
-              'Start searching',
+              'Explore Sinappses!',
               style: Theme.of(context).textTheme.headline5,
             )
           ],

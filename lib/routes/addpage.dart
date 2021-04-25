@@ -10,9 +10,8 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey[350],
+      return Scaffold(
+        backgroundColor: Colors.white70,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.grey[800],
@@ -44,9 +43,10 @@ class _AddPostState extends State<AddPost> {
                 decoration: BoxDecoration(
                   border: Border.all(width: 2),
                   borderRadius: BorderRadius.circular(6),
+                  color: Colors.grey[100],
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.white.withOpacity(1),
                       spreadRadius: 5,
                       blurRadius: 7,
                       offset: Offset(0, 3),
@@ -249,7 +249,6 @@ class _AddPostState extends State<AddPost> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

@@ -12,9 +12,9 @@ class FeedPage extends StatefulWidget {
 }
 
 List<Post> posts = [
-  Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post12.jpeg", location: Location(country:"Turkey", city: 'Istanbul-Acıbadem'), text:'We have empty beds in ER', date: '23 April 2021', likes:32, dislikes: 7, comments:12),
-  Post( username: 'surucux', userUrl:"lib/images/berf.jpeg", photoUrl:"lib/images/googleCampus.jpg", location: Location(country:"Turkey", city: 'Istanbul-Acıbadem'), text:'I am going to Google Campus. Does anyone want to come?', date: '22 January 2021', likes:35, dislikes: 5, comments:27 ),
-  Post( username: 'atmaca', userUrl:"lib/images/kaan.jpeg", photoUrl:"lib/images/post10.jpeg", location: Location(country:"Turkey", city: 'Istanbul-Acıbadem'), text:'Cool features about the foot structure', date: '7 January 2021', likes:23, dislikes: 8, comments:12 )
+  Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post12.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'We have empty beds in ER', date: '23 April 2021', likes:32, dislikes: 7, comments:12),
+  Post( username: 'surucux', userUrl:"lib/images/berf.jpeg", photoUrl:"lib/images/googleCampus.jpg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'I am going to Google Campus. Does anyone want to come?', date: '22 January 2021', likes:35, dislikes: 5, comments:27 ),
+  Post( username: 'atmaca', userUrl:"lib/images/kaan.jpeg", photoUrl:"lib/images/post10.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'Cool features about the foot structure', date: '7 January 2021', likes:23, dislikes: 8, comments:12 )
 ];
 
 class _FeedPageState extends State<FeedPage>{
