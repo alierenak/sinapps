@@ -1,15 +1,7 @@
-import 'dart:convert';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_project/models/notif.dart';
-import 'package:flutter_app_project/models/notifCard.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
+import 'package:sinapps/models/notif.dart';
+import 'package:sinapps/models/notifCard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
 
 class Noti extends StatefulWidget {
   @override
@@ -95,8 +87,8 @@ class _NotiState extends State<Noti> {
                   child: Column(
                     children: notifs
                         .map((notification) => NotifCard(
-                              notification: notification,
-                            ))
+                      notification: notification,
+                    ))
                         .toList(),
                   ),
                 ),

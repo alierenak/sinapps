@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/models/notif.dart';
-import 'package:flutter_app_project/utils/colors.dart';
+import 'package:sinapps/models/notif.dart';
+import 'package:sinapps/utils/colors.dart';
 
 class NotifCard extends StatelessWidget {
   final NotifPost notification;
@@ -41,7 +41,7 @@ class NotifCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                        notification.name,
+                          notification.name,
                           style: TextStyle(
                             color: AppColors.textColor1,
                             fontSize: 16,
@@ -64,7 +64,7 @@ class NotifCard extends StatelessWidget {
                   ],
                 ),
 
-            ),
+              ),
             ),
             Row(
               children: [

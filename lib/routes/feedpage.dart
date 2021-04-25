@@ -1,14 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_project/routes/login.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/routes/profilepage.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
-
-
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/models/post.dart';
+import 'package:sinapps/models/PostCard.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -34,25 +29,25 @@ class _FeedPageState extends State<FeedPage>{
             toolbarHeight: 0,
             backgroundColor: AppColors.primary,
           ),
-            body: Container(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        width:double.infinity,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: posts.map((post) => PostCard(
-                                post: post,
-                                delete: () {
-                                  setState(() {
-                                    posts.remove(post);
-                                  });
-                                }
-                            )).toList(),
-                          ),
-                        ),
-                      ),
+          body: Container(
+            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+            width:double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: posts.map((post) => PostCard(
+                    post: post,
+                    delete: () {
+                      setState(() {
+                        posts.remove(post);
+                      });
+                    }
+                )).toList(),
+              ),
             ),
           ),
-        );
+        ),
+      ),
+    );
 
   }
 }

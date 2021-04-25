@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/utils/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

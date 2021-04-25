@@ -1,14 +1,6 @@
-import 'dart:convert';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:sinapps/models/user.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 
 
 class EditProfile extends StatefulWidget {
