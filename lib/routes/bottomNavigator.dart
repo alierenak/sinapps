@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/bottomnavi.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/utils/bottomnavi.dart';
 /*
 class BottomNavi extends StatefulWidget {
   @override

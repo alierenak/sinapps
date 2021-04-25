@@ -36,7 +36,7 @@ dependencies:
   intl_phone_number_input: ^0.7.0+1
 
 
-  cached_network_image: ^3.0.0
+  #cached_network_image: ^3.0.0
 
 
   flutter_svg: ^0.18.0
