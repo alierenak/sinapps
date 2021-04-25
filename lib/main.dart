@@ -3,6 +3,7 @@ import 'package:flutter_app_project/routes/welcome.dart';
 import 'package:flutter_app_project/routes/login.dart';
 import 'package:flutter_app_project/routes/signup.dart';
 import 'package:flutter_app_project/routes/walkthrough.dart';
+import 'package:flutter_app_project/routes/profilepage.dart';
 import 'package:flutter_app_project/utils/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'routes/welcome.dart';
@@ -33,6 +34,7 @@ void main() async {
       '/login': (context) => Login(),
       '/signup': (context) => SignUp(),
       "/welcome": (context) => Welcome(),
+      '/profile': (context) => Profile(),
     },
   );
 

@@ -33,7 +33,11 @@ dependencies:
   http: ^0.13.1
   shared_preferences: ^2.0.5
   async: ^2.5.0
+
+  cached_network_image: ^3.0.0
+
   flutter_svg: ^0.18.0
+
 
 dev_dependencies:
   flutter_test:
