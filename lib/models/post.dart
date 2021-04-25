@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sinapps/models/location.dart';
 
 class Post {
   String username;
   String photoUrl;
   String userUrl;
-  String location;
+  Location location;
   String text;
   String date;
   int comments;

@@ -16,7 +16,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController bioController = TextEditingController();
   bool isLoading = false;
   user profUser = user(mail: 'mertture@sabanciuniv.edu', username: 'mertture0', fullname: 'Mert Türe',
-      followers: 0, following: 0, posts: 0, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/cat.jpg');
+      followers: 0, following: 0, posts: 0, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
   //this.User.photoUrl = 'lib/images/cat.jpg';
   List <bool> _selections = List.generate(2, (_) => false);
   @override
