@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
 
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Column(
@@ -74,12 +74,12 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  SizedBox(width: 50.0),
+
                   CircleAvatar(
                     backgroundImage: AssetImage(profUser.photoUrl),
                     radius: 56.0,
                   ),
-                  SizedBox(width: 50.0),
+
                   Column(
                     children: <Widget>[
                       Text(
@@ -155,7 +155,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 3.0),
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
@@ -192,7 +192,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  SizedBox(width:28.0),
+
                   Column(
 
                     children: <Widget>[
@@ -217,7 +217,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
 
-                  SizedBox(width:28.0),
+
 
                   Column(
                     children: [
@@ -305,11 +305,6 @@ class _ProfileState extends State<Profile> {
                               child: Column(
                                 children: posts.map((post) => PostCard(
                                     post: post,
-                                    delete: () {
-                                      setState(() {
-                                        posts.remove(post);
-                                      });
-                                    }
                                 )).toList(),
 
                               ),

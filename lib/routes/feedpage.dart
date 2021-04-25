@@ -26,9 +26,20 @@ class _FeedPageState extends State<FeedPage>{
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 0,
-            backgroundColor: AppColors.primary,
+            title: Text(
+              "Home",
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
           ),
+
           body: Container(
             padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
             width:double.infinity,

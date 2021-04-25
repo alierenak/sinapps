@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
@@ -70,7 +71,7 @@ class PostCard extends StatelessWidget {
                   post.text,
                   style: TextStyle(
                     color: AppColors.textColor1,
-                    fontSize: 24,
+                    fontSize: 26,
                     fontFamily: 'BrandonText',
                     fontWeight: FontWeight.w400,
                   ),
@@ -81,12 +82,13 @@ class PostCard extends StatelessWidget {
             SizedBox(height: 12.0),
 
             Container(
-              height: 200,
+              height: 300,
               child: PageView(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "Thank you, I thank you for your time. Is it a good way? ma"
@@ -95,13 +97,28 @@ class PostCard extends StatelessWidget {
                             "etting this problem:",
                         style: TextStyle(
                           color: AppColors.textColor1,
-                          fontSize: 20,
+                          fontSize: 24,
                           fontFamily: 'BrandonText',
                           fontWeight: FontWeight.w300,
                         ),
                         overflow: TextOverflow.clip,
                       ),
 
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: Colors.grey[600],
+                            size: 16,
+                          ),
+                          Icon(
+                            Icons.circle,
+                            color: Colors.grey[400],
+                            size: 16,
+                          ),
+
+                        ],
+                      ),
 
                     ],
                   ),
