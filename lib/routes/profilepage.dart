@@ -1,10 +1,15 @@
+import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/PostCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
+
 import 'package:sinapps/models/littlePostCard.dart';
+
+import 'package:sinapps/routes/settingspage.dart';
+
 
 class Profile extends StatefulWidget {
   @override
@@ -34,7 +39,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
@@ -47,9 +52,20 @@ class _ProfileState extends State<Profile> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          centerTitle: true,
+            centerTitle: true,
           backgroundColor: Colors.grey[800],
           elevation: 0.0,
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+              color: Colors.grey[300],
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+            ),
+          ]
+
         ),
 
         body: Container(

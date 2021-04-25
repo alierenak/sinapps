@@ -54,8 +54,7 @@ List<NotifPost> notifs = [
 class _NotiState extends State<Noti> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+      return Scaffold(
           backgroundColor: Colors.grey[350],
           appBar: AppBar(
             centerTitle: true,
@@ -70,18 +69,21 @@ class _NotiState extends State<Noti> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            leading: IconButton(
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+            IconButton(
               color: Colors.grey[300],
               icon: Icon(Icons.refresh_sharp),
               onPressed: () {
                 Noti();
               },
             ),
+        ]
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 5,),
+              //SizedBox(height: 5,),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -94,7 +96,8 @@ class _NotiState extends State<Noti> {
                 ),
               ),
             ],
-          )),
+          ),
     );
+
   }
 }
