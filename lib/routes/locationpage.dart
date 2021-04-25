@@ -49,25 +49,20 @@ class HomeView extends StatelessWidget {
 
 
 
-  /*
+/*
   Map<String, double> currentLocation = new Map();
   StreamSubscription<Map<String,double>> locationSubscription;
-
   Location location = new Location();
   String error;
-
   void initState(){
     super.initState();
     currentLocation["latitude"] = 0.0;
     currentLocation["longitude"] = 0.0;
-
     initPlatformState();
     locationSubscription = location.onLocationChanged().listen((Map<String,double> result){
       currentLocation = result;
     });
   }
-
-
   @override
   Widget build(BuildContext context){
     return new MaterialApp(
@@ -90,7 +85,6 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-
   void initPlatformState() async{
     Map<String, double> myLocation;
     try{
@@ -109,6 +103,3 @@ class HomeView extends StatelessWidget {
   }
 }
 */
-
-
-

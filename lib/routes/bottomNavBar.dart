@@ -26,7 +26,7 @@ class _BottomBarState extends State<BottomBar>{
   final List<Widget> bodyView = [
     FeedPage(),
     FeedPage(),
-    FeedPage(),
+    AddPage(),
     Noti(),
     Profile(),
   ];
