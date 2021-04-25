@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sinapps/routes/login.dart';
 import 'package:sinapps/routes/notificationpage.dart';
-import 'package:sinapps/routes/welcome.dart';
-import 'package:sinapps/routes/signup.dart';
-import 'package:sinapps/routes/walkthrough.dart';
 import 'package:sinapps/routes/profilepage.dart';
+import 'package:sinapps/routes/searchview.dart';
 import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/routes/addpage.dart';
@@ -26,8 +23,8 @@ class _BottomBarState extends State<BottomBar>{
 
   final List<Widget> bodyView = [
     FeedPage(),
-    FeedPage(),
-    AddPost(),
+    SearchPage(),
+    AddPage(),
     Noti(),
     Profile(),
   ];
@@ -75,10 +72,7 @@ class _BottomBarState extends State<BottomBar>{
             //  TabItem.values[index],
             // ),
           ),
-
-
     );
-
   }
 }
 
