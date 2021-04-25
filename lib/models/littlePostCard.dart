@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'post.dart';
 
-class PostCard extends StatelessWidget {
+class littlePostCard extends StatelessWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
   final Function delete;
-  PostCard({ this.post, this.delete });
+  littlePostCard({ this.post, this.delete });
 
   @override
   Widget build(BuildContext context) {
@@ -199,26 +199,6 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(width: 8.0),
-
-                Icon(
-                  Icons.more_horiz,
-                  size: 26.0,
-                ),
-
-/*
-                IconButton(
-                  padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
-                  alignment: Alignment.bottomLeft,
-                  splashRadius: 4.0,
-                  icon: Icon(
-                    Icons.delete,
-                    size: 20.0,
-                    color: Colors.red,
-                  ),
-                  onPressed: delete,
-                )
-*/
               ],
             ),
           ],
@@ -228,98 +208,4 @@ class PostCard extends StatelessWidget {
   }
 }
 
-/*
 
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          tweetAvatar(),
-          SizedBox(width:8.0),
-          tweetBody(),
-          SizedBox(height: 8.0),
-
-        ],
-      ),
-    );
-  }
-
-  Widget tweetAvatar() {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: CircleAvatar(
-        backgroundImage: AssetImage(post.userUrl),
-      ),
-    );
-  }
-
-
-
-
-  Widget tweetBody() {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          tweetHeader(),
-          tweetText(),
-
-
-        ],
-      ),
-    );
-  }
-
-  Widget tweetHeader() {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 5.0),
-          child: Text(
-            post.username,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(),
-
-      ],
-    );
-  }
-
-  Widget tweetText() {
-    return Text(
-      post.text,
-      overflow: TextOverflow.clip,
-    );
-  }
-
-
-
-  Widget tweetIconButton(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 16.0,
-          color: Colors.black45,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-*/

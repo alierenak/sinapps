@@ -1,14 +1,6 @@
-import 'dart:convert';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter_app_project/utils/colors.dart';
-import 'package:flutter_app_project/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/main.dart';
-import 'package:flutter_app_project/models/user.dart';
-import 'package:flutter_app_project/models/post.dart';
-import 'package:flutter_app_project/models/PostCard.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:sinapps/models/user.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 
 
 class EditProfile extends StatefulWidget {
@@ -87,6 +79,7 @@ class _EditProfileState extends State<EditProfile> {
       ],
     );
   }
+
   Column buildPrivateField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,14 +91,31 @@ class _EditProfileState extends State<EditProfile> {
               "Profile Visibility",
               style: TextStyle(color: Colors.grey),
             )),
-        ToggleButtons(children: [
+        ToggleButtons(
+          selectedColor: Colors.black,
+          fillColor: Colors.grey[500],
+          children: [
           Icon(Icons.lock),
           Icon(Icons.lock_open),
           ],
-    isSelected: _selections)
+
+          onPressed: (int index) {
+            setState(() {
+              for (int buttonIndex = 0; buttonIndex < _selections.length; buttonIndex++) {
+                if (buttonIndex == index) {
+                  _selections[buttonIndex] = true;
+                } else {
+                  _selections[buttonIndex] = false;
+                }
+              }
+            });
+          },
+          isSelected: _selections,
+        )
       ],
     );
   }
+
   Column buildBioField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,19 +168,29 @@ class _EditProfileState extends State<EditProfile> {
                     backgroundImage: AssetImage(profUser.photoUrl),
                   ),
                 ),
+
+                  TextButton(
+                    child: Text('Change Profile Photo'),
+                    onPressed: () {
+                      print("ProfilePhotoChangeButton Pressed");
+                    },
+                  ),
+
+
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(4.0),
                   child: Column(
                     children: <Widget>[
                       buildDisplayNameField(),
                       buildDisplayUsernameField(),
                       buildBioField(),
+                      SizedBox(height: 25,),
                       buildPrivateField(),
                     ],
                   ),
                 ),
 
-                RaisedButton(
+                FlatButton(
                   onPressed: () => print('update profile data'),
                   color: Colors.grey[800],
                   child: Text(

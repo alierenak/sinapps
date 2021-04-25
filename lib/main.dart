@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/routes/welcome.dart';
-import 'package:flutter_app_project/routes/login.dart';
-import 'package:flutter_app_project/routes/signup.dart';
-import 'package:flutter_app_project/routes/walkthrough.dart';
-import 'package:flutter_app_project/routes/profilepage.dart';
-import 'package:flutter_app_project/utils/preferences.dart';
+import 'package:sinapps/routes/welcome.dart';
+import 'package:sinapps/routes/login.dart';
+import 'package:sinapps/routes/signup.dart';
+import 'package:sinapps/routes/walkthrough.dart';
+import 'package:sinapps/routes/profilepage.dart';
+import 'package:sinapps/utils/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'routes/welcome.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   Widget _defaultHome =  Welcome();
 
   // in order to save and access user preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  if (prefs.getBool('initialRun')!=Null) {
-    print("Initial Run Value: ");
-    print(prefs.getBool('initialRun'));
+  // Firebase initialization
+  // await Firebase.initializeApp();
+
+  if (prefs.getBool('initialRun')==null) {
     await setDefaultPreferences(prefs);
     _defaultHome = WalkThrough();
-  } else if (prefs.getBool('isLogged')!=false) {
+  }
+  /*
+    else if (prefs.getBool('isLogged')!=false) {
     //TODO: If user is logged in no need to show Welcome -> check !!
     _defaultHome = Login();
   }
+   */
 
   Widget app = MaterialApp(
     title: 'sinapps',

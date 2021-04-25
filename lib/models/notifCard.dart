@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_project/models/notif.dart';
-import 'package:flutter_app_project/utils/colors.dart';
+import 'package:sinapps/models/notif.dart';
+import 'package:sinapps/utils/colors.dart';
 
 class NotifCard extends StatelessWidget {
   final NotifPost notification;
@@ -11,8 +11,8 @@ class NotifCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.indigo[100],
-      margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
+      color: Colors.grey[200],
+      margin: EdgeInsets.fromLTRB(7, 6, 7, 6),
       child: Padding(
         padding: EdgeInsets.all(15.0),
         child: Row(
@@ -20,57 +20,43 @@ class NotifCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
               child: Container(
-                height: 60.0,
-                width: 60.0,
+                height: 50.0,
+                width: 50.0,
                 color: AppColors.textColor1,
                 child: Image.asset(notification.photo),
               ),
-
             ),
+            SizedBox(width: 10,),
             Expanded(
-
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 child: Column(
 
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
-                    Row(
-
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                        notification.name,
+                          notification.name,
                           style: TextStyle(
                             color: AppColors.textColor1,
-                            fontSize: 13,
+                            fontSize: 16,
                             fontFamily: 'BrandonText',
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(width: 5,),
+                        SizedBox(height: 10,),
                         Text(
                           notification.text,
                           style: TextStyle(
                             color: AppColors.textColor1,
                             fontSize: 13,
                             fontFamily: 'BrandonText',
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        SizedBox(width: 25,),
-                        Text(
-                          notification.date,
-                          style: TextStyle(
-
-                            color: Colors.black26,
-                            fontSize: 13,
-                            fontFamily: 'BrandonText',
-                            fontWeight: FontWeight.w300,
-
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -78,8 +64,22 @@ class NotifCard extends StatelessWidget {
                   ],
                 ),
 
+              ),
             ),
-            ),
+            Row(
+              children: [
+                SizedBox(width: 25,),
+                Text(
+                  notification.date,
+                  style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: 13,
+                    fontFamily: 'BrandonText',
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
