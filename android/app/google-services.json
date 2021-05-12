@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "498944801543",
+    "project_id": "sinapps0",
+    "storage_bucket": "sinapps0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498944801543:android:65b5725eb4114f1ef4e3a2",
+        "android_client_info": {
+          "package_name": "com.example.sinapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498944801543-mgeq66rnq2en0bbshoangdvdh5s4t4qb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqdSsiC7qo6fNgYg249yhTHysnLPIbpRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498944801543-mgeq66rnq2en0bbshoangdvdh5s4t4qb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

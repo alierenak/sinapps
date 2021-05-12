@@ -1,9 +1,18 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 
 //hello world
 class Welcome extends StatefulWidget {
+
+  const Welcome({Key key, this.analytics, this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+
   @override
   _WelcomeState createState() => _WelcomeState();
 }
