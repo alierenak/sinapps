@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text("Invite More Doctors",
                     style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 24.0,
+                    fontSize: 20.0,
                     color: Colors.black87,
                     fontWeight: FontWeight.w400,
                   ),),
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text("Notifications",
                     style: TextStyle(
                       fontFamily: 'BrandonText',
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                     ),),
@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text("Account and Profile",
                     style: TextStyle(
                       fontFamily: 'BrandonText',
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                     ),),
@@ -96,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text("Help",
                     style: TextStyle(
                       fontFamily: 'BrandonText',
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                     ),),
@@ -112,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text("About",
                     style: TextStyle(
                       fontFamily: 'BrandonText',
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                     ),),

@@ -21,7 +21,7 @@ class PostCard extends StatelessWidget {
           children: <Widget>[
             Row(
 
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
@@ -33,11 +33,9 @@ class PostCard extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(width: 10.0),
-
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       post.username,
@@ -49,15 +47,46 @@ class PostCard extends StatelessWidget {
 
                   ],
                 ),
-                SizedBox(width: 50,),
-                Text(
-                  post.date,
-                  style: TextStyle(
-                    fontFamily: 'BrandonText',
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          post.date,
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.location_on_rounded,
+                          color: Colors.red[800],
+                        ),
+                        Text(
+                          post.location.city,
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+
+                    ),
+                  ],
                 ),
               ],
             ),

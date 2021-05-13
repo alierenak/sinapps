@@ -180,8 +180,8 @@ class _LoginState extends State<Login> {
                         Container(
                           //padding: const EdgeInsets.symmetric(vertical: 2.0),
                           //margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                          height: 50.0,
-                          width: 200.0,
+                          height: 40.0,
+                          width: 150.0,
                           child: OutlinedButton(
                             //margin: const EdgeInsets.symmetric(horizontal: 0.0),
                             //width:0.8,
@@ -204,7 +204,7 @@ class _LoginState extends State<Login> {
                             },
 
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
 
                               child: Text(
                                 'Log-In',
