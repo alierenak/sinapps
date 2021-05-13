@@ -18,28 +18,35 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
   Widget defaultHome =  Welcome();
-
+  if (defaultHome ==  Welcome()){ print("yes");}
   // in order to save and access user preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  bool ifFirst = false;
   // Firebase initialization
   // await Firebase.initializeApp();
-
+  print("1");
   if (prefs.getBool('initialRun')==null) {
+    ifFirst = true;
     await setDefaultPreferences(prefs);
     defaultHome = WalkThrough();
   }
-
-  Widget build(BuildContext context) {
-
-    return App(defaultHome: defaultHome);
+  print("2");
+  //Widget build(BuildContext context) {
+   //
+    //return App(defaultHome: defaultHome);
+  //}
+  print("4");
+  if (defaultHome == Welcome()) {
+    print("a");
   }
-
-  runApp(App());
+  else if(defaultHome == WalkThrough()) {
+    print("b");
+  }
+  runApp(App(ifFirst: ifFirst));
 }
   class App extends StatefulWidget {
-    final Widget defaultHome;
-    const App({Key key, this.defaultHome}): super(key: key);
+    final bool ifFirst;
+    const App({Key key, this.ifFirst}): super(key: key);
 
     @override
       _AppState createState() => _AppState();
@@ -47,22 +54,23 @@ void main() async {
 
 class _AppState extends State<App> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  var defaultHome;
+  bool ifFirst;
   @override
   void initState() {
     super.initState();
-    defaultHome = widget.defaultHome;
+    ifFirst = widget.ifFirst;
 }
 
-  //var temp2 = main(_DefaultHome: _defaultHome);
-  //var _defaulthome = temp2._DefaultHome;
+  //var temp2 = main(defaultHome: defaultHome);
+  //var defaulthome = temp2.defaultHome;
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: _initialization,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             print("Firebase connected");
-            return AppFlow(defaultHome: defaultHome);
+            return AppFlow(ifFirst: ifFirst);
           }
           return MaterialApp(
             home: UnknownWelcome(),
@@ -73,12 +81,13 @@ class _AppState extends State<App> {
 }
 
 class AppFlow extends StatelessWidget {
+  final bool ifFirst;
   const AppFlow({
     Key key,
-    @required this.defaultHome,
+    this.ifFirst,
   }) : super(key: key);
 
-  final Widget defaultHome;
+
 
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
@@ -86,7 +95,8 @@ class AppFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (defaultHome == Welcome()) {
+    if (ifFirst == false) {
+
       return MaterialApp(
 
         navigatorObservers: <NavigatorObserver>[observer],
@@ -101,7 +111,8 @@ class AppFlow extends StatelessWidget {
 
       );
     }
-    else {
+    else if(ifFirst == true) {
+      print("aa");
       return MaterialApp(
 
         navigatorObservers: <NavigatorObserver>[observer],
