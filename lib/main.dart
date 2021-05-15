@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sinapps/routes/setProfile.dart';
 import 'package:sinapps/routes/welcome.dart';
 import 'package:sinapps/routes/login.dart';
 import 'package:sinapps/routes/signup.dart';
@@ -17,40 +18,42 @@ import 'routes/unknownWelcome.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
-  Widget defaultHome =  Welcome();
-  if (defaultHome ==  Welcome()){ print("yes");}
+  Widget defaultHome = Welcome();
+  if (defaultHome == Welcome()) {
+    print("yes");
+  }
   // in order to save and access user preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool ifFirst = false;
   // Firebase initialization
   // await Firebase.initializeApp();
   print("1");
-  if (prefs.getBool('initialRun')==null) {
+  if (prefs.getBool('initialRun') == null) {
     ifFirst = true;
     await setDefaultPreferences(prefs);
     defaultHome = WalkThrough();
   }
   print("2");
   //Widget build(BuildContext context) {
-   //
-    //return App(defaultHome: defaultHome);
+  //
+  //return App(defaultHome: defaultHome);
   //}
   print("4");
   if (defaultHome == Welcome()) {
     print("a");
-  }
-  else if(defaultHome == WalkThrough()) {
+  } else if (defaultHome == WalkThrough()) {
     print("b");
   }
   runApp(App(ifFirst: ifFirst));
 }
-  class App extends StatefulWidget {
-    final bool ifFirst;
-    const App({Key key, this.ifFirst}): super(key: key);
 
-    @override
-      _AppState createState() => _AppState();
-    }
+class App extends StatefulWidget {
+  final bool ifFirst;
+  const App({Key key, this.ifFirst}) : super(key: key);
+
+  @override
+  _AppState createState() => _AppState();
+}
 
 class _AppState extends State<App> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -59,12 +62,11 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     ifFirst = widget.ifFirst;
-}
+  }
 
   //var temp2 = main(defaultHome: defaultHome);
   //var defaulthome = temp2.defaultHome;
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: _initialization,
         builder: (context, snapshot) {
@@ -75,8 +77,7 @@ class _AppState extends State<App> {
           return MaterialApp(
             home: UnknownWelcome(),
           );
-        }
-    );
+        });
   }
 }
 
@@ -87,18 +88,14 @@ class AppFlow extends StatelessWidget {
     this.ifFirst,
   }) : super(key: key);
 
-
-
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
-
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
     if (ifFirst == false) {
-
       return MaterialApp(
-
         navigatorObservers: <NavigatorObserver>[observer],
         home: Welcome(analytics: analytics, observer: observer),
         routes: {
@@ -108,13 +105,10 @@ class AppFlow extends StatelessWidget {
           "/welcome": (context) => Welcome(),
           '/profile': (context) => Profile(),
         },
-
       );
-    }
-    else if(ifFirst == true) {
+    } else if (ifFirst == true) {
       print("aa");
       return MaterialApp(
-
         navigatorObservers: <NavigatorObserver>[observer],
         home: WalkThrough(analytics: analytics, observer: observer),
         routes: {
@@ -124,12 +118,7 @@ class AppFlow extends StatelessWidget {
           "/welcome": (context) => Welcome(),
           '/profile': (context) => Profile(),
         },
-
       );
     }
   }
 }
-
-
-
-

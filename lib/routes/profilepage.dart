@@ -6,9 +6,7 @@ import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/PostCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
 import 'package:sinapps/models/location.dart';
-
 import 'package:sinapps/models/littlePostCard.dart';
-
 import 'package:sinapps/routes/settingspage.dart';
 
 
