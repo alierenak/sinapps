@@ -94,19 +94,20 @@ class _WelcomeState extends State<Welcome> {
                                       child: Text(
                                         'Login',
                                         style: TextStyle(
-                                          color: Colors.grey[800],
+                                          color: AppColors.primary,
                                           fontSize: 20.0,
                                           letterSpacing: 0,
                                         ),
                                       ),
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      backgroundColor: AppColors.primary,
+                                      backgroundColor: Colors.grey[800],
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+                            /*
                             SizedBox(height: 8,),
                             Row(
                               children: <Widget>[
@@ -135,6 +136,7 @@ class _WelcomeState extends State<Welcome> {
                                 //SizedBox(width: 8.0,),
                               ],
                             ),
+                            */
                           ],
                         )
                       ],
