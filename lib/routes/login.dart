@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -10,6 +11,14 @@ import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class Login extends StatefulWidget {
+
+  const Login({Key key, this.analytics, this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -46,9 +55,11 @@ class _LoginState extends State<Login> {
       final credential = await _auth.signInWithCredential(authCredential);
       if (credential?.user != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
+        FirebaseAnalytics().logEvent(name: 'Login Successful',parameters: null);
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
+        FirebaseAnalytics().logEvent(name: 'Login Failed',parameters:null);
         hasError = true;
         errorMessage = "Something went wrong!";
       });
@@ -56,6 +67,7 @@ class _LoginState extends State<Login> {
   }
 
   phoneNumberView(context) {
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.grey[700],
@@ -338,6 +350,7 @@ class _LoginState extends State<Login> {
                   height: 50,
                   child: TextButton(
                     onPressed: () {
+
                       _formKey.currentState.validate();
                       // conditions for validating
                       if (authCode.length != 6) {
@@ -357,6 +370,7 @@ class _LoginState extends State<Login> {
                             hasError = false;
                             PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: verificationID, smsCode: authCode);
                             signIn(phoneAuthCredential);
+
                           },
                         );
                       }

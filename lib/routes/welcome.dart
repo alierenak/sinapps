@@ -5,7 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 
 //hello world
+
+
+
 class Welcome extends StatefulWidget {
+
+  //FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics().getInstance(this);
+
+
 
   const Welcome({Key key, this.analytics, this.observer}) : super(key: key);
 
@@ -87,6 +94,7 @@ class _WelcomeState extends State<Welcome> {
                                   flex: 1,
                                   child: OutlinedButton(
                                     onPressed: () {
+                                      FirebaseAnalytics().logEvent(name: 'Login',parameters:null);
                                       Navigator.pushNamed(context, '/login');
                                     },
                                     child: Padding(

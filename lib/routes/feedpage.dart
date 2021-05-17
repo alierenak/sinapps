@@ -5,8 +5,31 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/PostCard.dart';
 import 'package:sinapps/models/location.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
+
+_sendAnalyticsEvent() async {
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+
+  await analytics.logEvent(
+    name: "Login",
+    parameters: <String, dynamic>{
+      'login': 'logged'
+    },
+  );
+}
+
 
 class FeedPage extends StatefulWidget {
+
+ /* const FeedPage({Key key, this.analytics, this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;*/
+
+
+
   @override
   _FeedPageState createState() => _FeedPageState();
 }
@@ -20,7 +43,7 @@ List<Post> posts = [
 class _FeedPageState extends State<FeedPage>{
   @override
   Widget build(BuildContext context) {
-
+    FirebaseAnalytics().logEvent(name: 'FeedPage',parameters:null);
     return new MaterialApp(
       home: SafeArea(
         top: false,

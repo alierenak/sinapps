@@ -3,8 +3,12 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:sinapps/models/searchResult.dart';
 import 'package:sinapps/models/searchResultCard.dart';
 import 'package:sinapps/utils/colors.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class SearchPage extends StatefulWidget {
+
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
