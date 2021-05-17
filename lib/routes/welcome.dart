@@ -1,9 +1,18 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 
 //hello world
 class Welcome extends StatefulWidget {
+
+  const Welcome({Key key, this.analytics, this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+
   @override
   _WelcomeState createState() => _WelcomeState();
 }
@@ -85,19 +94,20 @@ class _WelcomeState extends State<Welcome> {
                                       child: Text(
                                         'Login',
                                         style: TextStyle(
-                                          color: Colors.grey[800],
+                                          color: AppColors.primary,
                                           fontSize: 20.0,
                                           letterSpacing: 0,
                                         ),
                                       ),
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      backgroundColor: AppColors.primary,
+                                      backgroundColor: Colors.grey[800],
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+                            /*
                             SizedBox(height: 8,),
                             Row(
                               children: <Widget>[
@@ -126,6 +136,7 @@ class _WelcomeState extends State<Welcome> {
                                 //SizedBox(width: 8.0,),
                               ],
                             ),
+                            */
                           ],
                         )
                       ],
