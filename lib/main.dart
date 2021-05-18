@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sinapps/routes/setProfile.dart';
@@ -32,7 +33,7 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseAuth _auth;
   User _user;
-
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   if (prefs.getBool('initialRun')==null) {
     ifFirst = true;
     await setDefaultPreferences(prefs);
