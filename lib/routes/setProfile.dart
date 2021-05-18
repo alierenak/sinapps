@@ -1,10 +1,16 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:sinapps/routes/welcome.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
+
 
 class Setprofile extends StatefulWidget {
   @override
@@ -15,8 +21,31 @@ class _SetprofileState extends State<Setprofile> {
   //List<String> setP = [];
   final _formKey = GlobalKey<FormState>();
   String fullname, username, description, photourl = "";
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    Future<void> addUser() {
+      FirebaseAuth _auth;
+      User _user;
+      _auth = FirebaseAuth.instance;
+      _user = _auth.currentUser;
+      return users
+          .add({
+        'phoneNumber': _user.phoneNumber,
+        'username': username,
+        'fullname': fullname,
+        'description': description,
+        'photourl': photourl
+      })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[700],
       body: SingleChildScrollView(
@@ -231,14 +260,12 @@ class _SetprofileState extends State<Setprofile> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-
+                                addUser();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text('Created an Account!')));
-                                Navigator.pop(
-                                  context,
-                                  [fullname, username, description, photourl],
-                                );
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
+
                               }
                             },
 
