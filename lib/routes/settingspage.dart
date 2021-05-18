@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sinapps/routes/profilepage.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-
 class _SettingsPageState extends State<SettingsPage> {
+
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context){
   return MaterialApp(
@@ -121,8 +123,29 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 7,),
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: () async {
+                        await _auth.signOut();
+                        Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text("Sign Out",
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 20.0,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                  )
+                ],
+              ),
             ],
-
           ),
         ),
       ),

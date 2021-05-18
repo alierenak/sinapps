@@ -3,6 +3,8 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class SignUp extends StatefulWidget {
   @override
