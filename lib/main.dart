@@ -3,7 +3,11 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'package:sinapps/routes/setProfile.dart';
+
 import 'package:sinapps/routes/bottomNavBar.dart';
+
 import 'package:sinapps/routes/welcome.dart';
 import 'package:sinapps/routes/login.dart';
 import 'package:sinapps/routes/signup.dart';
@@ -18,6 +22,7 @@ import 'routes/unknownWelcome.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  //await Firebase.initializeApp();
   // in order to save and access user preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool ifFirst = false;
@@ -36,19 +41,26 @@ void main() async {
     _user = _auth.currentUser;
     if (_user != null)
       isLogged = true;
+
   }
 
   runApp(App(ifFirst: ifFirst, isLogged: isLogged));
 }
+
   class App extends StatefulWidget {
     final bool ifFirst;
     final bool isLogged;
 
     const App({Key key, this.ifFirst, this.isLogged}): super(key: key);
 
-    @override
-      _AppState createState() => _AppState();
-    }
+
+class App extends StatefulWidget {
+  final bool ifFirst;
+  const App({Key key, this.ifFirst}) : super(key: key);
+
+  @override
+  _AppState createState() => _AppState();
+}
 
 class _AppState extends State<App> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -62,7 +74,6 @@ class _AppState extends State<App> {
 }
 
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: _initialization,
         builder: (context, snapshot) {
@@ -73,8 +84,7 @@ class _AppState extends State<App> {
           return MaterialApp(
             home: UnknownWelcome(),
           );
-        }
-    );
+        });
   }
 }
 
@@ -88,8 +98,8 @@ class AppFlow extends StatelessWidget {
   }) : super(key: key);
 
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
-
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +116,3 @@ class AppFlow extends StatelessWidget {
       );
   }
 }
-
-
-
-

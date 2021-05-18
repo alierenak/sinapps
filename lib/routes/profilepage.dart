@@ -9,7 +9,6 @@ import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/models/littlePostCard.dart';
-
 import 'package:sinapps/routes/settingspage.dart';
 
 
