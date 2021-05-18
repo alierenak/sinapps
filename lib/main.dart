@@ -4,14 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:sinapps/routes/setProfile.dart';
-
 import 'package:sinapps/routes/bottomNavBar.dart';
-
 import 'package:sinapps/routes/welcome.dart';
 import 'package:sinapps/routes/login.dart';
-import 'package:sinapps/routes/signup.dart';
+import 'package:sinapps/routes/setProfile.dart';
 import 'package:sinapps/routes/walkthrough.dart';
 import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/utils/preferences.dart';
@@ -23,7 +19,6 @@ import 'routes/unknownWelcome.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //await Firebase.initializeApp();
   // in order to save and access user preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool ifFirst = false;
@@ -42,22 +37,15 @@ void main() async {
     _user = _auth.currentUser;
     if (_user != null)
       isLogged = true;
-
   }
 
   runApp(App(ifFirst: ifFirst, isLogged: isLogged));
 }
-
-  class App extends StatefulWidget {
-    final bool ifFirst;
-    final bool isLogged;
-
-    const App({Key key, this.ifFirst, this.isLogged}): super(key: key);
-
-
 class App extends StatefulWidget {
   final bool ifFirst;
-  const App({Key key, this.ifFirst}) : super(key: key);
+  final bool isLogged;
+
+  const App({Key key, this.ifFirst, this.isLogged}): super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -72,9 +60,10 @@ class _AppState extends State<App> {
     super.initState();
     ifFirst = widget.ifFirst;
     isLogged = widget.isLogged;
-}
+  }
 
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: _initialization,
         builder: (context, snapshot) {
@@ -85,7 +74,8 @@ class _AppState extends State<App> {
           return MaterialApp(
             home: UnknownWelcome(),
           );
-        });
+        }
+    );
   }
 }
 
@@ -99,21 +89,21 @@ class AppFlow extends StatelessWidget {
   }) : super(key: key);
 
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-        navigatorObservers: <NavigatorObserver>[observer],
-        home: ifFirst ? WalkThrough(analytics: analytics, observer: observer) : isLogged ? BottomBar() : Welcome(analytics: analytics, observer: observer),
-        routes: {
-          '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
-          '/login': (context) => Login(analytics: analytics, observer: observer),
-          //'/signup': (context) => SignUp(analytics: analytics, observer: observer),
-          "/welcome": (context) => Welcome(analytics: analytics, observer: observer),
-          '/profile': (context) => Profile(analytics: analytics, observer: observer),
-        },
-      );
+    return MaterialApp(
+      navigatorObservers: <NavigatorObserver>[observer],
+      home: ifFirst ? WalkThrough(analytics: analytics, observer: observer) : isLogged ? BottomBar() : Welcome(analytics: analytics, observer: observer),
+      routes: {
+        '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
+        '/login': (context) => Login(analytics: analytics, observer: observer),
+        //'/signup': (context) => SignUp(analytics: analytics, observer: observer),
+        "/welcome": (context) => Welcome(analytics: analytics, observer: observer),
+        '/profile': (context) => Profile(analytics: analytics, observer: observer),
+      },
+    );
   }
 }

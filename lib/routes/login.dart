@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sinapps/routes/setProfile.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/helpers.dart';
@@ -22,6 +25,7 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
+
 
 
 enum MobileVerificationState {
@@ -54,12 +58,36 @@ class _LoginState extends State<Login> {
     try {
       final credential = await _auth.signInWithCredential(authCredential);
       if (credential?.user != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
-        FirebaseAnalytics().logEvent(name: 'Login Successful',parameters: null);
+        print("its in");
+        print(userPhone);
+        FirebaseAnalytics().logEvent(name: 'LoginSuccessful',parameters: null);
+
+        var result = await FirebaseFirestore.instance.collection('users').where('phoneNumber', isEqualTo: userPhone).get();
+        result.docs.forEach((res) {
+          print(res.data());
+        });
+
+
+          if (result.size == 0) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Setprofile()));
+          }
+          else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => BottomBar()));
+          };
+
+
+
+
+
+
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
+
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
-        FirebaseAnalytics().logEvent(name: 'Login Failed',parameters:null);
+        FirebaseAnalytics().logEvent(name: 'LoginFailed',parameters:null);
         hasError = true;
         errorMessage = "Something went wrong!";
       });
@@ -175,22 +203,31 @@ class _LoginState extends State<Login> {
 
                               if(_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
+                                print("11");
+
                                 _auth.verifyPhoneNumber(
                                   phoneNumber: userPhone,
-                                  verificationCompleted: (authCredential) async {
+                                  verificationCompleted: (PhoneAuthCredential credential) async {
+
                                     setState(() {
+
+                                      print("22");
                                       isLoading = false;
                                     });
 
                                   },
-                                  verificationFailed: (verificationFailed) async {
+                                  verificationFailed: (FirebaseAuthException verificationFailed) async {
+
                                     _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(verificationFailed.message)));
                                     setState(() {
                                       isLoading = false;
+
                                     });
                                   },
+
                                   codeSent: (verificationID, resendingToken) async {
                                     setState(() {
+                                      print("33");
                                       isLoading = false;
                                       currentState = MobileVerificationState.CODE_VIEW_STATE;
                                       this.verificationID = verificationID;

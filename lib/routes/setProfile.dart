@@ -1,10 +1,20 @@
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:sinapps/routes/welcome.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path;
 
 class Setprofile extends StatefulWidget {
   @override
@@ -13,10 +23,53 @@ class Setprofile extends StatefulWidget {
 
 class _SetprofileState extends State<Setprofile> {
   //List<String> setP = [];
+  final picker = ImagePicker();
+  File _imageFile = null;
+  String _uploadedFileURL = "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
   final _formKey = GlobalKey<FormState>();
   String fullname, username, description, photourl = "";
+
+  Future pickImage(source) async {
+    final pickedFile = await picker.getImage(source: source);
+
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+
+    uploadFile(context);
+  }
+
+  Future uploadFile(BuildContext context) async {
+    String fileName = Path.basename(_imageFile.path);
+    Reference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('profilepictures/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+    setState(() {
+      _uploadedFileURL = imageUrl;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    Future<void> addUser() {
+      FirebaseAuth _auth;
+      User _user;
+      _auth = FirebaseAuth.instance;
+      _user = _auth.currentUser;
+      return users
+          .add({
+            'phoneNumber': _user.phoneNumber,
+            'username': username,
+            'fullname': fullname,
+            'description': description,
+            'photourl': _uploadedFileURL
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[700],
       body: SingleChildScrollView(
@@ -62,7 +115,9 @@ class _SetprofileState extends State<Setprofile> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 6,),
+                            SizedBox(
+                              height: 6,
+                            ),
                             Text(
                               "Feed me with\n some details.",
                               style: TextStyle(
@@ -83,7 +138,7 @@ class _SetprofileState extends State<Setprofile> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage(photourl),
+                          backgroundImage: NetworkImage(_uploadedFileURL),
                           radius: 40.0,
                           child: GestureDetector(
                             onTap: () {
@@ -92,7 +147,10 @@ class _SetprofileState extends State<Setprofile> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            pickImage(ImageSource.gallery);
+
+                          },
                           icon: Icon(Icons.photo_camera),
                         ),
                       ],
@@ -231,14 +289,14 @@ class _SetprofileState extends State<Setprofile> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-
+                                addUser();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text('Created an Account!')));
-                                Navigator.pop(
-                                  context,
-                                  [fullname, username, description, photourl],
-                                );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BottomBar()));
                               }
                             },
 
