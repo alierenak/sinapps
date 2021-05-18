@@ -1,7 +1,10 @@
+import 'package:sinapps/routes/setProfile.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -247,7 +250,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               side: BorderSide(width: 2, color: Colors.grey[800]),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
 
                               if(_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
@@ -259,7 +262,11 @@ class _SignUpState extends State<SignUp> {
                                 }
 
                                 ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(content: Text('Logging in')));
+                                    .showSnackBar(SnackBar(content: Text('Signing in')));
+                                  var credentials = await Navigator.push(context, MaterialPageRoute(builder: (context) => Setprofile()));
+                                  print(credentials);
+                                  //create acc from firebase
+                                  Navigator.pop(context);
                               }
 
                             },
