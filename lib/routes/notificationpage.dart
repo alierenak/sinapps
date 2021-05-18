@@ -2,8 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:sinapps/models/notif.dart';
 import 'package:sinapps/models/notifCard.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class Noti extends StatefulWidget {
+
+  const Noti({Key key, this.analytics, this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+
   @override
   _NotiState createState() => _NotiState();
 }

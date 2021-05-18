@@ -90,17 +90,18 @@ class AppFlow extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
+
   @override
   Widget build(BuildContext context) {
       return MaterialApp(
         navigatorObservers: <NavigatorObserver>[observer],
         home: ifFirst ? WalkThrough(analytics: analytics, observer: observer) : isLogged ? BottomBar() : Welcome(analytics: analytics, observer: observer),
         routes: {
-          '/walkthrough': (context) => WalkThrough(),
-          '/login': (context) => Login(),
-          '/signup': (context) => SignUp(),
-          "/welcome": (context) => Welcome(),
-          '/profile': (context) => Profile(),
+          '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
+          '/login': (context) => Login(analytics: analytics, observer: observer),
+          //'/signup': (context) => SignUp(analytics: analytics, observer: observer),
+          "/welcome": (context) => Welcome(analytics: analytics, observer: observer),
+          '/profile': (context) => Profile(analytics: analytics, observer: observer),
         },
       );
   }
