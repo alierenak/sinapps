@@ -30,23 +30,16 @@ class PostCard extends StatelessWidget {
                       backgroundImage: AssetImage(post.userUrl),
                       radius: 32.0,
                     ),
+                        Text(
+                          post.username,
+                          style: TextStyle(fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.clip,
+                        ),
                   ],
                 ),
 
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.username,
-                      style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                      overflow: TextOverflow.clip,
-                    ),
-
-                  ],
-                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
