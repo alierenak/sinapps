@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'routes/welcome.dart';
 import 'routes/unknownWelcome.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'utils/crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,9 @@ void main() async {
   FirebaseAuth _auth;
   User _user;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  FirebaseCrashlytics.instance.setCustomKey('str_key', 'custom_key1');
+
+  FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+  crashlytics.log("crashltics enabled");
 
   if (prefs.getBool('initialRun') == null) {
     ifFirst = true;
@@ -38,6 +41,7 @@ void main() async {
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     if (_user != null) isLogged = true;
+    if (isLogged == true) crashlytics.setCustomKey('isLoggedIn', true);
   }
 
   runApp(App(ifFirst: ifFirst, isLogged: isLogged));
@@ -57,6 +61,7 @@ class _AppState extends State<App> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   bool ifFirst;
   bool isLogged;
+
   @override
   void initState() {
     super.initState();

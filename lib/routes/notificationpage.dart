@@ -1,22 +1,21 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sinapps/models/notif.dart';
 import 'package:sinapps/models/notifCard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:sinapps/utils/crashlytics.dart';
 
 class Noti extends StatefulWidget {
-
   const Noti({Key key, this.analytics, this.observer}) : super(key: key);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
 
-
   @override
   _NotiState createState() => _NotiState();
 }
-
 
 List<NotifPost> notifs = [
   NotifPost(
@@ -61,54 +60,58 @@ List<NotifPost> notifs = [
       text: "liked your photo"),
 ];
 
-
 class _NotiState extends State<Noti> {
+  FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+  void MessageCrash() {
+    crashlytics.setCustomKey('isNotificationIconPressed', true);
+    crashlytics.setCustomKey("NotificationIcon", "Not working");
+    crashlytics.crash();
+  }
+
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-          backgroundColor: Colors.grey[350],
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.grey[800],
-            elevation: 0.0,
-            title: Text(
-              'Notifications',
-              style: TextStyle(
-                color: Colors.grey[300],
-                fontSize: 24,
-                fontFamily: 'BrandonText',
-                fontWeight: FontWeight.w600,
-              ),
+    return Scaffold(
+      backgroundColor: Colors.grey[350],
+      appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.grey[800],
+          elevation: 0.0,
+          title: Text(
+            'Notifications',
+            style: TextStyle(
+              color: Colors.grey[300],
+              fontSize: 24,
+              fontFamily: 'BrandonText',
+              fontWeight: FontWeight.w600,
             ),
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
+          ),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
             IconButton(
               color: Colors.grey[300],
               icon: Icon(Icons.refresh_sharp),
               onPressed: () {
-                Noti();
+                MessageCrash();
               },
             ),
-        ]
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //SizedBox(height: 5,),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: notifs
-                        .map((notification) => NotifCard(
-                      notification: notification,
-                    ))
-                        .toList(),
-                  ),
-                ),
+          ]),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          //SizedBox(height: 5,),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: notifs
+                    .map((notification) => NotifCard(
+                          notification: notification,
+                        ))
+                    .toList(),
               ),
-            ],
+            ),
           ),
+        ],
+      ),
     );
-
   }
 }
