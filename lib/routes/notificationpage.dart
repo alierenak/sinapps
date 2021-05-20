@@ -64,7 +64,7 @@ class _NotiState extends State<Noti> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
   void MessageCrash() {
     crashlytics.setCustomKey('isNotificationIconPressed', true);
-    crashlytics.setCustomKey("NotificationIcon", "Not working");
+    crashlytics.setCustomKey('error: ', "notification icon not working");
     crashlytics.crash();
   }
 

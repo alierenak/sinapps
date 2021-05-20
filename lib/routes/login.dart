@@ -56,8 +56,6 @@ class _LoginState extends State<Login> {
         print(userPhone);
         FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
         crashlytics.log(userPhone);
-        crashlytics.setCustomKey("user:", userPhone);
-        crashlytics.setUserIdentifier(userPhone);
         FirebaseAnalytics().logEvent(name: 'LoginSuccessful', parameters: null);
 
         var result = await FirebaseFirestore.instance

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:sinapps/models/searchResult.dart';
@@ -23,16 +24,16 @@ List<SearchResult> locationResult = [
 
 List<SearchResult> topicResult = [
   SearchResult(identifier: "Nobet", description: "doktorların tuttuğu şey"),
-  SearchResult(identifier: "asdasdas", description: "sadasdasdasdasdasdas")
+  SearchResult(identifier: "Doctor", description: "hospitals")
 ];
 
 class _SearchPageState extends State<SearchPage> {
   static const historyLength = 5;
   List<String> _searchHistory = [
-    'sample1',
-    'search2',
-    'hello world',
-    'sucourse'
+    'doctor',
+    'acibadem',
+    'dr mert',
+    'atmacaa',
   ];
 
   List<String> filteredSearchHistory;
@@ -102,6 +103,26 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
+  FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+  void checkIfExist(String src) {
+    bool ch = false;
+    for (int i = 0; i < peopleResult.length; i++) {
+      if (src == peopleResult[i].identifier ||
+          src == peopleResult[i].description) ch = true;
+    }
+    for (int i = 0; i < locationResult.length; i++) {
+      if (src == locationResult[i].identifier ||
+          src == locationResult[i].description) ch = true;
+    }
+    for (int i = 0; i < topicResult.length; i++) {
+      if (src == topicResult[i].identifier || src == topicResult[i].description)
+        ch = true;
+    }
+    if (ch == false) {
+      crashlytics.setCustomKey("search result not found:", src);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,6 +168,8 @@ class _SearchPageState extends State<SearchPage> {
           },
           onSubmitted: (query) {
             setState(() {
+              print(query);
+              checkIfExist(query);
               addSearchTerm(query);
               selectedTerm = query;
             });

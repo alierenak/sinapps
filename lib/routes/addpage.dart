@@ -21,6 +21,7 @@ class _AddPostState extends State<AddPost> {
   void AddPostCrash() {
     enableCrashlytics();
     crashlytics.setCustomKey('isAddIconPressed', true);
+    crashlytics.setCustomKey('error:', "add icon pressed");
     crashlytics.crash();
   }
 
