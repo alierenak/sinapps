@@ -64,6 +64,8 @@ List<Post> posts = [
 
 class _FeedPageState extends State<FeedPage> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+
+
   void MessageCrash() {
     enableCrashlytics();
     crashlytics.setCustomKey('isMessangerIconPressed', true);

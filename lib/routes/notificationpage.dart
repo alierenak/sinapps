@@ -98,7 +98,6 @@ class _NotiState extends State<Noti> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //SizedBox(height: 5,),
           Expanded(
             child: SingleChildScrollView(
               child: Column(

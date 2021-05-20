@@ -32,7 +32,10 @@ void main() async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
-  crashlytics.log("crashltics enabled");
+  crashlytics.log("crashlytics enabled");
+
+  //String id = _user.tenantId;
+  crashlytics.setUserIdentifier("id");
 
   if (prefs.getBool('initialRun') == null) {
     ifFirst = true;
@@ -41,7 +44,9 @@ void main() async {
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     if (_user != null) isLogged = true;
-    if (isLogged == true) crashlytics.setCustomKey('isLoggedIn', true);
+    if (isLogged == true) {
+      crashlytics.setCustomKey('isLoggedIn', true);
+    }
   }
 
   runApp(App(ifFirst: ifFirst, isLogged: isLogged));
@@ -87,7 +92,7 @@ class _AppState extends State<App> {
 class AppFlow extends StatelessWidget {
   final bool ifFirst;
   final bool isLogged;
-  const AppFlow({
+  AppFlow({
     Key key,
     this.ifFirst,
     this.isLogged,
