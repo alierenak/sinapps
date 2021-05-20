@@ -8,7 +8,7 @@ class PostCard extends StatelessWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
   final Function delete;
-  PostCard({ this.post, this.delete });
+  PostCard({this.post, this.delete});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,6 @@ class PostCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -30,21 +29,14 @@ class PostCard extends StatelessWidget {
                       backgroundImage: AssetImage(post.userUrl),
                       radius: 32.0,
                     ),
-                  ],
-                ),
-
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
                     Text(
                       post.username,
-                      style: TextStyle(fontWeight: FontWeight.bold,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                       overflow: TextOverflow.clip,
                     ),
-
                   ],
                 ),
                 Column(
@@ -84,14 +76,12 @@ class PostCard extends StatelessWidget {
                           ),
                         ),
                       ],
-
                     ),
                   ],
                 ),
               ],
             ),
             SizedBox(height: 8.0),
-
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -109,7 +99,6 @@ class PostCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.0),
-
             Container(
               height: 300,
               child: PageView(
@@ -121,9 +110,9 @@ class PostCard extends StatelessWidget {
                     children: [
                       Text(
                         "Thank you, I thank you for your time. Is it a good way? ma"
-                            "xHeight I will never know how much information will be"
-                            " loaded dynamically. where i should locate the scroll, i am g"
-                            "etting this problem:",
+                        "xHeight I will never know how much information will be"
+                        " loaded dynamically. where i should locate the scroll, i am g"
+                        "etting this problem:",
                         style: TextStyle(
                           color: AppColors.textColor1,
                           fontSize: 24,
@@ -132,52 +121,47 @@ class PostCard extends StatelessWidget {
                         ),
                         overflow: TextOverflow.clip,
                       ),
-
                       Row(
                         children: [
                           Icon(
                             Icons.circle,
                             color: Colors.grey[600],
-                            size: 16,
+                            size: 10,
                           ),
                           Icon(
                             Icons.circle,
-                            color: Colors.grey[400],
-                            size: 16,
+                            color: Colors.grey[300],
+                            size: 10,
                           ),
-
                         ],
                       ),
-
                     ],
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: MediaQuery.of(context).size.width/1.8,//MediaQuery.of(context).size.height/2.7,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    height: MediaQuery.of(context).size.width /
+                        1.8, //MediaQuery.of(context).size.height/2.7,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
-                      border: Border.all(width: 1,),
+                      border: Border.all(
+                        width: 1,
+                      ),
                       color: Colors.grey[200],
                       image: DecorationImage(
-                          image: AssetImage(post.photoUrl),
-                          fit: BoxFit.fill
-                      ),
+                          image: AssetImage(post.photoUrl), fit: BoxFit.fill),
                     ),
                   ),
                 ],
-
-
               ),
             ),
-
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-
                 SizedBox(width: 8.0),
-
                 Icon(
                   Icons.thumb_up,
                   size: 26.0,
@@ -192,15 +176,12 @@ class PostCard extends StatelessWidget {
                     color: AppColors.textColor,
                   ),
                 ),
-
                 SizedBox(width: 8.0),
-
                 Icon(
                   Icons.thumb_down,
                   size: 26.0,
                   color: AppColors.secondary,
                 ),
-
                 Text(
                   '${post.dislikes}',
                   style: TextStyle(
@@ -210,14 +191,11 @@ class PostCard extends StatelessWidget {
                     color: AppColors.textColor,
                   ),
                 ),
-
                 SizedBox(width: 8.0),
-
                 Icon(
                   Icons.comment,
                   size: 26.0,
                 ),
-
                 Text(
                   '${post.comments}',
                   style: TextStyle(
@@ -227,9 +205,7 @@ class PostCard extends StatelessWidget {
                     color: AppColors.textColor,
                   ),
                 ),
-
                 SizedBox(width: 8.0),
-
                 Icon(
                   Icons.more_horiz,
                   size: 26.0,
