@@ -25,7 +25,8 @@ class _SetprofileState extends State<Setprofile> {
   //List<String> setP = [];
   final picker = ImagePicker();
   File _imageFile = null;
-  String _uploadedFileURL = "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
+  String _uploadedFileURL =
+      "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
   final _formKey = GlobalKey<FormState>();
   String fullname, username, description, photourl = "";
 
@@ -42,13 +43,14 @@ class _SetprofileState extends State<Setprofile> {
   Future uploadFile(BuildContext context) async {
     String fileName = Path.basename(_imageFile.path);
     Reference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('profilepictures/$fileName');
+        FirebaseStorage.instance.ref().child('profilepictures/$fileName');
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     setState(() {
       _uploadedFileURL = imageUrl;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -75,8 +77,8 @@ class _SetprofileState extends State<Setprofile> {
       body: SingleChildScrollView(
         child: Container(
           //flex: 1,
-          margin: EdgeInsets.all(40.0),
-          padding: EdgeInsets.all(25.0),
+          margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 80),
+          padding: EdgeInsets.all(40.0),
 
           decoration: BoxDecoration(
             color: Colors.white,
@@ -118,21 +120,11 @@ class _SetprofileState extends State<Setprofile> {
                             SizedBox(
                               height: 6,
                             ),
-                            Text(
-                              "Feed me with\n some details.",
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 27.0,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
                           ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 28.0),
+                    SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,21 +134,14 @@ class _SetprofileState extends State<Setprofile> {
                           radius: 40.0,
                           child: GestureDetector(
                             onTap: () {
-                              print("bana basıldı");
+                              pickImage(ImageSource.gallery);
                             },
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            pickImage(ImageSource.gallery);
-
-                          },
-                          icon: Icon(Icons.photo_camera),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 12,
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -243,7 +228,6 @@ class _SetprofileState extends State<Setprofile> {
                               fillColor: AppColors.captionColor,
                               filled: true,
                               hintText: 'Description (optional)',
-                              //labelText: 'Username',
                               labelStyle: kLabelLightTextStyle,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -270,15 +254,12 @@ class _SetprofileState extends State<Setprofile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          //padding: const EdgeInsets.symmetric(vertical: 2.0),
-                          //margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                          height: 40.0,
-                          width: 150.0,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2.0, horizontal: 2.0),
+                          height: 50.0,
+                          width: 180.0,
                           child: OutlinedButton(
-                            //margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                            //width:0.8,
                             style: OutlinedButton.styleFrom(
-                              //backgroundColor: AppColors.secondary,
                               backgroundColor: Colors.grey[800],
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
@@ -299,22 +280,17 @@ class _SetprofileState extends State<Setprofile> {
                                         builder: (context) => BottomBar()));
                               }
                             },
-
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              padding: const EdgeInsets.all(5),
                               child: Text(
-                                'Have Fun!',
+                                'Create Profile',
                                 style: TextStyle(
                                   color: AppColors.primary,
-                                  fontSize: 20.0,
+                                  fontSize: 19.0,
                                   letterSpacing: 0,
                                 ),
                               ),
                             ),
-                            //style: OutlinedButton.styleFrom(
-                            //backgroundColor: AppColors.secondary,
-                            //),
                           ),
                         ),
                       ],
