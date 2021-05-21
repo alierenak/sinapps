@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 
-
 class EditProfile extends StatefulWidget {
   //List <bool> _selections = List.generate(2, (_) => false);
 
@@ -15,16 +14,24 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController displayUsernameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   bool isLoading = false;
-  user profUser = user(mail: 'mertture@sabanciuniv.edu', username: 'mertture0', fullname: 'Mert Türe',
-      followers: 0, following: 0, posts: 0, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
+  user profUser = user(
+      mail: 'mertture@sabanciuniv.edu',
+      username: 'mertture0',
+      fullname: 'Mert Türe',
+      followers: 0,
+      following: 0,
+      posts: 0,
+      description: 'Orthopedics in Acıbadem',
+      photoUrl: 'lib/images/mert.jpeg');
   //this.User.photoUrl = 'lib/images/cat.jpg';
-  List <bool> _selections = List.generate(2, (_) => false);
+  List<bool> _selections = List.generate(2, (_) => false);
   @override
   void initState() {
     super.initState();
 
 //    getUser();
   }
+
 /*
   getUser() async {
     setState(() {
@@ -58,7 +65,6 @@ class _EditProfileState extends State<EditProfile> {
       ],
     );
   }
-
 
   Column buildDisplayUsernameField() {
     return Column(
@@ -95,13 +101,14 @@ class _EditProfileState extends State<EditProfile> {
           selectedColor: Colors.black,
           fillColor: Colors.grey[500],
           children: [
-          Icon(Icons.lock),
-          Icon(Icons.lock_open),
+            Icon(Icons.lock),
+            Icon(Icons.lock_open),
           ],
-
           onPressed: (int index) {
             setState(() {
-              for (int buttonIndex = 0; buttonIndex < _selections.length; buttonIndex++) {
+              for (int buttonIndex = 0;
+                  buttonIndex < _selections.length;
+                  buttonIndex++) {
                 if (buttonIndex == index) {
                   _selections[buttonIndex] = true;
                 } else {
@@ -168,15 +175,12 @@ class _EditProfileState extends State<EditProfile> {
                     backgroundImage: AssetImage(profUser.photoUrl),
                   ),
                 ),
-
-                  TextButton(
-                    child: Text('Change Profile Photo'),
-                    onPressed: () {
-                      print("ProfilePhotoChangeButton Pressed");
-                    },
-                  ),
-
-
+                TextButton(
+                  child: Text('Change Profile Photo'),
+                  onPressed: () {
+                    print("ProfilePhotoChangeButton Pressed");
+                  },
+                ),
                 Padding(
                   padding: EdgeInsets.all(4.0),
                   child: Column(
@@ -184,12 +188,16 @@ class _EditProfileState extends State<EditProfile> {
                       buildDisplayNameField(),
                       buildDisplayUsernameField(),
                       buildBioField(),
-                      SizedBox(height: 25,),
+                      SizedBox(
+                        height: 25,
+                      ),
                       buildPrivateField(),
                     ],
                   ),
                 ),
-
+                SizedBox(
+                  height: 40,
+                ),
                 FlatButton(
                   onPressed: () => print('update profile data'),
                   color: Colors.grey[800],
@@ -199,17 +207,6 @@ class _EditProfileState extends State<EditProfile> {
                       color: Colors.white,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: FlatButton.icon(
-                    onPressed: () => print('logout'),
-                    icon: Icon(Icons.cancel, color: Colors.red),
-                    label: Text(
-                      "Logout",
-                      style: TextStyle(color: Colors.red, fontSize: 20.0),
                     ),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,93 +8,119 @@ import 'package:sinapps/models/PostCard.dart';
 import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-
+import 'package:sinapps/utils/crashlytics.dart';
 
 _sendAnalyticsEvent() async {
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
   await analytics.logEvent(
     name: "Login",
-    parameters: <String, dynamic>{
-      'login': 'logged'
-    },
+    parameters: <String, dynamic>{'login': 'logged'},
   );
 }
 
-
 class FeedPage extends StatefulWidget {
-
- /* const FeedPage({Key key, this.analytics, this.observer}) : super(key: key);
+  /* const FeedPage({Key key, this.analytics, this.observer}) : super(key: key);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;*/
-
-
 
   @override
   _FeedPageState createState() => _FeedPageState();
 }
 
 List<Post> posts = [
-  Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post12.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'We have empty beds in ER', date: '23 April 2021', likes:32, dislikes: 7, comments:12),
-  Post( username: 'surucux', userUrl:"lib/images/berf.jpeg", photoUrl:"lib/images/googleCampus.jpg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'I am going to Google Campus. Does anyone want to come?', date: '22 January 2021', likes:35, dislikes: 5, comments:27 ),
-  Post( username: 'atmaca', userUrl:"lib/images/kaan.jpeg", photoUrl:"lib/images/post10.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'Cool features about the foot structure', date: '7 January 2021', likes:23, dislikes: 8, comments:12 )
+  Post(
+      username: 'mertture0',
+      userUrl: "lib/images/mert.jpeg",
+      photoUrl: "lib/images/post12.jpeg",
+      location: Location(country: "Turkey", city: 'Acıbadem'),
+      text: 'We have empty beds in ER',
+      date: '23 April 2021',
+      likes: 32,
+      dislikes: 7,
+      comments: 12),
+  Post(
+      username: 'surucux',
+      userUrl: "lib/images/berf.jpeg",
+      photoUrl: "lib/images/googleCampus.jpg",
+      location: Location(country: "Turkey", city: 'Acıbadem'),
+      text: 'I am going to Google Campus. Does anyone want to come?',
+      date: '22 January 2021',
+      likes: 35,
+      dislikes: 5,
+      comments: 27),
+  Post(
+      username: 'atmaca',
+      userUrl: "lib/images/kaan.jpeg",
+      photoUrl: "lib/images/post10.jpeg",
+      location: Location(country: "Turkey", city: 'Acıbadem'),
+      text: 'Cool features about the foot structure',
+      date: '7 January 2021',
+      likes: 23,
+      dislikes: 8,
+      comments: 12)
 ];
 
-class _FeedPageState extends State<FeedPage>{
+class _FeedPageState extends State<FeedPage> {
+  FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+
+  void MessageCrash() {
+    enableCrashlytics();
+    crashlytics.setCustomKey("isMessangerIconPressed", true);
+    crashlytics.setCustomKey('error: ', "messanger icon pressed");
+    crashlytics.crash();
+  }
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAnalytics().logEvent(name: 'FeedPage',parameters:null);
+    FirebaseAnalytics().logEvent(name: 'FeedPage', parameters: null);
     return new MaterialApp(
       home: SafeArea(
         top: false,
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Home",
-              style: TextStyle(
-                fontFamily: 'BrandonText',
-                fontSize: 24.0,
-                fontWeight: FontWeight.w600,
+              title: Text(
+                "Home",
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.grey[800],
-            elevation: 0.0,
+              centerTitle: true,
+              backgroundColor: Colors.grey[800],
+              elevation: 0.0,
               automaticallyImplyLeading: false,
               actions: <Widget>[
                 IconButton(
                   color: Colors.grey[300],
                   icon: Icon(Icons.messenger_rounded),
                   onPressed: () {
-                    FeedPage();
+                    MessageCrash();
                   },
                 ),
-              ]
-          ),
-
+              ]),
           body: Container(
             padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-            width:double.infinity,
+            width: double.infinity,
             child: SingleChildScrollView(
               child: Column(
-                children: posts.map((post) => PostCard(
-                    post: post,
-                    delete: () {
-                      setState(() {
-                        posts.remove(post);
-                      });
-                    }
-                )).toList(),
+                children: posts
+                    .map((post) => PostCard(
+                        post: post,
+                        delete: () {
+                          setState(() {
+                            posts.remove(post);
+                          });
+                        }))
+                    .toList(),
               ),
             ),
           ),
         ),
       ),
     );
-
   }
 }
-
-

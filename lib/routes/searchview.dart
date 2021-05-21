@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:sinapps/models/searchResult.dart';
@@ -7,56 +8,32 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
 class SearchPage extends StatefulWidget {
-
-
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 List<SearchResult> peopleResult = [
-  SearchResult(
-    identifier: "Mert Ture",
-    description: "Orthopedics at Acıbadem"
-  ),
-  SearchResult(
-      identifier: "Kaan Atmaca",
-      description: "Doctor at Acıbadem"
-  )
+  SearchResult(identifier: "Mert Ture", description: "Orthopedics at Acıbadem"),
+  SearchResult(identifier: "Kaan Atmaca", description: "Doctor at Acıbadem")
 ];
 
 List<SearchResult> locationResult = [
-
-  SearchResult(
-      identifier: "Acıbadem",
-      description: "a uniiversity hospital"
-  ),
-  SearchResult(
-      identifier: "Koç Uni",
-      description: "University in Turkey"
-  )
+  SearchResult(identifier: "Acıbadem", description: "a uniiversity hospital"),
+  SearchResult(identifier: "Koç Uni", description: "University in Turkey")
 ];
 
 List<SearchResult> topicResult = [
-
-  SearchResult(
-      identifier: "Nobet",
-      description: "doktorların tuttuğu şey"
-  ),
-  SearchResult(
-      identifier: "asdasdas",
-      description: "sadasdasdasdasdasdas"
-  )
+  SearchResult(identifier: "Nobet", description: "doktorların tuttuğu şey"),
+  SearchResult(identifier: "Doctor", description: "hospitals")
 ];
 
-
-class _SearchPageState extends State<SearchPage>{
-
+class _SearchPageState extends State<SearchPage> {
   static const historyLength = 5;
   List<String> _searchHistory = [
-    'sample1',
-    'search2',
-    'hello world',
-    'sucourse'
+    'doctor',
+    'acibadem',
+    'dr mert',
+    'atmacaa',
   ];
 
   List<String> filteredSearchHistory;
@@ -65,12 +42,13 @@ class _SearchPageState extends State<SearchPage>{
   String selectedTerm;
 
   List<String> filteredSearchTerms({
-  @required String filter,
+    @required String filter,
   }) {
     // Filtering among search history to make search easy
     if (filter != null && filter.isNotEmpty) {
       return _searchHistory.reversed
-          .where((element) => element.startsWith(filter)).toList();
+          .where((element) => element.startsWith(filter))
+          .toList();
     } else {
       // if nothing written we can return all search history
       return _searchHistory.reversed.toList();
@@ -78,7 +56,6 @@ class _SearchPageState extends State<SearchPage>{
   }
 
   void addSearchTerm(String element) {
-
     // What we want to do is if the added search term is already exist
     // We dont neeed to duplicate it
     if (_searchHistory.contains(element)) {
@@ -91,7 +68,6 @@ class _SearchPageState extends State<SearchPage>{
       if (_searchHistory.length > historyLength) {
         // remove oldest search until length is proper to add new one
         _searchHistory.removeRange(0, _searchHistory.length - historyLength);
-
       }
       filteredSearchHistory = filteredSearchTerms(filter: null);
     }
@@ -121,17 +97,38 @@ class _SearchPageState extends State<SearchPage>{
     filteredSearchHistory = filteredSearchTerms(filter: null);
   }
 
-  @override void dispose() {
+  @override
+  void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+  void checkIfExist(String src) {
+    bool ch = false;
+    for (int i = 0; i < peopleResult.length; i++) {
+      if (src == peopleResult[i].identifier ||
+          src == peopleResult[i].description) ch = true;
+    }
+    for (int i = 0; i < locationResult.length; i++) {
+      if (src == locationResult[i].identifier ||
+          src == locationResult[i].description) ch = true;
+    }
+    for (int i = 0; i < topicResult.length; i++) {
+      if (src == topicResult[i].identifier || src == topicResult[i].description)
+        ch = true;
+    }
+    if (ch == false) {
+      crashlytics.setCustomKey("search result not found:", src);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           centerTitle: true,
-        automaticallyImplyLeading: false,
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.grey[800],
           elevation: 0.0,
           title: Text(
@@ -143,49 +140,50 @@ class _SearchPageState extends State<SearchPage>{
               fontWeight: FontWeight.w600,
             ),
           ),
-      ),
-
-      body: FloatingSearchBar(
-        automaticallyImplyBackButton: false,
-        controller: controller,
-        body: FloatingSearchBarScrollNotifier(
-          child: SearchResultsListView(
-            searchTerm: selectedTerm,
+        ),
+        body: FloatingSearchBar(
+          automaticallyImplyBackButton: false,
+          controller: controller,
+          body: FloatingSearchBarScrollNotifier(
+            child: SearchResultsListView(
+              searchTerm: selectedTerm,
+            ),
           ),
-        ),
-        // When we close process will be more nice (
-        transition: CircularFloatingSearchBarTransition(),
-        // search terms shows up in cool way :)
-        physics: BouncingScrollPhysics(),
-        title: Text(
-          selectedTerm ?? 'Enter to search',
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        hint: 'Start typing...',
-        actions: [
-          FloatingSearchBarAction.searchToClear(),
-        ],
-        onQueryChanged: (query) {
-          setState(() {
-            filteredSearchHistory = filteredSearchTerms(filter: query);
-          });
-        },
-        onSubmitted: (query) {
-          setState(() {
-            addSearchTerm(query);
-            selectedTerm = query;
-          });
-          controller.close();
-        },
-        builder: (context, transition) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Material(
-              color: Colors.white,
-              elevation: 4,
-              child: Builder(
-                builder: (context) {
-                  if (filteredSearchHistory.isEmpty && controller.query.isEmpty) {
+          // When we close process will be more nice (
+          transition: CircularFloatingSearchBarTransition(),
+          // search terms shows up in cool way :)
+          physics: BouncingScrollPhysics(),
+          title: Text(
+            selectedTerm ?? 'Enter to search',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          hint: 'Start typing...',
+          actions: [
+            FloatingSearchBarAction.searchToClear(),
+          ],
+          onQueryChanged: (query) {
+            setState(() {
+              filteredSearchHistory = filteredSearchTerms(filter: query);
+            });
+          },
+          onSubmitted: (query) {
+            setState(() {
+              print(query);
+              checkIfExist(query);
+              addSearchTerm(query);
+              selectedTerm = query;
+            });
+            controller.close();
+          },
+          builder: (context, transition) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Colors.white,
+                elevation: 4,
+                child: Builder(builder: (context) {
+                  if (filteredSearchHistory.isEmpty &&
+                      controller.query.isEmpty) {
                     return Container(
                       height: 56,
                       width: double.infinity,
@@ -200,10 +198,10 @@ class _SearchPageState extends State<SearchPage>{
                   } else if (filteredSearchHistory.isEmpty) {
                     // search history not found but user typing something
                     return ListTile(
-                        title: Text(controller.query),
-                        leading: const Icon(Icons.search),
-                        // for each type we need to add characters to history which is writing...
-                        onTap: () {
+                      title: Text(controller.query),
+                      leading: const Icon(Icons.search),
+                      // for each type we need to add characters to history which is writing...
+                      onTap: () {
                         setState(() {
                           addSearchTerm(controller.query);
                           selectedTerm = controller.query;
@@ -214,8 +212,8 @@ class _SearchPageState extends State<SearchPage>{
                   } else {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: filteredSearchHistory.map(
-                              (e) => ListTile(
+                      children: filteredSearchHistory
+                          .map((e) => ListTile(
                                 title: Text(
                                   e,
                                   maxLines: 1,
@@ -230,7 +228,6 @@ class _SearchPageState extends State<SearchPage>{
                                     });
                                   },
                                 ),
-
                                 onTap: () {
                                   setState(() {
                                     putSearchTermFirst(e);
@@ -238,23 +235,23 @@ class _SearchPageState extends State<SearchPage>{
                                   });
                                   controller.close();
                                 },
-                      )).toList(),
+                              ))
+                          .toList(),
                     );
                   }
-                }
+                }),
               ),
-            ),
-          );
-        },
-      )
-    );
+            );
+          },
+        ));
   }
 }
 
 class SearchResultsListView extends StatelessWidget {
   final String searchTerm;
 
-  Widget buildSearchResults(List<SearchResult> results, BuildContext context, int index) {
+  Widget buildSearchResults(
+      List<SearchResult> results, BuildContext context, int index) {
     return Center(
       child: Card(
         child: Column(
@@ -274,7 +271,7 @@ class SearchResultsListView extends StatelessWidget {
   const SearchResultsListView({
     Key key,
     @required this.searchTerm,
-  }) : super(key : key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -298,62 +295,65 @@ class SearchResultsListView extends StatelessWidget {
 
     final fsb = FloatingSearchBar.of(context);
     return ListView(
-      padding: EdgeInsets.only(top: fsb.height + fsb.margins.vertical),
-      children: [
-        Container(
-          margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
-          child: Text('People',
-            style: TextStyle(
-              fontFamily: 'BrandonText',
-              fontSize: 24.0,
-              fontWeight: FontWeight.w600,
+        padding: EdgeInsets.only(top: fsb.height + fsb.margins.vertical),
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
+            child: Text(
+              'People',
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
-        Divider(),
-        Column(
-          children: peopleResult.map((element) => SearchResultCard(
-            sr: element,
-          ))
-              .toList(),
-        ),
-
-        Container(
-          child: Text('Location',
-            style: TextStyle(
-              fontFamily: 'BrandonText',
-              fontSize: 24.0,
-              fontWeight: FontWeight.w600,
-            ),
+          Divider(),
+          Column(
+            children: peopleResult
+                .map((element) => SearchResultCard(
+                      sr: element,
+                    ))
+                .toList(),
           ),
-          margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
-        ),
-        Divider(),
-        Column(
-          children: locationResult.map((element) => SearchResultCard(
-            sr: element,
-          ))
-              .toList(),
-        ),
-
-        Container(
-          child: Text('Topic',
-            style: TextStyle(
-              fontFamily: 'BrandonText',
-              fontSize: 24.0,
-              fontWeight: FontWeight.w600,
+          Container(
+            child: Text(
+              'Location',
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
             ),
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
           ),
-          margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
-        ),
-        Divider(),
-        Column(
-          children: locationResult.map((element) => SearchResultCard(
-            sr: element,
-          ))
-              .toList(),
-        ),
-      ]
-    );
+          Divider(),
+          Column(
+            children: locationResult
+                .map((element) => SearchResultCard(
+                      sr: element,
+                    ))
+                .toList(),
+          ),
+          Container(
+            child: Text(
+              'Topic',
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
+          ),
+          Divider(),
+          Column(
+            children: locationResult
+                .map((element) => SearchResultCard(
+                      sr: element,
+                    ))
+                .toList(),
+          ),
+        ]);
   }
 }
