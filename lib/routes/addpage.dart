@@ -5,13 +5,16 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
-
+import 'package:sinapps/models/user.dart';
 class AddPost extends StatefulWidget {
-  const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
+  //const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
 
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
+  //final FirebaseAnalytics analytics;
+  //final FirebaseAnalyticsObserver observer;
 
+  const AddPost({Key key, this.currentUser}) : super(key: key);
+
+  final user currentUser;
   @override
   _AddPostState createState() => _AddPostState();
 }

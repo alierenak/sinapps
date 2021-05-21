@@ -14,6 +14,7 @@ import 'package:sinapps/utils/styles.dart';
 import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
+
 class Login extends StatefulWidget {
   const Login({Key key, this.analytics, this.observer}) : super(key: key);
 
@@ -52,8 +53,7 @@ class _LoginState extends State<Login> {
     try {
       final credential = await _auth.signInWithCredential(authCredential);
       if (credential?.user != null) {
-        print("its in");
-        print(userPhone);
+
         FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
         crashlytics.log(userPhone);
         FirebaseAnalytics().logEvent(name: 'LoginSuccessful', parameters: null);
@@ -62,9 +62,6 @@ class _LoginState extends State<Login> {
             .collection('users')
             .where('phoneNumber', isEqualTo: userPhone)
             .get();
-        result.docs.forEach((res) {
-          print(res.data());
-        });
         if (result.size == 0) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Setprofile()));

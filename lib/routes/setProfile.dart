@@ -15,7 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
-
+import 'package:sinapps/models/user.dart';
 class Setprofile extends StatefulWidget {
   @override
   _SetprofileState createState() => _SetprofileState();
@@ -53,23 +53,16 @@ class _SetprofileState extends State<Setprofile> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    final CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    Future<void> addUser() {
-      FirebaseAuth _auth;
-      User _user;
-      _auth = FirebaseAuth.instance;
-      _user = _auth.currentUser;
-      return users
-          .add({
-            'phoneNumber': _user.phoneNumber,
-            'username': username,
-            'fullname': fullname,
-            'description': description,
-            'photourl': _uploadedFileURL
-          })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
+    Future<void> addUser(user cUser) async {
+      try {
+        await users.doc(cUser.phoneNumber).set(cUser.toJson());
+        //.then((value) => print("User Added"))
+        //.catchError((error) => print("Failed to add user: $error"));
+      } catch (e) {
+        return e.message;
+      }
     }
 
     return Scaffold(
@@ -270,16 +263,44 @@ class _SetprofileState extends State<Setprofile> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                addUser();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Created an Account!')));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BottomBar()));
+
+                                var result = await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .where('username', isEqualTo: username)
+                                    .get();
+                                if (result.size == 0) {
+                                  FirebaseAuth _auth;
+                                  User _user;
+                                  _auth = FirebaseAuth.instance;
+                                  _user = _auth.currentUser;
+                                  user cUser = user(
+                                  username: username,
+                                      fullname: fullname,
+                                      description: description,
+                                      photoUrl: _uploadedFileURL,
+                                      followers: [],
+                                      following: [],
+                                      posts: [],
+                                      phoneNumber: _user.phoneNumber);
+                                  addUser(cUser);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Created an Account!')));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BottomBar()));
+                                }
+                                else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Username is already used!')));
+                                }
                               }
-                            },
+
+                              },
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: Text(
