@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/profilepage.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 
 class EditProfile extends StatefulWidget {
   //List <bool> _selections = List.generate(2, (_) => false);
+  const EditProfile({Key key, this.currentUser}) : super(key: key);
+
+  final user currentUser;
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -14,21 +18,23 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController displayUsernameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   bool isLoading = false;
-  user profUser = user(
-      mail: 'mertture@sabanciuniv.edu',
+
+  /*user profUser = user(
       username: 'mertture0',
       fullname: 'Mert Türe',
-      followers: 0,
-      following: 0,
-      posts: 0,
+      followers: [],
+      following: [],
+      posts: [],
       description: 'Orthopedics in Acıbadem',
-      photoUrl: 'lib/images/mert.jpeg');
+      photoUrl: 'lib/images/mert.jpeg',
+      phoneNumber: '+905553332211');*/
+
   //this.User.photoUrl = 'lib/images/cat.jpg';
   List<bool> _selections = List.generate(2, (_) => false);
   @override
   void initState() {
     super.initState();
-
+    //print(widget.currentUser.username);
 //    getUser();
   }
 
@@ -47,6 +53,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 */
   Column buildDisplayNameField() {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -59,7 +66,7 @@ class _EditProfileState extends State<EditProfile> {
         TextField(
           controller: displayNameController,
           decoration: InputDecoration(
-            hintText: "${profUser.fullname}",
+            hintText: "${widget.currentUser.fullname}",
           ),
         )
       ],
@@ -79,7 +86,7 @@ class _EditProfileState extends State<EditProfile> {
         TextField(
           controller: displayUsernameController,
           decoration: InputDecoration(
-            hintText: "${profUser.username}",
+            hintText: "${widget.currentUser.username}",
           ),
         )
       ],
@@ -136,7 +143,7 @@ class _EditProfileState extends State<EditProfile> {
         TextField(
           controller: bioController,
           decoration: InputDecoration(
-            hintText: "${profUser.description}",
+            hintText: "${widget.currentUser.description}",
           ),
         )
       ],
@@ -172,7 +179,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   child: CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: AssetImage(profUser.photoUrl),
+                    backgroundImage: NetworkImage(widget.currentUser.photoUrl),
                   ),
                 ),
                 TextButton(

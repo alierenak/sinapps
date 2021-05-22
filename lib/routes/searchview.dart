@@ -6,8 +6,14 @@ import 'package:sinapps/models/searchResultCard.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-
+import 'package:sinapps/models/user.dart';
 class SearchPage extends StatefulWidget {
+
+  const SearchPage({Key key, this.currentUser}) : super(key: key);
+
+  final user currentUser;
+
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }

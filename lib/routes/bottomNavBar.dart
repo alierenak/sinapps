@@ -7,9 +7,12 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/routes/addpage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-
+import 'package:sinapps/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 class BottomBar extends StatefulWidget {
-
 
 
   @override
@@ -17,11 +20,62 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+  user currentUser;
   int currentPage = 0;
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "";
+  List<dynamic> postsUser = [];
+  //var userInff;
+  /*void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('phoneNumber', isEqualTo: _user.phoneNumber)
+        .get();
+    //.then((QuerySnapshot querySnapshot) {
+    //  querySnapshot.docs.forEach((doc) async {
+    //print(doc['username'] + " " + doc['fullname']);
+    //print(doc.data()['username'])
+
+
+    //});
+    //});
+    print(x.docs[0]['username']);
+    setState(() {
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+    });
+    //print(x.docs[0]['username']);
+    //print(x);
+
+
+
+  }
+*/
 
   void changePage(int index) {
     setState(() {
       FirebaseAnalytics().logEvent(name: views[index],parameters:null);
+      /*_loadUserInfo();
+      currentUser = user(
+          username: username,
+          fullname: fullname,
+          followers: followers,
+          following: following,
+          posts: postsUser,
+          description: description,
+          photoUrl: photoUrl,
+          phoneNumber: phoneNumber);
+*/
       currentPage = index;
     });
   }

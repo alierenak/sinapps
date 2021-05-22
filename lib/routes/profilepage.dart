@@ -10,9 +10,20 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/models/littlePostCard.dart';
 import 'package:sinapps/routes/settingspage.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
+import 'package:sinapps/routes/welcome.dart';
+import 'package:sinapps/routes/login.dart';
+import 'package:sinapps/routes/setProfile.dart';
+import 'package:sinapps/routes/walkthrough.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sinapps/net/firestore_methods.dart';
+
 
 
 class Profile extends StatefulWidget {
+
   const Profile({Key key, this.analytics, this.observer}) : super(key: key);
 
   final FirebaseAnalytics analytics;
@@ -24,9 +35,63 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final controller = PageController(initialPage: 0);
+  var userInf;
+  //Future<user> _currentUser;
+ //Future<user> get currentUser => _currentUser;
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "";
+  List<dynamic> postsUser = [];
+  //var userInff;
+  user currentUser;
+  void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('phoneNumber', isEqualTo: _user.phoneNumber)
+        .get();
 
-  user profUser = user(mail: 'mertture@sabanciuniv.edu', username: 'mertture0', fullname: 'Mert Türe',
-      followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
+    //.then((QuerySnapshot querySnapshot) {
+    // querySnapshot.docs.forEach((doc) async {
+    //print(doc['username'] + " " + doc['fullname']);
+    //print(doc.data()['username'])
+
+    //});
+    //});
+    setState(() {
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      postsUser = x.docs[0]['posts'];
+
+    });
+  //print(username);
+
+/*
+  user _currentUser = user(
+      username: username,
+      fullname: fullname,
+      followers: followers,
+      following: following,
+      posts: postsUser,
+      description: description,
+      photoUrl: photoUrl,
+      phoneNumber: phoneNumber);*/
+    //print(x.docs[0]['username']);
+    //print(x);
+    //return _currentUser;
+  }
+
+
+  //user profUser = user(username: 'm', fullname: 'Mert Türe',
+    //  followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
   //final String currentUserId = profUser.username;
   List<Post> posts = [
     Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post1.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'Rhinoplasty journal', date: '23 April 2021', likes:83, dislikes: 7, comments:38 ),
@@ -42,10 +107,33 @@ class _ProfileState extends State<Profile> {
     Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post11.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'), text:'What could be more miracle than newbornie?', date: '7 March 2020', likes:78, dislikes: 7, comments:13 ),
     Post( username: 'mertture0', userUrl:"lib/images/mert.jpeg", photoUrl:"lib/images/post12.jpeg", location: Location(country:"Turkey", city: 'Acıbadem'),text:'We have empty beds in ER tonight.', date: '9 January 2020', likes:132, dislikes: 8, comments:23 ),
   ];
-
   @override
+
+
+  void initState() {
+
+    super.initState();
+    //print(x.docs[0]['username']);
+    _loadUserInfo();
+    //print("AAAAAAAAAAAAAAAA");
+
+
+  }
+
   Widget build(BuildContext context) {
+
+    currentUser = user(
+        username: username,
+        fullname: fullname,
+        followers: followers,
+        following: following,
+        posts: postsUser,
+        description: description,
+        photoUrl: photoUrl,
+        phoneNumber: phoneNumber);
+    //_loadUserInfo();
     return MaterialApp(
+
       home: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
@@ -96,7 +184,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${profUser.followers}',
+                        '${followers.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -108,7 +196,7 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   CircleAvatar(
-                    backgroundImage: AssetImage(profUser.photoUrl),
+                    backgroundImage: NetworkImage(photoUrl),
                     radius: 56.0,
                   ),
 
@@ -124,7 +212,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${profUser.following}',
+                        '${following.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -147,7 +235,7 @@ class _ProfileState extends State<Profile> {
 
                     children: <Widget>[
                       Text(
-                        '${profUser.fullname}',
+                        '${fullname}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -170,7 +258,7 @@ class _ProfileState extends State<Profile> {
 
                     children: <Widget>[
                       Text(
-                        '${profUser.description}',
+                        '${description}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 16.0,
@@ -237,7 +325,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${posts.length}',
+                        '${postsUser.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -278,7 +366,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(currentUser: currentUser)));
                           },
                         ),
                       ),

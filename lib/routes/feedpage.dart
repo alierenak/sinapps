@@ -9,7 +9,7 @@ import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
-
+import 'package:sinapps/models/user.dart';
 _sendAnalyticsEvent() async {
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -24,6 +24,10 @@ class FeedPage extends StatefulWidget {
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;*/
+
+  const FeedPage({Key key, this.currentUser}) : super(key: key);
+
+  final user currentUser;
 
   @override
   _FeedPageState createState() => _FeedPageState();
