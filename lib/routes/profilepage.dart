@@ -35,9 +35,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final controller = PageController(initialPage: 0);
-  var userInf;
-  //Future<user> _currentUser;
- //Future<user> get currentUser => _currentUser;
+
   List<dynamic> followers = [];
   List<dynamic> following = [];
   String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";

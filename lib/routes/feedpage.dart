@@ -11,7 +11,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
 import 'package:sinapps/models/user.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 _sendAnalyticsEvent() async {
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -27,9 +29,6 @@ class FeedPage extends StatefulWidget {
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;*/
 
-  const FeedPage({Key key, this.currentUser}) : super(key: key);
-
-  final user currentUser;
 
   @override
   _FeedPageState createState() => _FeedPageState();
@@ -78,8 +77,59 @@ class _FeedPageState extends State<FeedPage> {
     //crashlytics.crash();
   }
 
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";
+  List<dynamic> postsUser = [];
+  bool profType;
+  //var userInff;
+  user currentUser;
+  void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+
+    setState(() {
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      postsUser = x.docs[0]['posts'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
+    });
+  }
+
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    currentUser = user(
+        username: username,
+        fullname: fullname,
+        followers: followers,
+        following: following,
+        posts: postsUser,
+        description: description,
+        photoUrl: photoUrl,
+        phoneNumber: phoneNumber,
+        profType: profType,
+        uid: uid);
+
+
     FirebaseAnalytics().logEvent(name: 'FeedPage', parameters: null);
     return new MaterialApp(
       home: SafeArea(
@@ -104,8 +154,9 @@ class _FeedPageState extends State<FeedPage> {
                   color: Colors.grey[300],
                   icon: Icon(Icons.messenger_rounded),
                   onPressed: () {
+                    print(currentUser.uid);
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatsPage()));
+                        MaterialPageRoute(builder: (context) => ChatsPage(currentUser: currentUser)));
 
                     //MessageCrash();
                   },
