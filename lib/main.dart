@@ -16,8 +16,10 @@ import 'routes/welcome.dart';
 import 'routes/unknownWelcome.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'utils/crashlytics.dart';
+import 'package:sinapps/routes/chats/core/locator.dart';
 
 void main() async {
+  setupLocators();
   WidgetsFlutterBinding.ensureInitialized();
 
   // in order to save and access user preferences
@@ -118,8 +120,7 @@ class AppFlow extends StatelessWidget {
         //'/signup': (context) => SignUp(analytics: analytics, observer: observer),
         "/welcome": (context) =>
             Welcome(analytics: analytics, observer: observer),
-        '/profile': (context) =>
-            Profile(),
+        '/profile': (context) => Profile(),
       },
     );
   }
