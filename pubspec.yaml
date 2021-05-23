@@ -45,6 +45,8 @@ dependencies:
   #pic
   image_picker: ^0.7.5
   firebase_storage: ^8.1.0
+  provider: ^4.0.5
+  get_it: ^4.0.1
 
 
 dev_dependencies:
