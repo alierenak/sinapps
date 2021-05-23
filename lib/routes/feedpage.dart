@@ -2,6 +2,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/PostCard.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
 import 'package:sinapps/models/user.dart';
+
 _sendAnalyticsEvent() async {
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -73,7 +75,7 @@ class _FeedPageState extends State<FeedPage> {
     enableCrashlytics();
     crashlytics.setCustomKey("isMessangerIconPressed", true);
     crashlytics.setCustomKey('error: ', "messanger icon pressed");
-    crashlytics.crash();
+    //crashlytics.crash();
   }
 
   @override
@@ -102,7 +104,10 @@ class _FeedPageState extends State<FeedPage> {
                   color: Colors.grey[300],
                   icon: Icon(Icons.messenger_rounded),
                   onPressed: () {
-                    MessageCrash();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ChatsPage()));
+
+                    //MessageCrash();
                   },
                 ),
               ]),
