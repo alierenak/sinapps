@@ -28,8 +28,8 @@ class _SetprofileState extends State<Setprofile> {
   String _uploadedFileURL =
       "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
   final _formKey = GlobalKey<FormState>();
-  String fullname, username, description, photourl = "";
-
+  String fullname, username, description, photourl = "", uid;
+  bool private = true;
   Future pickImage(source) async {
     final pickedFile = await picker.getImage(source: source);
 
@@ -54,10 +54,13 @@ class _SetprofileState extends State<Setprofile> {
   @override
   Widget build(BuildContext context) {
     final CollectionReference users = FirebaseFirestore.instance.collection('users');
-
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
     Future<void> addUser(user cUser) async {
       try {
-        await users.doc(cUser.phoneNumber).set(cUser.toJson());
+        await users.doc(cUser.uid).set(cUser.toJson());
         //.then((value) => print("User Added"))
         //.catchError((error) => print("Failed to add user: $error"));
       } catch (e) {
@@ -281,7 +284,9 @@ class _SetprofileState extends State<Setprofile> {
                                       followers: [],
                                       following: [],
                                       posts: [],
-                                      phoneNumber: _user.phoneNumber);
+                                      phoneNumber: _user.phoneNumber,
+                                      profType: private,
+                                      uid: _user.uid);
                                   addUser(cUser);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
