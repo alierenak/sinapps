@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'conversationpage.dart';
 import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/chats/startConversation.dart';
 class ChatsPage extends StatefulWidget {
   //const ChatsPage({Key key}) : super(key: key);
 
@@ -31,6 +32,13 @@ class ChatsPage extends StatefulWidget {
       return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primary,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => startConversation(currentUser: widget.currentUser)));
+          },
+
           child: IconButton(
             icon: Icon(Icons.chat_bubble),
           ),
@@ -102,7 +110,7 @@ class ChatsPage extends StatefulWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ConversationPage(
-                                      userId: userId, conversationId: doc.id)));
+                                      userId: userId)));
                         },
                       ))
                   .toList(),

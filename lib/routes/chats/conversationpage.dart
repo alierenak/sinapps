@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sinapps/models/user.dart';
 import 'package:sinapps/utils/colors.dart';
-
+import 'package:sinapps/models/conversation.dart';
 class ConversationPage extends StatefulWidget {
   final String userId;
-  final String conversationId;
-
-  const ConversationPage({Key key, this.userId, this.conversationId})
+  final String ConversationId;
+  final String otherUsername;
+  const ConversationPage({Key key, this.userId, this.ConversationId, this.otherUsername})
       : super(key: key);
 
   @override
@@ -16,11 +17,16 @@ class ConversationPage extends StatefulWidget {
 class _ConversationPageState extends State<ConversationPage> {
   CollectionReference _ref;
   final TextEditingController _editingController = TextEditingController();
+
+
+
   @override
-  void initState() {
-    _ref = FirebaseFirestore.instance
-        .collection("conversations/${widget.conversationId}/messages");
-  }
+  /*void initState() {
+    /*_ref = FirebaseFirestore.instance
+        .collection("conversations/${widget.conversationId}/messages");*/
+    //StartConversation(user, otherUser)
+  }*/
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,7 @@ class _ConversationPageState extends State<ConversationPage> {
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                "Kaan Atmaca",
+                widget.otherUsername,
                 style: TextStyle(
                   fontFamily: 'BrandonText',
                   fontSize: 22.0,
