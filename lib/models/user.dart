@@ -8,8 +8,9 @@ class user {
   List<dynamic> following;
   List<dynamic> posts;
   String description;
-
-  user({this.username, this.fullname, this.followers, this.following, this.posts, this.description, this.photoUrl, this.phoneNumber});
+  bool profType;
+  String uid;
+  user({this.username, this.fullname, this.followers, this.following, this.posts, this.description, this.photoUrl, this.phoneNumber, this.profType, this.uid});
 
   user.fromData(Map<String, dynamic> data)
   : username = data['username'],
@@ -19,7 +20,9 @@ class user {
   posts = data['posts'],
   description = data['description'],
   photoUrl = data['photoUrl'],
-  phoneNumber = data['phoneNumber'];
+  phoneNumber = data['phoneNumber'],
+  profType = data['prof_type'],
+  uid = data['uid'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -31,6 +34,8 @@ class user {
       'description': description,
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
+      'profType': profType,
+      'uid': uid,
     };
   }
 }

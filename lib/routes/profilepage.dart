@@ -40,8 +40,9 @@ class _ProfileState extends State<Profile> {
  //Future<user> get currentUser => _currentUser;
   List<dynamic> followers = [];
   List<dynamic> following = [];
-  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "";
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";
   List<dynamic> postsUser = [];
+  bool profType;
   //var userInff;
   user currentUser;
   void _loadUserInfo() async {
@@ -51,7 +52,7 @@ class _ProfileState extends State<Profile> {
     _user = _auth.currentUser;
     var x = await FirebaseFirestore.instance
         .collection('users')
-        .where('phoneNumber', isEqualTo: _user.phoneNumber)
+        .where('uid', isEqualTo: _user.uid)
         .get();
 
     //.then((QuerySnapshot querySnapshot) {
@@ -70,7 +71,8 @@ class _ProfileState extends State<Profile> {
       photoUrl = x.docs[0]['photoUrl'];
       description = x.docs[0]['description'];
       postsUser = x.docs[0]['posts'];
-
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
     });
   //print(username);
 
@@ -130,7 +132,9 @@ class _ProfileState extends State<Profile> {
         posts: postsUser,
         description: description,
         photoUrl: photoUrl,
-        phoneNumber: phoneNumber);
+        phoneNumber: phoneNumber,
+        profType: profType,
+        uid: uid);
     //_loadUserInfo();
     return MaterialApp(
 
