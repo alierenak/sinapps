@@ -73,14 +73,16 @@ class _ChatsPageState extends State<ChatsPage> {
             //crashlytics
             return Text("Loading...");
           }
-
+          // ListView
           return ListView(
 
             children: snapshot.data.docs
                 .map((doc) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(doc["photoUrl"]),
-                        backgroundColor: Colors.black,
+                      leading: Icon(
+                        Icons.chat_bubble_outline,
+                        size: 30,
+                        //backgroundImage: NetworkImage(doc["photoUrl"]),
+                        //backgroundColor: Colors.black,
                       ),
                       title: Text(
                         doc["otherUsername"],
