@@ -1,29 +1,21 @@
 import 'dart:io';
-
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
 import 'package:sinapps/routes/chats/conversationpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
-import 'package:sinapps/routes/welcome.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/conversation.dart';
 
 class startConversation extends StatefulWidget {
-
   const startConversation({Key key, this.currentUser}) : super(key: key);
   final user currentUser;
-
 
   @override
   _startConversationState createState() => _startConversationState();
@@ -53,7 +45,7 @@ class _startConversationState extends State<startConversation> {
   Future uploadFile(BuildContext context) async {
     String fileName = Path.basename(_imageFile.path);
     Reference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('profilepictures/$fileName');
+        FirebaseStorage.instance.ref().child('profilepictures/$fileName');
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     setState(() {
@@ -61,31 +53,24 @@ class _startConversationState extends State<startConversation> {
     });
   }
 
+  String otherUsername = "";
+  String conversationID = "";
   Future<Conversation> StartConversation(
-      user user,
-      String otherUserId,
-      String otherUserPhotoUrl
-      ) async {
-    var ref = FirebaseFirestore.instance.collection('conversations');
+      user user, String otherUserId, String otherUserPhotoUrl) async {
+    var ref = FirebaseFirestore.instance.collection('chats');
 
     var documentRef = await ref.add({
-      "displayMessage": "",
+      "displayMessage": "hello",
+      "otherUsername": otherUsername,
       "members": [user.uid, otherUserId],
+      "conversationID": conversationID,
     });
-
-    return Conversation(
-      documentRef.id,
-      otherUserId,
-      otherUserPhotoUrl,
-      '',
-    );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference users = FirebaseFirestore.instance.collection('users');
+    final CollectionReference users =
+        FirebaseFirestore.instance.collection('users');
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
@@ -96,6 +81,7 @@ class _startConversationState extends State<startConversation> {
         //.then((value) => print("User Added"))
         //.catchError((error) => print("Failed to add user: $error"));
       } catch (e) {
+        print(e);
         return e.message;
       }
     }
@@ -165,7 +151,6 @@ class _startConversationState extends State<startConversation> {
                         ),
                       ],
                     ),
-
                     SizedBox(
                       height: 12,
                     ),
@@ -185,7 +170,7 @@ class _startConversationState extends State<startConversation> {
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
+                                    BorderRadius.all(Radius.circular(30.0)),
                               ),
                             ),
                             keyboardType: TextInputType.text,
@@ -221,7 +206,7 @@ class _startConversationState extends State<startConversation> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                               side:
-                              BorderSide(width: 2, color: Colors.grey[800]),
+                                  BorderSide(width: 2, color: Colors.grey[800]),
                             ),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
@@ -233,34 +218,40 @@ class _startConversationState extends State<startConversation> {
                                     .get();
                                 print(result.docs[0]['uid']);
                                 if (result.size != 0) {
+                                  otherUserId = result.docs[0]['uid'];
+                                  otherUsername = result.docs[0]['username'];
+                                  if (_user.uid.length >= otherUserId.length) {
+                                    conversationID = _user.uid + otherUserId;
+                                  } else {
+                                    conversationID = otherUserId + _user.uid;
+                                  }
 
-                                  /*FirebaseAuth _auth;
-                                  User _user;
-                                  _auth = FirebaseAuth.instance;
-                                  _user = _auth.currentUser;*/
-                                  //print(otherUserId);
-                                 otherUserId = result.docs[0]['uid'];
-
-                                 String otherUserPhotoUrl = result.docs[0]['photoUrl'];
+                                  String otherUserPhotoUrl =
+                                      result.docs[0]['photoUrl'];
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content: Text(
-                                              'Started a conversation!')));
-                                  StartConversation(widget.currentUser, otherUserId, otherUserPhotoUrl);
+                                          content:
+                                              Text('Started a conversation!')));
+                                  StartConversation(widget.currentUser,
+                                      otherUserId, otherUserPhotoUrl);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ConversationPage(userId: otherUserId, ConversationId: "0", otherUsername: result.docs[0]['username'])));
-                                }
-                                else {
+                                          builder: (context) =>
+                                              ConversationPage(
+                                                userId: _user.uid,
+                                                otherUserId: otherUserId,
+                                                otherUsername: result.docs[0]
+                                                    ['username'],
+                                                conversationId: conversationID,
+                                              )));
+                                } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content: Text(
-                                              'There is no user!')));
+                                          content: Text('There is no user!')));
                                 }
                               }
-
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5),

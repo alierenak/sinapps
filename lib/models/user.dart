@@ -1,5 +1,4 @@
 class user {
-
   String username;
   String fullname;
   String photoUrl;
@@ -10,19 +9,29 @@ class user {
   String description;
   bool profType;
   String uid;
-  user({this.username, this.fullname, this.followers, this.following, this.posts, this.description, this.photoUrl, this.phoneNumber, this.profType, this.uid});
+  user(
+      {this.username,
+      this.fullname,
+      this.followers,
+      this.following,
+      this.posts,
+      this.description,
+      this.photoUrl,
+      this.phoneNumber,
+      this.profType,
+      this.uid});
 
   user.fromData(Map<String, dynamic> data)
-  : username = data['username'],
-  fullname = data['fullname'],
-  followers = data['followers'],
-  following = data['following'],
-  posts = data['posts'],
-  description = data['description'],
-  photoUrl = data['photoUrl'],
-  phoneNumber = data['phoneNumber'],
-  profType = data['prof_type'],
-  uid = data['uid'];
+      : username = data['username'],
+        fullname = data['fullname'],
+        followers = data['followers'],
+        following = data['following'],
+        posts = data['posts'],
+        description = data['description'],
+        photoUrl = data['photoUrl'],
+        phoneNumber = data['phoneNumber'],
+        profType = data['prof_type'],
+        uid = data['uid'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -38,4 +47,10 @@ class user {
       'uid': uid,
     };
   }
+
+  //String getUsername(String userid) {
+  //  if (uid == userid) return username;
+  // }
 }
+
+List<user> allUsers;
