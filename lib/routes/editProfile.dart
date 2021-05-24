@@ -118,6 +118,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
+    _uploadedFileURL = widget.currentUser.photoUrl;
   }
 
 /*
@@ -244,7 +245,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    _uploadedFileURL = widget.currentUser.photoUrl;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
