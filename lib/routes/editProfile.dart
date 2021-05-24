@@ -92,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
-        print(_uploadedFileURL);
+      print(_uploadedFileURL);
       SnackBar successSnackBar =
           SnackBar(content: Text("Profile has been updated."));
       _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
@@ -247,7 +247,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -281,7 +280,6 @@ class _EditProfileState extends State<EditProfile> {
                 TextButton(
                   child: Text('Change Profile Photo'),
                   onPressed: () {
-
                     print("ProfilePhotoChangeButton Pressed");
                     pickImage(ImageSource.gallery);
                   },

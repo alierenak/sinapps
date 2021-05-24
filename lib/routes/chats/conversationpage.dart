@@ -6,26 +6,18 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/conversation.dart';
 
 class ConversationPage extends StatefulWidget {
-  //final String conversationId;
   final String otherUsername;
-  //final Future<Conversation> conversation;
   final user currUser;
   final String conversationId;
   final List<dynamic> members;
   final String photoUrl;
-  //final String userId;
-  //final String otherUserId;
   const ConversationPage({
     Key key,
-    //this.userId,
-    //this.otherUserId,
-    //this.conversationId,
     this.photoUrl,
     this.otherUsername,
     this.currUser,
     this.conversationId,
     this.members,
-    //this.conversation,
   }) : super(key: key);
 
   @override
