@@ -83,6 +83,16 @@ class _ConversationPageState extends State<ConversationPage> {
                 );
               }),
         ],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChatsPage(
+                            currentUser: widget.currUser,
+                          )));
+            }),
       ),
       body: Column(
         children: <Widget>[
@@ -169,6 +179,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       "display": _editingController.text,
                       "timeStamp": DateTime.now(),
                     });
+                    _editingController.clear();
                   },
                 ),
               ),

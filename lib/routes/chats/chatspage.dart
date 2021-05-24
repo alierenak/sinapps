@@ -4,6 +4,7 @@ import 'package:sinapps/utils/colors.dart';
 import 'conversationpage.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/routes/chats/startConversation.dart';
+import 'package:sinapps/routes/feedpage.dart';
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({Key key, this.currentUser}) : super(key: key);
@@ -49,6 +50,12 @@ class _ChatsPageState extends State<ChatsPage> {
         centerTitle: true,
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => FeedPage()));
+            }),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
