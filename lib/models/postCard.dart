@@ -159,48 +159,42 @@ class PostCard extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(width: 8.0),
-                Icon(
-                  Icons.thumb_up,
-                  size: 26.0,
-                  color: AppColors.primary,
+                IconButton(
+                  icon: Icon(
+                    Icons.thumb_up,
+                    size: 26.0,
+                    color: AppColors.primary,
+                  ),
+                  onPressed: () {
+                    print("like");
+                  },
                 ),
                 Text(
                   '${post.likes}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 22.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor,
                   ),
                 ),
-                SizedBox(width: 8.0),
-                Icon(
-                  Icons.thumb_down,
-                  size: 26.0,
-                  color: AppColors.secondary,
-                ),
-                Text(
-                  '${post.dislikes}',
-                  style: TextStyle(
-                    fontFamily: 'BrandonText',
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor,
+                SizedBox(width: 20.0),
+                IconButton(
+                  icon: Icon(
+                    Icons.comment,
+                    size: 26.0,
                   ),
-                ),
-                SizedBox(width: 8.0),
-                Icon(
-                  Icons.comment,
-                  size: 26.0,
+                  onPressed: () {
+                    print("comment");
+                  },
                 ),
                 Text(
                   '${post.comments}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
-                    fontSize: 22.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor,
                   ),

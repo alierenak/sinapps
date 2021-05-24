@@ -120,7 +120,6 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-
     _uploadedFileURL = widget.currentUser.photoUrl;
   }
 
