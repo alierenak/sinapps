@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/utils/colors.dart';
@@ -66,10 +68,11 @@ class _ChatsPageState extends State<ChatsPage> {
           }
 
           return ListView(
+
             children: snapshot.data.docs
                 .map((doc) => ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage("lib/images/pp.png"),
+                        backgroundImage: NetworkImage(doc["photoUrl"]),
                         backgroundColor: Colors.black,
                       ),
                       title: Text(
@@ -99,13 +102,24 @@ class _ChatsPageState extends State<ChatsPage> {
                         ],
                       ),
                       onTap: () {
+                        String otherUsername;
+                        if (doc["otherUsername"] == widget.currentUser.username) {
+                          otherUsername = doc["secondUsername"];
+
+                        }
+                        else {
+                          otherUsername = doc["otherUsername"];
+                        }
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ConversationPage(
                                       currUser: widget.currentUser,
                                       conversationId: doc["conversationID"],
-                                      otherUsername: doc["otherUsername"],
+                                      members: doc["members"],
+                                      otherUsername: otherUsername,
+                                      photoUrl: doc["photoUrl"],
                                     )));
                       },
                     ))

@@ -11,6 +11,8 @@ class ConversationPage extends StatefulWidget {
   //final Future<Conversation> conversation;
   final user currUser;
   final String conversationId;
+  final List<dynamic> members;
+  final String photoUrl;
   //final String userId;
   //final String otherUserId;
   const ConversationPage({
@@ -18,9 +20,11 @@ class ConversationPage extends StatefulWidget {
     //this.userId,
     //this.otherUserId,
     //this.conversationId,
+    this.photoUrl,
+    this.otherUsername,
     this.currUser,
     this.conversationId,
-    this.otherUsername,
+    this.members,
     //this.conversation,
   }) : super(key: key);
 
@@ -46,6 +50,8 @@ class _ConversationPageState extends State<ConversationPage> {
   bool checkIfSent = false;
   @override
   Widget build(BuildContext context) {
+    String otherUser;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
@@ -53,7 +59,10 @@ class _ConversationPageState extends State<ConversationPage> {
         titleSpacing: -5,
         title: Row(
           children: <Widget>[
-            CircleAvatar(),
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.photoUrl),
+              backgroundColor: Colors.black,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
