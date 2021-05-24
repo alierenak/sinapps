@@ -7,6 +7,7 @@ import 'package:sinapps/routes/profilepage.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path/path.dart' as Path;
 import 'package:firebase_storage/firebase_storage.dart';
+
 class EditProfile extends StatefulWidget {
   //List <bool> _selections = List.generate(2, (_) => false);
   const EditProfile({Key key, this.currentUser}) : super(key: key);
@@ -31,7 +32,7 @@ class _EditProfileState extends State<EditProfile> {
   int idx = 0;
 
   Future pickImage(source) async {
-  final pickedFile = await picker.getImage(source: source);
+    final pickedFile = await picker.getImage(source: source);
 
     setState(() {
       _imageFile = File(pickedFile.path);
@@ -43,7 +44,7 @@ class _EditProfileState extends State<EditProfile> {
   Future uploadFile(BuildContext context) async {
     String fileName = Path.basename(_imageFile.path);
     Reference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('profilepictures/$fileName');
+        FirebaseStorage.instance.ref().child('profilepictures/$fileName');
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     setState(() {
@@ -51,17 +52,16 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-
   updateUserData() {
     bool priv;
     setState(() {
-      bioController.text
-          .trim()
-          .length > 100 ? bioValid = false : bioValid = true;
+      bioController.text.trim().length > 100
+          ? bioValid = false
+          : bioValid = true;
 
-      displayPhoneNumberController.text
-          .trim()
-          .length != 13 ? phoneNumberValid = false : phoneNumberValid = true;
+      displayPhoneNumberController.text.trim().length != 13
+          ? phoneNumberValid = false
+          : phoneNumberValid = true;
     });
 
     if (displayPhoneNumberController.text.isEmpty) {
@@ -74,34 +74,35 @@ class _EditProfileState extends State<EditProfile> {
     }
     if (_selections[0] == true) {
       priv = true;
-    }
-    else {
+    } else {
       priv = false;
     }
 
     if (bioValid && phoneNumberValid) {
-      FirebaseFirestore.instance.collection('users').doc(
-          widget.currentUser.uid).update({
-        "description": bioController.text,
-        "phoneNumber": displayPhoneNumberController.text,
-        "photoUrl": _uploadedFileURL,
-        "profType": priv,
-      })
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.currentUser.uid)
+          .update({
+            "description": bioController.text,
+            "phoneNumber": displayPhoneNumberController.text,
+            "photoUrl": _uploadedFileURL,
+            "profType": priv,
+          })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
 
-      SnackBar successSnackBar = SnackBar(
-          content: Text("Profile has been updated."));
+      SnackBar successSnackBar =
+          SnackBar(content: Text("Profile has been updated."));
       _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
       idx = 0;
-    }
-    else {
+    } else {
       SnackBar successSnackBar = SnackBar(
-          content: Text("Phone number is not valid or description is longer than 100 characters."));
+          content: Text(
+              "Phone number is not valid or description is longer than 100 characters."));
       _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
     }
   }
-    /*user profUser = user(
+  /*user profUser = user(
       username: 'mertture0',
       fullname: 'Mert Türe',
       followers: [],
@@ -111,14 +112,13 @@ class _EditProfileState extends State<EditProfile> {
       photoUrl: 'lib/images/mert.jpeg',
       phoneNumber: '+905553332211');*/
 
-    //this.User.photoUrl = 'lib/images/cat.jpg';
-    List<bool> _selections = List.generate(2, (_) => false);
+  //this.User.photoUrl = 'lib/images/cat.jpg';
+  List<bool> _selections = List.generate(2, (_) => false);
 
-    @override
-    void initState() {
-      super.initState();
-      }
-
+  @override
+  void initState() {
+    super.initState();
+  }
 
 /*
   getUser() async {
@@ -134,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 */
-    /*Column buildDisplayNameField() {
+  /*Column buildDisplayNameField() {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,174 +155,169 @@ class _EditProfileState extends State<EditProfile> {
     );
   }*/
 
-    Column buildDisplayPhoneNumberField() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(top: 12.0),
-              child: Text(
-                "Username",
-                style: TextStyle(color: Colors.grey),
-              )),
-          TextField(
-            controller: displayPhoneNumberController,
-            decoration: InputDecoration(
-              hintText: "${widget.currentUser.phoneNumber}",
-            ),
-          )
-        ],
-      );
+  Column buildDisplayPhoneNumberField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text(
+              "Phone number",
+              style: TextStyle(color: Colors.grey),
+            )),
+        TextField(
+          controller: displayPhoneNumberController,
+          decoration: InputDecoration(
+            hintText: "${widget.currentUser.phoneNumber}",
+          ),
+        )
+      ],
+    );
+  }
+
+  Column buildPrivateField() {
+    if (widget.currentUser.profType == true && idx == 0) {
+      _selections[0] = true;
+      _selections[1] = false;
+      idx++;
+    } else if (idx == 0) {
+      idx++;
+      _selections[1] = true;
+      _selections[0] = false;
     }
-
-    Column buildPrivateField() {
-      if (widget.currentUser.profType == true && idx == 0) {
-        _selections[0] = true;
-        _selections[1] = false;
-        idx++;
-      }
-      else if (idx == 0){
-        idx++;
-        _selections[1] = true;
-        _selections[0] = false;
-      }
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(top: 12.0),
-              child: Text(
-                "Profile Visibility",
-                style: TextStyle(color: Colors.grey),
-              )),
-          ToggleButtons(
-
-            selectedColor: Colors.black,
-            fillColor: Colors.grey[500],
-            children: [
-              Icon(Icons.lock),
-              Icon(Icons.lock_open),
-            ],
-            //isSelected: privIndex,
-            onPressed: (int index) {
-              setState(() {
-                for (int buttonIndex = 0;
-                buttonIndex < _selections.length;
-                buttonIndex++) {
-                  if (buttonIndex == index) {
-                    _selections[buttonIndex] = true;
-                  } else {
-                    _selections[buttonIndex] = false;
-                  }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text(
+              "Profile Visibility",
+              style: TextStyle(color: Colors.grey),
+            )),
+        ToggleButtons(
+          selectedColor: Colors.black,
+          fillColor: Colors.grey[500],
+          children: [
+            Icon(Icons.lock),
+            Icon(Icons.lock_open),
+          ],
+          //isSelected: privIndex,
+          onPressed: (int index) {
+            setState(() {
+              for (int buttonIndex = 0;
+                  buttonIndex < _selections.length;
+                  buttonIndex++) {
+                if (buttonIndex == index) {
+                  _selections[buttonIndex] = true;
+                } else {
+                  _selections[buttonIndex] = false;
                 }
-              });
-            },
-            isSelected: _selections,
-          )
-        ],
-      );
-    }
+              }
+            });
+          },
+          isSelected: _selections,
+        )
+      ],
+    );
+  }
 
-    Column buildBioField() {
+  Column buildBioField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text(
+              "Description",
+              style: TextStyle(color: Colors.grey),
+            )),
+        TextField(
+          controller: bioController,
+          decoration: InputDecoration(
+            hintText: "${widget.currentUser.description}",
+          ),
+        )
+      ],
+    );
+  }
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  @override
+  Widget build(BuildContext context) {
+    _uploadedFileURL = widget.currentUser.photoUrl;
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(
+            fontFamily: 'BrandonText',
+            fontSize: 24.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.grey[800],
+        elevation: 0.0,
+      ),
+      body: ListView(
         children: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(top: 12.0),
-              child: Text(
-                "Description",
-                style: TextStyle(color: Colors.grey),
-              )),
-          TextField(
-            controller: bioController,
-            decoration: InputDecoration(
-              hintText: "${widget.currentUser.description}",
-            ),
-          )
-        ],
-      );
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      _uploadedFileURL = widget.currentUser.photoUrl;
-      return Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          title: Text(
-            'Edit Profile',
-            style: TextStyle(
-              fontFamily: 'BrandonText',
-              fontSize: 24.0,
-              fontWeight: FontWeight.w600,
+          Container(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 16.0,
+                    bottom: 8.0,
+                  ),
+                  child: CircleAvatar(
+                    radius: 50.0,
+                    backgroundImage: NetworkImage(_uploadedFileURL),
+                  ),
+                ),
+                TextButton(
+                  child: Text('Change Profile Photo'),
+                  onPressed: () {
+                    print("ProfilePhotoChangeButton Pressed");
+                    pickImage(ImageSource.gallery);
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Column(
+                    children: <Widget>[
+                      ///buildDisplayNameField(),
+                      buildDisplayPhoneNumberField(),
+                      buildBioField(),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      buildPrivateField(),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                TextButton(
+                  onPressed: () => updateUserData(),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.grey[800],
+                  ),
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          centerTitle: true,
-          backgroundColor: Colors.grey[800],
-          elevation: 0.0,
-        ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 16.0,
-                      bottom: 8.0,
-                    ),
-                    child: CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: NetworkImage(
-                          _uploadedFileURL),
-                    ),
-                  ),
-                  TextButton(
-                    child: Text('Change Profile Photo'),
-                    onPressed: () {
-                      print("ProfilePhotoChangeButton Pressed");
-                      pickImage(ImageSource.gallery);
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      children: <Widget>[
-
-                        ///buildDisplayNameField(),
-                        buildDisplayPhoneNumberField(),
-                        buildBioField(),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        buildPrivateField(),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TextButton(
-                    onPressed: () => updateUserData(),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.grey[800],
-                    ),
-                    child: Text(
-                      "Update Profile",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+        ],
+      ),
+    );
   }
+}

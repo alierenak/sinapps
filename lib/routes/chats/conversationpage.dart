@@ -8,8 +8,9 @@ import 'package:sinapps/models/conversation.dart';
 class ConversationPage extends StatefulWidget {
   //final String conversationId;
   final String otherUsername;
-  final Future<Conversation> conversation;
+  //final Future<Conversation> conversation;
   final user currUser;
+  final String conversationId;
   //final String userId;
   //final String otherUserId;
   const ConversationPage({
@@ -18,8 +19,9 @@ class ConversationPage extends StatefulWidget {
     //this.otherUserId,
     //this.conversationId,
     this.currUser,
+    this.conversationId,
     this.otherUsername,
-    this.conversation,
+    //this.conversation,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class _ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     _ref = FirebaseFirestore.instance
-        .collection("chats/${widget.conversation.conversationID}/messages");
+        .collection("chats/${widget.conversationId}/messages");
   }
 
   void sent() {
@@ -67,16 +69,23 @@ class _ConversationPageState extends State<ConversationPage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.info_outline_rounded,
-              color: Colors.white,
-            ),
-          ),
+              icon: Icon(
+                Icons.info_outline_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChatsPage(
+                            currentUser: widget.currUser,
+                          )),
+                );
+              }),
         ],
       ),
       body: Column(
         children: <Widget>[
-          //  if (checkIfSent || widget.isMessage)
           Expanded(
             child: StreamBuilder(
                 stream:
@@ -90,7 +99,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                 (doc) => ListTile(
                                   title: Align(
                                     alignment:
-                                        widget.currUser == doc["senderId"]
+                                        widget.currUser.uid == doc["senderId"]
                                             ? Alignment.centerRight
                                             : Alignment.centerLeft,
                                     child: Container(
@@ -155,8 +164,9 @@ class _ConversationPageState extends State<ConversationPage> {
                   onPressed: () async {
                     sent();
                     await _ref.add({
-                      "senderId": widget.currUser,
+                      "senderId": widget.currUser.uid,
                       "message": _editingController.text,
+                      "display": _editingController.text,
                       "timeStamp": DateTime.now(),
                     });
                   },
