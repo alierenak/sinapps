@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
+import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/conversation.dart';
+
 class ConversationPage extends StatefulWidget {
+  final String conversationId;
   final String userId;
-  final String ConversationId;
+  final String otherUserId;
   final String otherUsername;
-  const ConversationPage({Key key, this.userId, this.ConversationId, this.otherUsername})
-      : super(key: key);
+  const ConversationPage({
+    Key key,
+    this.userId,
+    this.otherUserId,
+    this.otherUsername,
+    this.conversationId,
+  }) : super(key: key);
 
   @override
   _ConversationPageState createState() => _ConversationPageState();
@@ -18,16 +27,18 @@ class _ConversationPageState extends State<ConversationPage> {
   CollectionReference _ref;
   final TextEditingController _editingController = TextEditingController();
 
+  //@override
+  void initState() {
+    _ref = FirebaseFirestore.instance
+        .collection("chats/${widget.conversationId}/messages");
+  }
 
+  void sent() {
+    checkIfSent = true;
+    print("sent");
+  }
 
-  @override
-  /*void initState() {
-    /*_ref = FirebaseFirestore.instance
-        .collection("conversations/${widget.conversationId}/messages");*/
-    //StartConversation(user, otherUser)
-  }*/
-
-
+  bool checkIfSent = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,12 +68,12 @@ class _ConversationPageState extends State<ConversationPage> {
               Icons.info_outline_rounded,
               color: Colors.white,
             ),
-            // onPressed: () { ConversationPage() },
           ),
         ],
       ),
       body: Column(
         children: <Widget>[
+          //  if (checkIfSent || widget.isMessage)
           Expanded(
             child: StreamBuilder(
                 stream:
@@ -138,6 +149,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
+                    sent();
                     await _ref.add({
                       "senderId": widget.userId,
                       "message": _editingController.text,
