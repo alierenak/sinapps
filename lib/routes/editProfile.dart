@@ -28,7 +28,7 @@ class _EditProfileState extends State<EditProfile> {
   bool phoneNumberValid = true;
   final picker = ImagePicker();
   File _imageFile;
-  String _uploadedFileURL;
+  String _uploadedFileURL = "";
   int idx = 0;
 
   Future pickImage(source) async {
@@ -49,7 +49,9 @@ class _EditProfileState extends State<EditProfile> {
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     setState(() {
       _uploadedFileURL = imageUrl;
+      print(_uploadedFileURL);
     });
+    print(_uploadedFileURL);
   }
 
   updateUserData() {
@@ -90,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
-
+        print(_uploadedFileURL);
       SnackBar successSnackBar =
           SnackBar(content: Text("Profile has been updated."));
       _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
@@ -245,6 +247,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -278,6 +281,7 @@ class _EditProfileState extends State<EditProfile> {
                 TextButton(
                   child: Text('Change Profile Photo'),
                   onPressed: () {
+
                     print("ProfilePhotoChangeButton Pressed");
                     pickImage(ImageSource.gallery);
                   },

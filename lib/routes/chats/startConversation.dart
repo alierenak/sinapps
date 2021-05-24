@@ -56,14 +56,17 @@ class _startConversationState extends State<startConversation> {
   String otherUsername = "";
   String conversationID = "";
   String photoUrl = "";
+  List<String> members = [];
   Future<Conversation> StartConversation(
       user currUser, String otherUserId, String otherUserPhotoUrl) async {
     var ref = FirebaseFirestore.instance.collection('chats').doc();
     conversationID = ref.id;
+    members = [currUser.uid, otherUserId];
     await ref.set({
       "displayMessage": "hello",
       "conversationID": ref.id,
       "otherUsername": otherUsername,
+      "secondUsername": widget.currentUser.username,
       "members": [currUser.uid, otherUserId],
       "photoUrl": photoUrl,
     });
@@ -264,8 +267,9 @@ class _startConversationState extends State<startConversation> {
                                                   conversationId:
                                                       conversationID,
                                                   //otherUserId: otherUserId,
-                                                  otherUsername: result.docs[0]
-                                                      ['username'],
+                                                  members: members,
+                                                  otherUsername: otherUsername,
+                                                  photoUrl: otherUserPhotoUrl,
                                                   //   conversation: currentCon,
                                                   // conversationId: conversationID,
                                                 )));
@@ -286,8 +290,8 @@ class _startConversationState extends State<startConversation> {
                                                     conversationId:
                                                         conResult.docs[0]
                                                             ["conversationID"],
-                                                    otherUsername: result
-                                                        .docs[0]['username'],
+                                                    members: conResult.docs[0]['members'],
+                                                    otherUsername: otherUsername,
                                                   )));
                                     } else {
                                       Navigator.push(
@@ -300,8 +304,8 @@ class _startConversationState extends State<startConversation> {
                                                     conversationId:
                                                         conResult2.docs[0]
                                                             ["conversationID"],
-                                                    otherUsername: result
-                                                        .docs[0]['username'],
+                                                    members: conResult2.docs[0]['members'],
+                                                    otherUsername: otherUsername,
                                                   )));
                                     }
                                   }
