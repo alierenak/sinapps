@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/routes/chats/chatspage.dart';
-import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/conversation.dart';
 
 class ConversationPage extends StatefulWidget {
-  final String conversationId;
-  final String userId;
-  final String otherUserId;
+  //final String conversationId;
   final String otherUsername;
+  final Future<Conversation> conversation;
+  final user currUser;
+  //final String userId;
+  //final String otherUserId;
   const ConversationPage({
     Key key,
-    this.userId,
-    this.otherUserId,
+    //this.userId,
+    //this.otherUserId,
+    //this.conversationId,
+    this.currUser,
     this.otherUsername,
-    this.conversationId,
+    this.conversation,
   }) : super(key: key);
 
   @override
@@ -27,10 +30,10 @@ class _ConversationPageState extends State<ConversationPage> {
   CollectionReference _ref;
   final TextEditingController _editingController = TextEditingController();
 
-  //@override
+  @override
   void initState() {
     _ref = FirebaseFirestore.instance
-        .collection("chats/${widget.conversationId}/messages");
+        .collection("chats/${widget.conversation.conversationID}/messages");
   }
 
   void sent() {
@@ -86,9 +89,10 @@ class _ConversationPageState extends State<ConversationPage> {
                               .map(
                                 (doc) => ListTile(
                                   title: Align(
-                                    alignment: widget.userId == doc["senderId"]
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
+                                    alignment:
+                                        widget.currUser == doc["senderId"]
+                                            ? Alignment.centerRight
+                                            : Alignment.centerLeft,
                                     child: Container(
                                       child: Text(
                                         doc["message"],
@@ -151,7 +155,7 @@ class _ConversationPageState extends State<ConversationPage> {
                   onPressed: () async {
                     sent();
                     await _ref.add({
-                      "senderId": widget.userId,
+                      "senderId": widget.currUser,
                       "message": _editingController.text,
                       "timeStamp": DateTime.now(),
                     });

@@ -55,16 +55,25 @@ class _startConversationState extends State<startConversation> {
 
   String otherUsername = "";
   String conversationID = "";
+  String photoUrl = "";
   Future<Conversation> StartConversation(
-      user user, String otherUserId, String otherUserPhotoUrl) async {
-    var ref = FirebaseFirestore.instance.collection('chats');
+      user currUser, String otherUserId, String otherUserPhotoUrl) async {
+    var ref = FirebaseFirestore.instance.collection('chats').doc();
 
-    var documentRef = await ref.add({
+    await ref.set({
       "displayMessage": "hello",
+      "conversationID": ref.id,
       "otherUsername": otherUsername,
-      "members": [user.uid, otherUserId],
-      "conversationID": conversationID,
+      "members": [currUser.uid, otherUserId],
+      "photoUrl": photoUrl,
     });
+    return Conversation(
+      "hello",
+      ref.id,
+      otherUsername,
+      [currUser.uid, otherUserId],
+      photoUrl,
+    );
   }
 
   @override
@@ -220,31 +229,32 @@ class _startConversationState extends State<startConversation> {
                                 if (result.size != 0) {
                                   otherUserId = result.docs[0]['uid'];
                                   otherUsername = result.docs[0]['username'];
-                                  if (_user.uid.length >= otherUserId.length) {
+                                  photoUrl = result.docs[0]['photoUrl'];
+                                  /* if (_user.uid.length >= otherUserId.length) {
                                     conversationID = _user.uid + otherUserId;
                                   } else {
                                     conversationID = otherUserId + _user.uid;
-                                  }
-
+                                  }*/
                                   String otherUserPhotoUrl =
                                       result.docs[0]['photoUrl'];
-
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
                                               Text('Started a conversation!')));
-                                  StartConversation(widget.currentUser,
-                                      otherUserId, otherUserPhotoUrl);
+                                  Future<Conversation> currentCon =
+                                      StartConversation(widget.currentUser,
+                                          otherUserId, otherUserPhotoUrl);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ConversationPage(
-                                                userId: _user.uid,
-                                                otherUserId: otherUserId,
+                                                currUser: widget.currentUser,
+                                                //otherUserId: otherUserId,
                                                 otherUsername: result.docs[0]
                                                     ['username'],
-                                                conversationId: conversationID,
+                                                conversation: currentCon,
+                                                // conversationId: conversationID,
                                               )));
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(

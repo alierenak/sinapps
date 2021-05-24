@@ -3,18 +3,21 @@ import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/models/user.dart';
 
 class Conversation {
-  String id;
-  String username;
+  String conversationID;
+  String otherUsername;
   String photoUrl;
+  List<String> members;
   String displaymessage;
 
   Conversation(
-      this.id,
-      this.username,
-      this.photoUrl,
-      this.displaymessage,
-      );
+    this.conversationID,
+    this.otherUsername,
+    this.photoUrl,
+    this.members,
+    this.displaymessage,
+  );
 
+/*
   factory Conversation.fromSnapshot(DocumentSnapshot snapshot, user otherUser) {
     return Conversation(
       snapshot.id,
@@ -22,5 +25,5 @@ class Conversation {
       otherUser.photoUrl,
       snapshot['displaymessage'],
     );
-  }
+  } */
 }
