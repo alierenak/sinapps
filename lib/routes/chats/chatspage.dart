@@ -5,6 +5,7 @@ import 'conversationpage.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/routes/chats/startConversation.dart';
 import 'package:sinapps/routes/feedpage.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({Key key, this.currentUser}) : super(key: key);
@@ -53,8 +54,8 @@ class _ChatsPageState extends State<ChatsPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_rounded),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => FeedPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomBar()));
             }),
       ),
       body: StreamBuilder(
