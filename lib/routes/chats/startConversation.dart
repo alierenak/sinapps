@@ -56,6 +56,7 @@ class _startConversationState extends State<startConversation> {
   String otherUsername = "";
   String conversationID = "";
   String photoUrl = "";
+  String otherPhotoUrl = "";
   List<String> members = [];
   Future<Conversation> StartConversation(
       user currUser, String otherUserId, String otherUserPhotoUrl) async {
@@ -68,7 +69,8 @@ class _startConversationState extends State<startConversation> {
       "otherUsername": otherUsername,
       "secondUsername": widget.currentUser.username,
       "members": [currUser.uid, otherUserId],
-      "photoUrl": photoUrl,
+      "photoUrl": widget.currentUser.photoUrl,
+      "otherPhotoUrl": otherUserPhotoUrl,
     });
     return Conversation(
       "hello",
@@ -269,7 +271,8 @@ class _startConversationState extends State<startConversation> {
                                                   //otherUserId: otherUserId,
                                                   members: members,
                                                   otherUsername: otherUsername,
-                                                  photoUrl: otherUserPhotoUrl,
+                                                  photoUrl: widget.currentUser.photoUrl,
+                                                  otherPhotoUrl: otherUserPhotoUrl,
                                                   //   conversation: currentCon,
                                                   // conversationId: conversationID,
                                                 )));
