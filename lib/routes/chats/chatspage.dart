@@ -130,6 +130,7 @@ class _ChatsPageState extends State<ChatsPage> {
                                       members: doc["members"],
                                       otherUsername: otherUsername,
                                       photoUrl: doc["photoUrl"],
+                                      otherPhotoUrl: doc["otherPhotoUrl"],
                                     )));
                       },
                     ))
