@@ -3,18 +3,18 @@ import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/models/user.dart';
 
 class Conversation {
+  String displayMessage;
   String conversationID;
   String otherUsername;
   String photoUrl;
   List<String> members;
-  String displaymessage;
 
   Conversation(
+    this.displayMessage,
     this.conversationID,
     this.otherUsername,
-    this.photoUrl,
     this.members,
-    this.displaymessage,
+    this.photoUrl,
   );
 
 /*

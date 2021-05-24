@@ -103,9 +103,9 @@ class _ChatsPageState extends State<ChatsPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ConversationPage(
-                                      userId: userId,
-                                      otherUsername: "mert",
-                                      conversationId: userId + otherUserIds[1],
+                                      currUser: widget.currentUser,
+                                      conversationId: doc["conversationID"],
+                                      otherUsername: doc["otherUsername"],
                                     )));
                       },
                     ))

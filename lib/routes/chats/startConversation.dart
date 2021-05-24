@@ -59,7 +59,7 @@ class _startConversationState extends State<startConversation> {
   Future<Conversation> StartConversation(
       user currUser, String otherUserId, String otherUserPhotoUrl) async {
     var ref = FirebaseFirestore.instance.collection('chats').doc();
-
+    conversationID = ref.id;
     await ref.set({
       "displayMessage": "hello",
       "conversationID": ref.id,
@@ -225,37 +225,86 @@ class _startConversationState extends State<startConversation> {
                                     .collection('users')
                                     .where('username', isEqualTo: username)
                                     .get();
-                                print(result.docs[0]['uid']);
+
                                 if (result.size != 0) {
                                   otherUserId = result.docs[0]['uid'];
                                   otherUsername = result.docs[0]['username'];
                                   photoUrl = result.docs[0]['photoUrl'];
-                                  /* if (_user.uid.length >= otherUserId.length) {
-                                    conversationID = _user.uid + otherUserId;
+                                  var conResult = await FirebaseFirestore
+                                      .instance
+                                      .collection('chats')
+                                      .where("members", isEqualTo: [
+                                    widget.currentUser.uid,
+                                    otherUserId
+                                  ]).get();
+                                  var conResult2 = await FirebaseFirestore
+                                      .instance
+                                      .collection('chats')
+                                      .where("members", isEqualTo: [
+                                    otherUserId,
+                                    widget.currentUser.uid
+                                  ]).get();
+                                  if (conResult.size == 0 &&
+                                      conResult2.size == 0) {
+                                    String otherUserPhotoUrl =
+                                        result.docs[0]['photoUrl'];
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Started a conversation!')));
+                                    Future<Conversation> currentCon =
+                                        StartConversation(widget.currentUser,
+                                            otherUserId, otherUserPhotoUrl);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ConversationPage(
+                                                  currUser: widget.currentUser,
+                                                  conversationId:
+                                                      conversationID,
+                                                  //otherUserId: otherUserId,
+                                                  otherUsername: result.docs[0]
+                                                      ['username'],
+                                                  //   conversation: currentCon,
+                                                  // conversationId: conversationID,
+                                                )));
                                   } else {
-                                    conversationID = otherUserId + _user.uid;
-                                  }*/
-                                  String otherUserPhotoUrl =
-                                      result.docs[0]['photoUrl'];
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content:
-                                              Text('Started a conversation!')));
-                                  Future<Conversation> currentCon =
-                                      StartConversation(widget.currentUser,
-                                          otherUserId, otherUserPhotoUrl);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ConversationPage(
-                                                currUser: widget.currentUser,
-                                                //otherUserId: otherUserId,
-                                                otherUsername: result.docs[0]
-                                                    ['username'],
-                                                conversation: currentCon,
-                                                // conversationId: conversationID,
-                                              )));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'You already have a chat with this user!')));
+                                    if (conResult.docs[0]["conversationID"] !=
+                                        null) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConversationPage(
+                                                    currUser:
+                                                        widget.currentUser,
+                                                    conversationId:
+                                                        conResult.docs[0]
+                                                            ["conversationID"],
+                                                    otherUsername: result
+                                                        .docs[0]['username'],
+                                                  )));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConversationPage(
+                                                    currUser:
+                                                        widget.currentUser,
+                                                    conversationId:
+                                                        conResult2.docs[0]
+                                                            ["conversationID"],
+                                                    otherUsername: result
+                                                        .docs[0]['username'],
+                                                  )));
+                                    }
+                                  }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
