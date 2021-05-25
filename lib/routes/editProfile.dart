@@ -302,7 +302,11 @@ class _EditProfileState extends State<EditProfile> {
                   height: 40,
                 ),
                 TextButton(
-                  onPressed: () => updateUserData(),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profile()));
+                    updateUserData();
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.grey[800],
                   ),
