@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:sinapps/routes/profilepage.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path/path.dart' as Path;
@@ -304,7 +305,7 @@ class _EditProfileState extends State<EditProfile> {
                 TextButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Profile()));
+                        MaterialPageRoute(builder: (context) => BottomBar()));
                     updateUserData();
                   },
                   style: TextButton.styleFrom(
