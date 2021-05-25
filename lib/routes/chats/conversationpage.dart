@@ -6,13 +6,12 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/conversation.dart';
 
 class ConversationPage extends StatefulWidget {
-  //final String conversationId;
   final String otherUsername;
-  //final Future<Conversation> conversation;
   final user currUser;
   final String conversationId;
   final List<dynamic> members;
   final String photoUrl;
+
   final String otherPhotoUrl;
 
   const ConversationPage({
