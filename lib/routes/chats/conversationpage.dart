@@ -11,8 +11,12 @@ class ConversationPage extends StatefulWidget {
   final String conversationId;
   final List<dynamic> members;
   final String photoUrl;
+
+  final String otherPhotoUrl;
+
   const ConversationPage({
     Key key,
+    this.otherPhotoUrl,
     this.photoUrl,
     this.otherUsername,
     this.currUser,
@@ -43,7 +47,12 @@ class _ConversationPageState extends State<ConversationPage> {
   @override
   Widget build(BuildContext context) {
     String otherUser;
-
+    String showPhoto;
+    if (widget.currUser.photoUrl == widget.photoUrl) {
+      showPhoto = widget.otherPhotoUrl;
+    } else {
+      showPhoto = widget.photoUrl;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
@@ -52,7 +61,7 @@ class _ConversationPageState extends State<ConversationPage> {
         title: Row(
           children: <Widget>[
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.photoUrl),
+              backgroundImage: NetworkImage(showPhoto),
               backgroundColor: Colors.black,
             ),
             Padding(
@@ -144,6 +153,7 @@ class _ConversationPageState extends State<ConversationPage> {
                   child: Container(
                     margin: EdgeInsets.all(10),
                     child: TextField(
+                      textInputAction: TextInputAction.send,
                       controller: _editingController,
                       style: TextStyle(
                         fontFamily: 'BrandonText',

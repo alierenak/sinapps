@@ -56,6 +56,7 @@ class _startConversationState extends State<startConversation> {
   String otherUsername = "";
   String conversationID = "";
   String photoUrl = "";
+  String otherPhotoUrl = "";
   String lastMessage = "Say, hi!";
   List<String> members = [];
   Future<Conversation> StartConversation(
@@ -69,7 +70,8 @@ class _startConversationState extends State<startConversation> {
       "otherUsername": otherUsername,
       "secondUsername": widget.currentUser.username,
       "members": [currUser.uid, otherUserId],
-      "photoUrl": photoUrl,
+      "photoUrl": widget.currentUser.photoUrl,
+      "otherPhotoUrl": otherUserPhotoUrl,
     });
     return Conversation(
       lastMessage,
@@ -269,7 +271,9 @@ class _startConversationState extends State<startConversation> {
                                                       conversationID,
                                                   members: members,
                                                   otherUsername: otherUsername,
-                                                  photoUrl: otherUserPhotoUrl,
+                                                  photoUrl: widget.currentUser.photoUrl,
+                                                  otherPhotoUrl: otherUserPhotoUrl,
+  
                                                 )));
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
