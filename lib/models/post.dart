@@ -6,11 +6,23 @@ class Post {
   String photoUrl;
   String userUrl;
   Location location;
-  String text;
+  String text; //content
   String date;
   int comments;
-  int likes;
-  int dislikes;
+ int likes;
+ int dislikes;
   List<String> topics;
-  Post({ this.username, this. userUrl, this. photoUrl, this.location, this.text, this.date, this.likes, this.dislikes, this.comments });
+
+  String upost;
+  Post(
+      {this.username,
+      this.userUrl,
+      this.photoUrl,
+      this.location,
+      this.text,
+      this.date,
+      this.likes,
+      this.dislikes,
+      this.comments});
+
 }
