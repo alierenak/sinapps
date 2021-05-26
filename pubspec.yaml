@@ -47,6 +47,9 @@ dependencies:
   firebase_storage: ^8.1.0
   provider: ^4.0.5
   get_it: ^4.0.1
+  geolocator: ^3.0.1
+
+  flutter_spinkit: ^3.1.0
 
 
 dev_dependencies:
