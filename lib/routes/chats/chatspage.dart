@@ -75,8 +75,8 @@ class _ChatsPageState extends State<ChatsPage> {
             return Text("Loading...");
           }
           // ListView
-          return ListView(
 
+          return ListView(
             children: snapshot.data.docs
                 .map((doc) => ListTile(
                       leading: Icon(
@@ -85,12 +85,19 @@ class _ChatsPageState extends State<ChatsPage> {
                         //backgroundImage: NetworkImage(doc["photoUrl"]),
                         //backgroundColor: Colors.black,
                       ),
-                      title: Text(
-                        doc["otherUsername"],
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
+                      title: doc["otherUsername"] == widget.currentUser.username
+                          ? Text(
+                              doc["secondUsername"],
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            )
+                          : Text(
+                              doc["otherUsername"],
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
                       subtitle: Text(
                         doc["displayMessage"],
                         style: TextStyle(
@@ -113,11 +120,10 @@ class _ChatsPageState extends State<ChatsPage> {
                       ),
                       onTap: () {
                         String otherUsername;
-                        if (doc["otherUsername"] == widget.currentUser.username) {
+                        if (doc["otherUsername"] ==
+                            widget.currentUser.username) {
                           otherUsername = doc["secondUsername"];
-
-                        }
-                        else {
+                        } else {
                           otherUsername = doc["otherUsername"];
                         }
 

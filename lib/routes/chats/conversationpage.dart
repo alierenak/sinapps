@@ -6,13 +6,12 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/conversation.dart';
 
 class ConversationPage extends StatefulWidget {
-  //final String conversationId;
   final String otherUsername;
-  //final Future<Conversation> conversation;
   final user currUser;
   final String conversationId;
   final List<dynamic> members;
   final String photoUrl;
+
   final String otherPhotoUrl;
 
   const ConversationPage({
@@ -51,8 +50,7 @@ class _ConversationPageState extends State<ConversationPage> {
     String showPhoto;
     if (widget.currUser.photoUrl == widget.photoUrl) {
       showPhoto = widget.otherPhotoUrl;
-    }
-    else {
+    } else {
       showPhoto = widget.photoUrl;
     }
     return Scaffold(
@@ -155,6 +153,7 @@ class _ConversationPageState extends State<ConversationPage> {
                   child: Container(
                     margin: EdgeInsets.all(10),
                     child: TextField(
+                      textInputAction: TextInputAction.send,
                       controller: _editingController,
                       style: TextStyle(
                         fontFamily: 'BrandonText',

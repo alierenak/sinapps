@@ -1,21 +1,16 @@
 import 'dart:io';
-
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/styles.dart';
-import 'package:sinapps/routes/welcome.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
 import 'package:sinapps/models/user.dart';
+
 class Setprofile extends StatefulWidget {
   @override
   _SetprofileState createState() => _SetprofileState();
@@ -51,22 +46,22 @@ class _SetprofileState extends State<Setprofile> {
     });
   }
 
+  Future<void> addUser(user cUser) async {
+    final CollectionReference users = FirebaseFirestore.instance.collection('users');
+    try {
+      await users.doc(cUser.uid).set(cUser.toJson());
+      //.then((value) => print("User Added"))
+      //.catchError((error) => print("Failed to add user: $error"));
+    } catch (e) {
+      return e.message;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final CollectionReference users = FirebaseFirestore.instance.collection('users');
+
     FirebaseAuth _auth;
-    User _user;
     _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
-    Future<void> addUser(user cUser) async {
-      try {
-        await users.doc(cUser.uid).set(cUser.toJson());
-        //.then((value) => print("User Added"))
-        //.catchError((error) => print("Failed to add user: $error"));
-      } catch (e) {
-        return e.message;
-      }
-    }
 
     return Scaffold(
       backgroundColor: Colors.grey[700],
@@ -273,9 +268,8 @@ class _SetprofileState extends State<Setprofile> {
                                     .get();
                                 if (result.size == 0) {
                                   FirebaseAuth _auth;
-                                  User _user;
                                   _auth = FirebaseAuth.instance;
-                                  _user = _auth.currentUser;
+                                  User _user = _auth.currentUser;
                                   user cUser = user(
                                   username: username,
                                       fullname: fullname,

@@ -57,6 +57,7 @@ class _startConversationState extends State<startConversation> {
   String conversationID = "";
   String photoUrl = "";
   String otherPhotoUrl = "";
+  String lastMessage = "Say, hi!";
   List<String> members = [];
   Future<Conversation> StartConversation(
       user currUser, String otherUserId, String otherUserPhotoUrl) async {
@@ -64,7 +65,7 @@ class _startConversationState extends State<startConversation> {
     conversationID = ref.id;
     members = [currUser.uid, otherUserId];
     await ref.set({
-      "displayMessage": "hello",
+      "displayMessage": lastMessage,
       "conversationID": ref.id,
       "otherUsername": otherUsername,
       "secondUsername": widget.currentUser.username,
@@ -73,7 +74,7 @@ class _startConversationState extends State<startConversation> {
       "otherPhotoUrl": otherUserPhotoUrl,
     });
     return Conversation(
-      "hello",
+      lastMessage,
       ref.id,
       otherUsername,
       [currUser.uid, otherUserId],
@@ -268,13 +269,11 @@ class _startConversationState extends State<startConversation> {
                                                   currUser: widget.currentUser,
                                                   conversationId:
                                                       conversationID,
-                                                  //otherUserId: otherUserId,
                                                   members: members,
                                                   otherUsername: otherUsername,
                                                   photoUrl: widget.currentUser.photoUrl,
                                                   otherPhotoUrl: otherUserPhotoUrl,
-                                                  //   conversation: currentCon,
-                                                  // conversationId: conversationID,
+  
                                                 )));
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -293,8 +292,10 @@ class _startConversationState extends State<startConversation> {
                                                     conversationId:
                                                         conResult.docs[0]
                                                             ["conversationID"],
-                                                    members: conResult.docs[0]['members'],
-                                                    otherUsername: otherUsername,
+                                                    members: conResult.docs[0]
+                                                        ['members'],
+                                                    otherUsername:
+                                                        otherUsername,
                                                   )));
                                     } else {
                                       Navigator.push(
@@ -307,8 +308,10 @@ class _startConversationState extends State<startConversation> {
                                                     conversationId:
                                                         conResult2.docs[0]
                                                             ["conversationID"],
-                                                    members: conResult2.docs[0]['members'],
-                                                    otherUsername: otherUsername,
+                                                    members: conResult2.docs[0]
+                                                        ['members'],
+                                                    otherUsername:
+                                                        otherUsername,
                                                   )));
                                     }
                                   }
