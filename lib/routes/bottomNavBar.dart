@@ -84,7 +84,7 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> bodyView = [
     FeedPage(),
     SearchPage(),
-    AddPost(),
+    AddPost(currentUser: user(username: "deneme", uid: "12345")),
     Noti(),
     Profile(),
   ];

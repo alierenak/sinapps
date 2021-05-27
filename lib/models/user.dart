@@ -9,6 +9,7 @@ class user {
   String description;
   bool profType;
   String uid;
+
   user(
       {this.username,
       this.fullname,

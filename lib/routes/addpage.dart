@@ -5,16 +5,31 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:sinapps/models/location.dart';
 import 'package:sinapps/models/post.dart';
+
+import 'package:sinapps/models/user.dart';
+
 import 'package:sinapps/utils/colors.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
+
 import 'package:sinapps/models/user.dart';
 import 'package:path/path.dart' as Path;
 import 'package:sinapps/utils/post_templates.dart';
+
+import 'package:sinapps/models/post.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
+
+class AddPost extends StatefulWidget {
+  //const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
+
+  //final FirebaseAnalytics analytics;
+  //final FirebaseAnalyticsObserver observer;
 
 class AddPost extends StatefulWidget {
   const AddPost({Key key, this.currentUser}) : super(key: key);
@@ -25,6 +40,35 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
+  final picker = ImagePicker();
+  File _imageFile = null;
+  String _uploadedFileURL =
+      "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
+  final _formKey = GlobalKey<FormState>();
+  String fullname, username, description, photourl = "", uid;
+  bool private = true;
+  Future pickImage(source) async {
+    final pickedFile = await picker.getImage(source: source);
+
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+
+    uploadFile(context);
+  }
+
+  Future uploadFile(BuildContext context) async {
+    String fileName = Path.basename(_imageFile.path);
+    Reference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('post_pictures/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+    setState(() {
+      _uploadedFileURL = imageUrl;
+    });
+  }
+
+
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 
   void AddPostCrash() {
@@ -77,8 +121,34 @@ class _AddPostState extends State<AddPost> {
     _addPost(posts);
   }
 
+  String caption, textf;
+  String photoUrl = null;
+
   @override
   Widget build(BuildContext context) {
+
+    final CollectionReference users = FirebaseFirestore.instance.collection('posts');
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    Future<void> addPost() async {
+      String keyVal = "${widget.currentUser.username}-${DateTime.now()}";
+      try {
+        await users.doc(keyVal).set({
+          'title': caption,
+          "dislikes":[],
+          "likes":[],
+          "photo_url":_uploadedFileURL,
+          "username": widget.currentUser.username,
+          "userid" :widget.currentUser.uid,
+          //"location":
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -136,6 +206,11 @@ class _AddPostState extends State<AddPost> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          onChanged: (value){
+                            setState(() {
+                              caption = value;
+                            });
+                          } ,
                           style: TextStyle(
                             color: AppColors.textColor,
                             fontSize: 14,
@@ -168,6 +243,11 @@ class _AddPostState extends State<AddPost> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          onChanged: (value){
+                            setState(() {
+                              textf = value;
+                            });
+                          } ,
                           style: TextStyle(
                             color: AppColors.textColor,
                             fontSize: 14,
@@ -214,7 +294,7 @@ class _AddPostState extends State<AddPost> {
                                 size: 18.0,
                               ),
                               onPressed: () {
-                                AddPost();
+                                pickImage(ImageSource.gallery);
                               },
                             ),
                           ),
@@ -306,8 +386,12 @@ class _AddPostState extends State<AddPost> {
                                 size: 24.0,
                                 color: Colors.black54,
                               ),
-                              onPressed: () {
-                                AddPostCrash();
+                              onPressed: () async {
+
+                                await addPost();
+                                print(caption);
+                                print(textf);
+                                //AddPostCrash();
                               },
                             ),
                           ),
