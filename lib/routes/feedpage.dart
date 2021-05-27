@@ -2,18 +2,18 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sinapps/routes/chats/chatspage.dart';
-import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/post.dart';
-import 'package:sinapps/models/PostCard.dart';
-import 'package:sinapps/models/location.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
+import 'package:sinapps/models/postCard.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
+import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+
+
 _sendAnalyticsEvent() async {
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -24,48 +24,9 @@ _sendAnalyticsEvent() async {
 }
 
 class FeedPage extends StatefulWidget {
-  /* const FeedPage({Key key, this.analytics, this.observer}) : super(key: key);
-
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;*/
-
-
   @override
   _FeedPageState createState() => _FeedPageState();
 }
-
-List<Post> posts = [
-  Post(
-      username: 'mertture0',
-      userUrl: "lib/images/mert.jpeg",
-      photoUrl: "lib/images/post12.jpeg",
-      location: Location(country: "Turkey", city: 'Acıbadem'),
-      text: 'We have empty beds in ER',
-      date: '23 April 2021',
-      likes: 32,
-      dislikes: 7,
-      comments: 12),
-  Post(
-      username: 'surucux',
-      userUrl: "lib/images/berf.jpeg",
-      photoUrl: "lib/images/googleCampus.jpg",
-      location: Location(country: "Turkey", city: 'Acıbadem'),
-      text: 'I am going to Google Campus. Does anyone want to come?',
-      date: '22 January 2021',
-      likes: 35,
-      dislikes: 5,
-      comments: 27),
-  Post(
-      username: 'atmaca',
-      userUrl: "lib/images/kaan.jpeg",
-      photoUrl: "lib/images/post10.jpeg",
-      location: Location(country: "Turkey", city: 'Acıbadem'),
-      text: 'Cool features about the foot structure',
-      date: '7 January 2021',
-      likes: 23,
-      dislikes: 8,
-      comments: 12)
-];
 
 class _FeedPageState extends State<FeedPage> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
@@ -74,45 +35,108 @@ class _FeedPageState extends State<FeedPage> {
     enableCrashlytics();
     crashlytics.setCustomKey("isMessangerIconPressed", true);
     crashlytics.setCustomKey('error: ', "messanger icon pressed");
-    //crashlytics.crash();
   }
 
   List<dynamic> followers = [];
   List<dynamic> following = [];
   String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";
-  List<dynamic> postsUser = [];
+  List<dynamic> posts = [];
   bool profType;
-  //var userInff;
   user currentUser;
-  void _loadUserInfo() async {
+  bool feedLoading = true;
+
+  void _loadUserFeed() async {
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
+
     var x = await FirebaseFirestore.instance
         .collection('users')
         .where('uid', isEqualTo: _user.uid)
         .get();
 
-    setState(() {
-      username = x.docs[0]['username'];
-      fullname = x.docs[0]['fullname'];
-      followers = x.docs[0]['followers'];
-      following = x.docs[0]['following'];
-      phoneNumber = x.docs[0]['phoneNumber'];
-      photoUrl = x.docs[0]['photoUrl'];
-      description = x.docs[0]['description'];
-      postsUser = x.docs[0]['posts'];
-      profType = x.docs[0]['profType'];
-      uid = x.docs[0]['uid'];
+    username = x.docs[0]['username'];
+    fullname = x.docs[0]['fullname'];
+    followers = x.docs[0]['followers'];
+    following = x.docs[0]['following'];
+    phoneNumber = x.docs[0]['phoneNumber'];
+    photoUrl = x.docs[0]['photoUrl'];
+    description = x.docs[0]['description'];
+    profType = x.docs[0]['profType'];
+    uid = x.docs[0]['uid'];
+
+    var feed_posts = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('userid', whereIn: following)
+        .get();
+
+    feed_posts.docs.forEach((doc) => {
+      posts.add(
+          Post(
+              pid: doc['pid'],
+              username: doc['username'],
+              userid: doc['userid'],
+              userPhotoUrl: doc['userPhotoURL'],
+              photoUrl: doc['postPhotoURL'],
+              location: doc['location'],
+              title: doc['title'],
+              content: doc['content'],
+              date: DateTime.fromMillisecondsSinceEpoch(doc['date'].seconds * 1000),
+              likes: doc['likes'],
+              comments: doc['comments'],
+              topics: doc['topics'],
+              isLiked: doc['likes'].contains(uid) ? true : false
+          )
+      )
     });
+
+    posts..sort((a,b) => b.date.compareTo(a.date));
+      setState(() {
+      feedLoading = false;
+    });
+
+  }
+
+  loadingScreen(context) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top:100),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 120.0,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: Container(
+                      width: 75,
+                      height: 75,
+                      child: new CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+                "Your feed is getting ready...",
+                style: TextStyle(
+                  color: AppColors.textColor
+                )
+            )
+          ],
+        ),
+      )
+
+    ];
   }
 
   void initState() {
     super.initState();
-    _loadUserInfo();
+    _loadUserFeed();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -122,13 +146,12 @@ class _FeedPageState extends State<FeedPage> {
         fullname: fullname,
         followers: followers,
         following: following,
-        posts: postsUser,
         description: description,
         photoUrl: photoUrl,
         phoneNumber: phoneNumber,
         profType: profType,
-        uid: uid);
-
+        uid: uid
+    );
 
     FirebaseAnalytics().logEvent(name: 'FeedPage', parameters: null);
     return new MaterialApp(
@@ -157,7 +180,6 @@ class _FeedPageState extends State<FeedPage> {
                     print(currentUser.uid);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => ChatsPage(currentUser: currentUser)));
-
                     //MessageCrash();
                   },
                 ),
@@ -167,8 +189,7 @@ class _FeedPageState extends State<FeedPage> {
             width: double.infinity,
             child: SingleChildScrollView(
               child: Column(
-                children: posts
-                    .map((post) => PostCard(
+                children: feedLoading ? loadingScreen(context) : posts.map((post) => PostCard(
                         post: post,
                         delete: () {
                           setState(() {

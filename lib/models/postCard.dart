@@ -1,17 +1,66 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sinapps/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:sinapps/models/postView.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'post.dart';
+import 'package:intl/intl.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
   final Function delete;
   PostCard({this.post, this.delete});
 
   @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+
+  void goToComments(
+      {BuildContext context, String postId, String ownerId, String mediaUrl}) {
+    Navigator.of(context)
+        .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
+      return PostView(
+        postId: postId,
+      );
+    }));
+  }
+
+  void likeAction(String postid) async {
+
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User _user = _auth.currentUser;
+
+    print(postid);
+    var currPost = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('pid', isEqualTo: postid)
+        .get();
+
+    var currLikes = currPost.docs[0]['likes'];
+
+    bool flag;
+    if (currLikes.contains(_user.uid)) {
+      currLikes.remove(_user.uid);
+      flag = false;
+    } else {
+      currLikes.add(_user.uid);
+      flag = true;
+    }
+    await FirebaseFirestore.instance.collection('posts')
+        .doc(postid).update({"likes": currLikes});
+    setState(() {
+      widget.post.isLiked = flag;
+      widget.post.likes = currLikes;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Card(
       margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: Padding(
@@ -26,11 +75,11 @@ class PostCard extends StatelessWidget {
                 Column(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(post.userUrl),
+                      backgroundImage: NetworkImage(widget.post.userPhotoUrl),
                       radius: 32.0,
                     ),
                     Text(
-                      post.username,
+                      widget.post.username,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -48,7 +97,7 @@ class PostCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          post.date,
+                          DateFormat.yMMMMd('en_US').format(widget.post.date),
                           style: TextStyle(
                             fontFamily: 'BrandonText',
                             fontSize: 16.0,
@@ -67,7 +116,7 @@ class PostCard extends StatelessWidget {
                           color: Colors.red[800],
                         ),
                         Text(
-                          post.location.city,
+                          "istinye üniversitesi",
                           style: TextStyle(
                             fontFamily: 'BrandonText',
                             fontSize: 16.0,
@@ -87,7 +136,7 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  post.text,
+                  widget.post.title,
                   style: TextStyle(
                     color: AppColors.textColor1,
                     fontSize: 26,
@@ -102,24 +151,23 @@ class PostCard extends StatelessWidget {
             Container(
               height: 300,
               child: PageView(
-                controller: controller,
+                controller: widget.controller,
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Thank you, I thank you for your time. Is it a good way? ma"
-                        "xHeight I will never know how much information will be"
-                        " loaded dynamically. where i should locate the scroll, i am g"
-                        "etting this problem:",
+                        widget.post.content,
+                        textAlign: TextAlign.justify,
+                        maxLines: 9,
                         style: TextStyle(
                           color: AppColors.textColor1,
                           fontSize: 24,
                           fontFamily: 'BrandonText',
                           fontWeight: FontWeight.w300,
                         ),
-                        overflow: TextOverflow.clip,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
@@ -148,7 +196,7 @@ class PostCard extends StatelessWidget {
                       ),
                       color: Colors.grey[200],
                       image: DecorationImage(
-                          image: AssetImage(post.photoUrl), fit: BoxFit.fill),
+                          image: NetworkImage(widget.post.photoUrl), fit: BoxFit.fill),
                     ),
                   ),
                 ],
@@ -163,16 +211,16 @@ class PostCard extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.thumb_up,
+                    widget.post.isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
                     size: 26.0,
                     color: AppColors.primary,
                   ),
                   onPressed: () {
-                    print("like");
+                    likeAction(widget.post.pid);
                   },
                 ),
                 Text(
-                  '${post.likes}',
+                  "${widget.post.likes.length}",
                   style: TextStyle(
                     fontFamily: 'BrandonText',
                     fontSize: 20.0,
@@ -187,11 +235,11 @@ class PostCard extends StatelessWidget {
                     size: 26.0,
                   ),
                   onPressed: () {
-                    print("comment");
+                    //goToComments(postId: widget.post.pid);
                   },
                 ),
                 Text(
-                  '${post.comments}',
+                  "${widget.post.comments.length}",
                   style: TextStyle(
                     fontFamily: 'BrandonText',
                     fontSize: 20.0,
@@ -200,11 +248,15 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 8.0),
-                Icon(
-                  Icons.more_horiz,
-                  size: 26.0,
-                ),
-
+                IconButton(
+                  icon: Icon(
+                    Icons.more_horiz,
+                    size: 26.0,
+                  ),
+                  onPressed: () {
+                    //goToComments(postId: widget.post.pid);
+                  },
+                )
 /*
                 IconButton(
                   padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
@@ -226,99 +278,3 @@ class PostCard extends StatelessWidget {
     );
   }
 }
-
-/*
-
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          tweetAvatar(),
-          SizedBox(width:8.0),
-          tweetBody(),
-          SizedBox(height: 8.0),
-
-        ],
-      ),
-    );
-  }
-
-  Widget tweetAvatar() {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: CircleAvatar(
-        backgroundImage: AssetImage(post.userUrl),
-      ),
-    );
-  }
-
-
-
-
-  Widget tweetBody() {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          tweetHeader(),
-          tweetText(),
-
-
-        ],
-      ),
-    );
-  }
-
-  Widget tweetHeader() {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 5.0),
-          child: Text(
-            post.username,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(),
-
-      ],
-    );
-  }
-
-  Widget tweetText() {
-    return Text(
-      post.text,
-      overflow: TextOverflow.clip,
-    );
-  }
-
-
-
-  Widget tweetIconButton(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 16.0,
-          color: Colors.black45,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-*/
