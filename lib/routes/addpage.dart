@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -25,7 +25,7 @@ import 'package:sinapps/models/post.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
-class AddPost extends StatefulWidget {
+//class AddPost extends StatefulWidget {
   //const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
 
   //final FirebaseAnalytics analytics;
