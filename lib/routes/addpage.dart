@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,8 +45,7 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   final picker = ImagePicker();
   File _imageFile = null;
-  String _uploadedFileURL =
-      "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
+  String _uploadedFileURL =null;
   final _formKey = GlobalKey<FormState>();
   String fullname, username, description, photourl = "", uid;
   bool private = true;
@@ -120,7 +120,9 @@ class _AddPostState extends State<AddPost> {
   @override
   void initState() {
     super.initState();
-    _addPost(posts);
+    //_addPost(posts);
+    getLocationData();
+    print(widget.currentUser.username);
   }
 
   String caption, textf;
@@ -128,12 +130,6 @@ class _AddPostState extends State<AddPost> {
 
   Location loc = Location();
 
-  void initState() {
-    super.initState();
-    //_loadUserInfo();
-    getLocationData();
-    print(widget.currentUser.username);
-  }
 
   void getLocationData() async {
    await loc.getCurrentLocation();
@@ -150,7 +146,7 @@ class _AddPostState extends State<AddPost> {
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     Future<void> addPost() async {
-      String keyVal = "${widget.currentUser.username}-${DateTime.now()}";
+      String keyVal = "${_user.phoneNumber}-${DateTime.now().microsecondsSinceEpoch}";
       try {
         await users.doc(keyVal).set({
           'title': caption,
