@@ -24,6 +24,8 @@ import 'package:sinapps/utils/post_templates.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
+import 'package:sinapps/routes/geopoint/network.dart';
+import 'package:sinapps/routes/geopoint/locationclass.dart';
 
 //class AddPost extends StatefulWidget {
   //const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
@@ -123,6 +125,21 @@ class _AddPostState extends State<AddPost> {
 
   String caption, textf;
   String photoUrl = null;
+
+  Location loc = Location();
+
+  void initState() {
+    super.initState();
+    //_loadUserInfo();
+    getLocationData();
+    print(widget.currentUser.username);
+  }
+
+  void getLocationData() async {
+   await loc.getCurrentLocation();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -311,8 +328,10 @@ class _AddPostState extends State<AddPost> {
                                 Icons.add_location,
                                 size: 18.0,
                               ),
-                              onPressed: () {
-                                AddPost();
+                              onPressed: () async {
+                                await getLocationData();
+                                print(loc.latitude);
+                                print(loc.longitude);
                               },
                             ),
                           ),
