@@ -3,7 +3,7 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/post.dart';
-import 'package:sinapps/models/PostCard.dart';
+import 'package:sinapps/models/postCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
 import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -19,6 +19,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/net/firestore_methods.dart';
+import 'package:sinapps/utils/post_templates.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key, this.analytics, this.observer}) : super(key: key);
@@ -94,135 +95,11 @@ class _ProfileState extends State<Profile> {
   //user profUser = user(username: 'm', fullname: 'Mert Türe',
   //  followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
   //final String currentUserId = profUser.username;
-  List<Post> posts = [
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post1.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Rhinoplasty journal',
-        date: '23 April 2021',
-        likes: 83,
-        dislikes: 7,
-        comments: 38),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post2.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Surgery vibes',
-        date: '12 February 2021',
-        likes: 52,
-        dislikes: 5,
-        comments: 17),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post3.jpeg",
-        location: Location(country: "Turkey", city: 'Koç'),
-        text: 'Blood samples are carring everything that we need.',
-        date: '2 January 2021',
-        likes: 31,
-        dislikes: 4,
-        comments: 7),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post4.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text:
-            '"The good physician treats the disease; the great physician treats the patient who has the disease." - William Osler',
-        date: '23 April 2020',
-        likes: 99,
-        dislikes: 8,
-        comments: 14),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post5.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'MR, MR and MR...',
-        date: '28 December 2020',
-        likes: 37,
-        dislikes: 2,
-        comments: 24),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post6.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Guys... Do not smoke',
-        date: '23 December 2020',
-        likes: 42,
-        dislikes: 9,
-        comments: 19),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post7.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'ER nights...',
-        date: '22 June 2020',
-        likes: 93,
-        dislikes: 5,
-        comments: 21),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post8.png",
-        location: Location(country: "Germany", city: 'Munich'),
-        text: 'Hallo aus Deutschland',
-        date: '17 April 2020',
-        likes: 35,
-        dislikes: 6,
-        comments: 15),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post9.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'The structural points of chest',
-        date: '15 April 2020',
-        likes: 57,
-        dislikes: 3,
-        comments: 17),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post10.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Some tips of foot rontgens',
-        date: '2 April 2020',
-        likes: 87,
-        dislikes: 5,
-        comments: 32),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post11.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'What could be more miracle than newbornie?',
-        date: '7 March 2020',
-        likes: 78,
-        dislikes: 7,
-        comments: 13),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post12.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'We have empty beds in ER tonight.',
-        date: '9 January 2020',
-        likes: 132,
-        dislikes: 8,
-        comments: 23),
-  ];
+
   @override
   void initState() {
     super.initState();
-    //print(x.docs[0]['username']);
     _loadUserInfo();
-    //print("AAAAAAAAAAAAAAAA");
   }
 
   Widget build(BuildContext context) {
@@ -236,7 +113,8 @@ class _ProfileState extends State<Profile> {
         photoUrl: photoUrl,
         phoneNumber: phoneNumber,
         profType: profType,
-        uid: uid);
+        uid: uid
+    );
     //_loadUserInfo();
     return MaterialApp(
       home: Scaffold(

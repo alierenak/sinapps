@@ -1,16 +1,26 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:sinapps/models/location.dart';
+import 'package:sinapps/models/post.dart';
+
 import 'package:sinapps/models/user.dart';
+
 import 'package:sinapps/utils/colors.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/utils/crashlytics.dart';
+
+import 'package:sinapps/models/user.dart';
+import 'package:path/path.dart' as Path;
+import 'package:sinapps/utils/post_templates.dart';
+
 import 'package:sinapps/models/post.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
@@ -21,9 +31,10 @@ class AddPost extends StatefulWidget {
   //final FirebaseAnalytics analytics;
   //final FirebaseAnalyticsObserver observer;
 
+class AddPost extends StatefulWidget {
   const AddPost({Key key, this.currentUser}) : super(key: key);
-
   final user currentUser;
+
   @override
   _AddPostState createState() => _AddPostState();
 }
@@ -59,6 +70,7 @@ class _AddPostState extends State<AddPost> {
 
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+
   void AddPostCrash() {
     enableCrashlytics();
     crashlytics.setCustomKey('isAddIconPressed', true);
@@ -66,8 +78,52 @@ class _AddPostState extends State<AddPost> {
     crashlytics.crash();
   }
 
+    Future _addPost(List<Post> posts) async {
+
+    final CollectionReference collection = FirebaseFirestore.instance.collection('posts');
+    for (var i = 0; i < posts.length; i++) {
+
+      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+
+      File _imageFile = File(pickedFile.path);
+      String refID = "${posts[i].userid}_${Timestamp.fromDate(DateTime.now()).nanoseconds}";
+      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('post_pictures/$refID');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+      var imageUrl = await (await uploadTask).ref.getDownloadURL();
+
+      var post_ref = collection.doc();
+      try {
+        await post_ref.set({
+          "pid": post_ref.id,
+          "comments": [],
+          "content": posts[i].content,
+          "date": posts[i].date,
+          "likes": posts[i].likes,
+          "location": posts[i].location,
+          "title": posts[i].title,
+          "topics": posts[i].topics,
+          "userid": posts[i].userid,
+          "userPhotoURL": posts[i].userPhotoUrl,
+          "postPhotoURL": imageUrl,
+          "username": posts[i].username,
+          "topics": posts[i].topics
+        }).then((value) => print("${posts[i].date}\t${posts[i].userid}\t${posts[i].username}\t${imageUrl}\t${posts[i].userPhotoUrl}\t${posts[i].title}"));
+        //.catchError((error) => print("Failed to add user: $error"));
+      } catch (e) {
+      print(e);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _addPost(posts);
+  }
+
   String caption, textf;
   String photoUrl = null;
+
   @override
   Widget build(BuildContext context) {
 

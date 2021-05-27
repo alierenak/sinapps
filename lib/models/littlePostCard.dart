@@ -27,7 +27,7 @@ class littlePostCard extends StatelessWidget {
                 Column(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(post.userUrl),
+                      backgroundImage: AssetImage(post.userPhotoUrl),
                       radius: 32.0,
                     ),
                   ],
@@ -51,7 +51,7 @@ class littlePostCard extends StatelessWidget {
                 ),
                 SizedBox(width: 50,),
                 Text(
-                  post.date,
+                  post.date.toString(),
                   style: TextStyle(
                     fontFamily: 'BrandonText',
                     fontSize: 16.0,
@@ -68,7 +68,7 @@ class littlePostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  post.text,
+                  post.title,
                   style: TextStyle(
                     color: AppColors.textColor1,
                     fontSize: 26,
@@ -91,10 +91,7 @@ class littlePostCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Thank you, I thank you for your time. Is it a good way? ma"
-                            "xHeight I will never know how much information will be"
-                            " loaded dynamically. where i should locate the scroll, i am g"
-                            "etting this problem:",
+                        post.content,
                         style: TextStyle(
                           color: AppColors.textColor1,
                           fontSize: 24,
@@ -156,24 +153,6 @@ class littlePostCard extends StatelessWidget {
                 ),
                 Text(
                   '${post.likes}',
-                  style: TextStyle(
-                    fontFamily: 'BrandonText',
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor,
-                  ),
-                ),
-
-                SizedBox(width: 8.0),
-
-                Icon(
-                  Icons.thumb_down,
-                  size: 26.0,
-                  color: AppColors.secondary,
-                ),
-
-                Text(
-                  '${post.dislikes}',
                   style: TextStyle(
                     fontFamily: 'BrandonText',
                     fontSize: 22.0,
