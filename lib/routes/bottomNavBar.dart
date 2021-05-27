@@ -20,7 +20,7 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  user currentUser;
+  user currentUserA ;
   int currentPage = 0;
   List<dynamic> followers = [];
   List<dynamic> following = [];
@@ -84,7 +84,17 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> bodyView = [
     FeedPage(),
     SearchPage(),
-    AddPost(),
+    AddPost(currentUser: user(
+        username: "doeTheJohn",
+        fullname: "John Doe",
+        description: "mucize doktor 2",
+        photoUrl: "https://i0.wp.com/www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png?fit=550%2C532&ssl=1",
+        followers: [],
+        following: [],
+        posts: [],
+        phoneNumber: "5554443322",
+        profType: true,
+        uid: "1234567"),),
     Noti(),
     Profile(),
   ];
