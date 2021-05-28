@@ -35,20 +35,20 @@ import 'package:sinapps/routes/geopoint/locationclass.dart';
   //final FirebaseAnalyticsObserver observer;
 
 class AddPost extends StatefulWidget {
-  const AddPost({Key key, this.currentUser}) : super(key: key);
-  final user currentUser;
+  //const AddPost({Key key, this.currentUser}) : super(key: key);
+  //final user currentUser;
 
   @override
   _AddPostState createState() => _AddPostState();
 }
 
 class _AddPostState extends State<AddPost> {
+  user currentUser;
   final picker = ImagePicker();
   File _imageFile = null;
   String _uploadedFileURL =null;
   final _formKey = GlobalKey<FormState>();
-  String fullname, username, description, photourl = "", uid;
-  bool private = true;
+
   Future pickImage(source) async {
     final pickedFile = await picker.getImage(source: source);
 
@@ -70,6 +70,47 @@ class _AddPostState extends State<AddPost> {
     });
   }
 
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "", fullname = "", phoneNumber = "", photoUrlUser = "", description = "", uid = "";
+  bool profType;
+  List<dynamic> postsUser = [];
+  //var userInff;
+  void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+    //.then((QuerySnapshot querySnapshot) {
+    //  querySnapshot.docs.forEach((doc) async {
+    //print(doc['username'] + " " + doc['fullname']);
+    //print(doc.data()['username'])
+
+
+    //});
+    //});
+    //print(x.docs[0]['username']);
+    setState(() {
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrlUser = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
+    });
+    //print(x.docs[0]['username']);
+    //print(x);
+
+
+
+  }
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 
@@ -121,8 +162,10 @@ class _AddPostState extends State<AddPost> {
   void initState() {
     super.initState();
     //_addPost(posts);
+    _loadUserInfo();
+
     getLocationData();
-    print(widget.currentUser.username);
+    //print(currentUser.username);
   }
 
   String caption, textf;
@@ -139,22 +182,41 @@ class _AddPostState extends State<AddPost> {
 
   @override
   Widget build(BuildContext context) {
-
-    final CollectionReference users = FirebaseFirestore.instance.collection('posts');
+    currentUser = user(
+      username: username,
+      fullname: fullname,
+      followers: followers,
+      following: following,
+      posts: postsUser,
+      description: description,
+      photoUrl: photoUrlUser,
+      phoneNumber: phoneNumber,
+      profType: profType,
+      uid: uid,
+    );
+    print(photoUrl);
+    final CollectionReference posts = FirebaseFirestore.instance.collection('posts');
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     Future<void> addPost() async {
-      String keyVal = "${_user.phoneNumber}-${DateTime.now().microsecondsSinceEpoch}";
+      //String keyVal = "${_user.phoneNumber}-${DateTime.now().microsecondsSinceEpoch}";
       try {
-        await users.doc(keyVal).set({
-          'title': caption,
-          "dislikes":[],
-          "likes":[],
-          "photo_url":_uploadedFileURL,
-          "username": widget.currentUser.username,
-          "userid" :widget.currentUser.uid,
+        var post_ref = posts.doc();
+        await post_ref.set({
+          "pid": post_ref.id,
+          "comments": [],
+          "content": textf,
+          "date": DateTime.now(),
+          "likes": [],
+          "location": GeoPoint(loc.latitude, loc.longitude),
+          "title": caption,
+          "topics": [],
+          "userid": currentUser.uid,
+          "userPhotoURL": currentUser.photoUrl,
+          "postPhotoURL": _uploadedFileURL,
+          "username": currentUser.username,
           //"location":
         });
       } catch (e) {

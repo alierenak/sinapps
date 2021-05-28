@@ -24,10 +24,11 @@ class _BottomBarState extends State<BottomBar> {
   int currentPage = 0;
   List<dynamic> followers = [];
   List<dynamic> following = [];
-  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "";
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";
+  bool profType;
   List<dynamic> postsUser = [];
   //var userInff;
-  /*void _loadUserInfo() async {
+ /* void _loadUserInfo() async {
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
@@ -53,6 +54,8 @@ class _BottomBarState extends State<BottomBar> {
       phoneNumber = x.docs[0]['phoneNumber'];
       photoUrl = x.docs[0]['photoUrl'];
       description = x.docs[0]['description'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
     });
     //print(x.docs[0]['username']);
     //print(x);
@@ -84,23 +87,15 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> bodyView = [
     FeedPage(),
     SearchPage(),
-    AddPost(currentUser: user(
-        username: "doeTheJohn",
-        fullname: "John Doe",
-        description: "mucize doktor 2",
-        photoUrl: "https://i0.wp.com/www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png?fit=550%2C532&ssl=1",
-        followers: [],
-        following: [],
-        posts: [],
-        phoneNumber: "5554443322",
-        profType: true,
-        uid: "1234567"),),
+    AddPost(),
     Noti(),
     Profile(),
   ];
 
   @override
   Widget build(BuildContext context) {
+
+
     return new Scaffold(
       body: bodyView[currentPage],
       bottomNavigationBar: BottomNavigationBar(

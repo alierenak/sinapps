@@ -23,7 +23,7 @@ class _SetprofileState extends State<Setprofile> {
   String _uploadedFileURL =
       "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2Fpp.jpeg?alt=media&token=c771f64f-9f1d-4c7c-8fc0-567f935e324c";
   final _formKey = GlobalKey<FormState>();
-  String fullname, username, description, photourl = "", uid;
+  String fullname, username, description, photourl = "", uid, activation = "active";
   bool private = true;
   Future pickImage(source) async {
     final pickedFile = await picker.getImage(source: source);
@@ -280,7 +280,8 @@ class _SetprofileState extends State<Setprofile> {
                                       posts: [],
                                       phoneNumber: _user.phoneNumber,
                                       profType: private,
-                                      uid: _user.uid);
+                                      uid: _user.uid,
+                                      activation: activation);
                                   addUser(cUser);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

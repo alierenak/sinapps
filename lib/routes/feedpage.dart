@@ -70,7 +70,7 @@ class _FeedPageState extends State<FeedPage> {
         .collection('posts')
         .where('userid', whereIn: following)
         .get();
-
+    print(feed_posts.size);
     feed_posts.docs.forEach((doc) => {
       posts.add(
           Post(
@@ -93,6 +93,7 @@ class _FeedPageState extends State<FeedPage> {
 
     posts..sort((a,b) => b.date.compareTo(a.date));
       setState(() {
+        print("its in");
       feedLoading = false;
     });
 

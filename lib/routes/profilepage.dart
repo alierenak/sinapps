@@ -19,8 +19,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/net/firestore_methods.dart';
-import 'package:sinapps/utils/post_templates.dart';
-
+//import 'package:sinapps/utils/post_templates.dart';
+import 'package:sinapps/routes/following.dart';
+import 'package:sinapps/routes/followers.dart';
 class Profile extends StatefulWidget {
   const Profile({Key key, this.analytics, this.observer}) : super(key: key);
 
@@ -44,6 +45,7 @@ class _ProfileState extends State<Profile> {
       uid = "";
   List<dynamic> postsUser = [];
   bool profType;
+  List<dynamic> posts = [];
   //var userInff;
   user currentUser;
   void _loadUserInfo() async {
@@ -75,31 +77,69 @@ class _ProfileState extends State<Profile> {
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
     });
-    //print(username);
-
-/*
-  user _currentUser = user(
-      username: username,
-      fullname: fullname,
-      followers: followers,
-      following: following,
-      posts: postsUser,
-      description: description,
-      photoUrl: photoUrl,
-      phoneNumber: phoneNumber);*/
-    //print(x.docs[0]['username']);
-    //print(x);
-    //return _currentUser;
   }
+    bool feedLoading = true;
+    int postsSize = 0;
+    void _loadUserProf() async {
+      FirebaseAuth _auth;
+      User _user;
+      _auth = FirebaseAuth.instance;
+      _user = _auth.currentUser;
 
-  //user profUser = user(username: 'm', fullname: 'Mert Türe',
-  //  followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
-  //final String currentUserId = profUser.username;
+      var x = await FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: _user.uid)
+          .get();
+
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
+
+      var profPosts = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('userid', isEqualTo: uid)
+          .get();
+      postsSize = profPosts.size;
+      profPosts.docs.forEach((doc) =>
+      {
+        posts.add(
+            Post(
+                pid: doc['pid'],
+                username: doc['username'],
+                userid: doc['userid'],
+                userPhotoUrl: doc['userPhotoURL'],
+                photoUrl: doc['postPhotoURL'],
+                location: doc['location'],
+                title: doc['title'],
+                content: doc['content'],
+                date: DateTime.fromMillisecondsSinceEpoch(
+                    doc['date'].seconds * 1000),
+                likes: doc['likes'],
+                comments: doc['comments'],
+                topics: doc['topics'],
+                isLiked: doc['likes'].contains(uid) ? true : false
+            )
+        )
+      });
+
+      posts..sort((a, b) => b.date.compareTo(a.date));
+      setState(() {
+        print("its in");
+        feedLoading = false;
+      });
+    }
 
   @override
   void initState() {
     super.initState();
     _loadUserInfo();
+    _loadUserProf();
   }
 
   Widget build(BuildContext context) {
@@ -153,14 +193,22 @@ class _ProfileState extends State<Profile> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Text(
-                        'Followers',
-                        style: TextStyle(
-                          color: AppColors.textColor,
-                          fontFamily: 'BrandonText',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      TextButton(
+                          child: Text('Followers',
+                            style: TextStyle(
+                              fontFamily: 'BrandonText',
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Followers(currentUser: currentUser)));
+                          }
                       ),
                       Text(
                         '${followers.length}',
@@ -179,14 +227,22 @@ class _ProfileState extends State<Profile> {
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
-                        'Following',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor,
+                      TextButton(
+                        child: Text('Following',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
                         ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Following(currentUser: currentUser)));
+                        }
                       ),
                       Text(
                         '${following.length}',
@@ -300,7 +356,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${postsUser.length}',
+                        '$postsSize',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -388,7 +444,7 @@ class _ProfileState extends State<Profile> {
                               size: 9,
                             ),
                           ]),
-                      //SizedBox(height: 20.0),
+                      SizedBox(height: 20.0),
                       /*Container(
                             padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             width:double.infinity,
@@ -414,7 +470,7 @@ class _ProfileState extends State<Profile> {
                               decoration: BoxDecoration(
                                 //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 image: DecorationImage(
-                                  image: AssetImage(post.photoUrl),
+                                  image: NetworkImage(post.photoUrl),
                                   fit: BoxFit.fill,
                                 ),
                               ),
