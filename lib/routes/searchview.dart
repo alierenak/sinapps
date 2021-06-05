@@ -1,40 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:sinapps/models/searchResult.dart';
 import 'package:sinapps/models/searchResultCard.dart';
-import 'package:sinapps/utils/colors.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:sinapps/models/user.dart';
+
+List<SearchResult> userResults = [];
+List<SearchResult> postResults = [];
+
 class SearchPage extends StatefulWidget {
 
   const SearchPage({Key key, this.currentUser}) : super(key: key);
-
   final user currentUser;
-
 
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
-List<SearchResult> peopleResult = [
-  SearchResult(identifier: "Mert Ture", description: "Orthopedics at Acıbadem"),
-  SearchResult(identifier: "Kaan Atmaca", description: "Doctor at Acıbadem")
-];
-
-List<SearchResult> locationResult = [
-  SearchResult(identifier: "Acıbadem", description: "a uniiversity hospital"),
-  SearchResult(identifier: "Koç Uni", description: "University in Turkey")
-];
-
-List<SearchResult> topicResult = [
-  SearchResult(identifier: "Nobet", description: "doktorların tuttuğu şey"),
-  SearchResult(identifier: "Doctor", description: "hospitals")
-];
-
 class _SearchPageState extends State<SearchPage> {
   static const historyLength = 5;
+  var results = [];
   List<String> _searchHistory = [
     'doctor',
     'acibadem',
@@ -63,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void addSearchTerm(String element) {
     // What we want to do is if the added search term is already exist
-    // We dont neeed to duplicate it
+    // We dont need to duplicate it
     if (_searchHistory.contains(element)) {
       putSearchTermFirst(element);
       return;
@@ -112,21 +98,47 @@ class _SearchPageState extends State<SearchPage> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
   void checkIfExist(String src) {
     bool ch = false;
-    for (int i = 0; i < peopleResult.length; i++) {
-      if (src == peopleResult[i].identifier ||
-          src == peopleResult[i].description) ch = true;
-    }
-    for (int i = 0; i < locationResult.length; i++) {
-      if (src == locationResult[i].identifier ||
-          src == locationResult[i].description) ch = true;
-    }
-    for (int i = 0; i < topicResult.length; i++) {
-      if (src == topicResult[i].identifier || src == topicResult[i].description)
-        ch = true;
+    for (int i = 0; i < results.length; i++) {
+      if (src == results[i].identifier ||
+          src == results[i].description) ch = true;
     }
     if (ch == false) {
       crashlytics.setCustomKey("search result not found:", src);
     }
+  }
+
+  void getSearchResults(query) async {
+
+    var users = await FirebaseFirestore.instance
+        .collection("users")
+        .where('username', isGreaterThanOrEqualTo: query,
+      isLessThan: query.substring(0, query.length - 1) +
+          String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
+    )
+        .get();
+    users.docs.forEach((doc) => {
+      userResults.add(
+          SearchResult(identifier: doc['username'], description: doc['description'], itemID: doc['uid'], photoUrl: doc['photoUrl'])
+      )
+    });
+
+    var posts = await FirebaseFirestore.instance
+        .collection("posts")
+        .where('title', isGreaterThanOrEqualTo: query,
+      isLessThan: query.substring(0, query.length - 1) +
+          String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
+    ).get();
+    print(posts.docs.length+1);
+    posts.docs.forEach((doc) => {
+      postResults.add(
+          SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['photoUrl'])
+      )
+    });
+
+    setState(() {
+      selectedTerm = query;
+      results = userResults;
+    });
   }
 
   @override
@@ -173,12 +185,11 @@ class _SearchPageState extends State<SearchPage> {
             });
           },
           onSubmitted: (query) {
-            setState(() {
-              print(query);
-              checkIfExist(query);
-              addSearchTerm(query);
-              selectedTerm = query;
-            });
+            userResults = [];
+            postResults = [];
+            checkIfExist(query);
+            getSearchResults(query);
+            addSearchTerm(query);
             controller.close();
           },
           builder: (context, transition) {
@@ -220,28 +231,28 @@ class _SearchPageState extends State<SearchPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: filteredSearchHistory
                           .map((e) => ListTile(
-                                title: Text(
-                                  e,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                leading: const Icon(Icons.history),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () {
-                                    setState(() {
-                                      deleteSearchTerm(e);
-                                    });
-                                  },
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    putSearchTermFirst(e);
-                                    selectedTerm = e;
-                                  });
-                                  controller.close();
-                                },
-                              ))
+                        title: Text(
+                          e,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: const Icon(Icons.history),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            setState(() {
+                              deleteSearchTerm(e);
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          setState(() {
+                            putSearchTermFirst(e);
+                            selectedTerm = e;
+                          });
+                          controller.close();
+                        },
+                      ))
                           .toList(),
                     );
                   }
@@ -278,6 +289,22 @@ class SearchResultsListView extends StatelessWidget {
     Key key,
     @required this.searchTerm,
   }) : super(key: key);
+
+  noResultsFound(context) {
+    return [
+      Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'SEARCH NOT FOUND',
+              style: Theme.of(context).textTheme.headline5,
+            )
+          ],
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -316,49 +343,28 @@ class SearchResultsListView extends StatelessWidget {
           ),
           Divider(),
           Column(
-            children: peopleResult
+            children: (userResults == null || userResults.isEmpty) ? noResultsFound(context) : userResults
                 .map((element) => SearchResultCard(
-                      sr: element,
-                    ))
-                .toList(),
+              sr: element,
+            )).toList(),
           ),
           Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: Text(
-              'Location',
+              'Posts',
               style: TextStyle(
                 fontFamily: 'BrandonText',
                 fontSize: 24.0,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
           ),
           Divider(),
           Column(
-            children: locationResult
+            children: (postResults == null || postResults.isEmpty) ? noResultsFound(context) : postResults
                 .map((element) => SearchResultCard(
-                      sr: element,
-                    ))
-                .toList(),
-          ),
-          Container(
-            child: Text(
-              'Topic',
-              style: TextStyle(
-                fontFamily: 'BrandonText',
-                fontSize: 24.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
-          ),
-          Divider(),
-          Column(
-            children: locationResult
-                .map((element) => SearchResultCard(
-                      sr: element,
-                    ))
-                .toList(),
+              sr: element,
+            )).toList(),
           ),
         ]);
   }

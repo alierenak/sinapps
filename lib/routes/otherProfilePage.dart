@@ -1,38 +1,28 @@
-import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/postCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
-import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:sinapps/models/littlePostCard.dart';
 import 'package:sinapps/routes/settingspage.dart';
-import 'package:sinapps/routes/bottomNavBar.dart';
-import 'package:sinapps/routes/welcome.dart';
-import 'package:sinapps/routes/login.dart';
-import 'package:sinapps/routes/setProfile.dart';
-import 'package:sinapps/routes/walkthrough.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sinapps/net/firestore_methods.dart';
-//import 'package:sinapps/utils/post_templates.dart';
 import 'package:sinapps/routes/following.dart';
 import 'package:sinapps/routes/followers.dart';
-class Profile extends StatefulWidget {
-  const Profile({Key key, this.analytics, this.observer}) : super(key: key);
 
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
+class OtherProfilePage extends StatefulWidget {
+  const OtherProfilePage({Key key, this.otherUser}) : super(key: key);
+
+
+  final user otherUser;
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _OtherProfilePageState createState() => _OtherProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _OtherProfilePageState extends State<OtherProfilePage> {
   final controller = PageController(initialPage: 0);
 
   List<dynamic> followers = [];
@@ -42,14 +32,14 @@ class _ProfileState extends State<Profile> {
       phoneNumber = "",
       photoUrl = "",
       description = "",
-      uid = "";
+      uid = "",
+      activation = "";
   List<dynamic> postsUser = [];
   bool profType;
   List<dynamic> posts = [];
   //var userInff;
   user currentUser;
-  String activation = "";
-  void _loadUserInfo() async {
+  /*void _loadUserInfo() async {
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
@@ -77,70 +67,70 @@ class _ProfileState extends State<Profile> {
       postsUser = x.docs[0]['posts'];
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
-      activation = x.docs[0]['activation'];
+    });
+  }*/
+  bool feedLoading = true;
+  int postsSize = 0;
+  void _loadUserProf() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: widget.otherUser.uid)
+        .get();
+
+    username = x.docs[0]['username'];
+    fullname = x.docs[0]['fullname'];
+    followers = x.docs[0]['followers'];
+    following = x.docs[0]['following'];
+    phoneNumber = x.docs[0]['phoneNumber'];
+    photoUrl = x.docs[0]['photoUrl'];
+    description = x.docs[0]['description'];
+    profType = x.docs[0]['profType'];
+    uid = x.docs[0]['uid'];
+    activation = x.docs[0]['activation'];
+
+    var profPosts = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('userid', isEqualTo: uid)
+        .get();
+    postsSize = profPosts.size;
+    profPosts.docs.forEach((doc) =>
+    {
+      posts.add(
+          Post(
+              pid: doc['pid'],
+              username: doc['username'],
+              userid: doc['userid'],
+              userPhotoUrl: doc['userPhotoURL'],
+              photoUrl: doc['postPhotoURL'],
+              location: doc['location'],
+              title: doc['title'],
+              content: doc['content'],
+              date: DateTime.fromMillisecondsSinceEpoch(
+                  doc['date'].seconds * 1000),
+              likes: doc['likes'],
+              comments: doc['comments'],
+              topics: doc['topics'],
+              isLiked: doc['likes'].contains(uid) ? true : false
+          )
+      )
+    });
+
+    posts..sort((a, b) => b.date.compareTo(a.date));
+    setState(() {
+      print("its in");
+      feedLoading = false;
     });
   }
-    bool feedLoading = true;
-    int postsSize = 0;
-    void _loadUserProf() async {
-      FirebaseAuth _auth;
-      User _user;
-      _auth = FirebaseAuth.instance;
-      _user = _auth.currentUser;
-
-      var x = await FirebaseFirestore.instance
-          .collection('users')
-          .where('uid', isEqualTo: _user.uid)
-          .get();
-
-      username = x.docs[0]['username'];
-      fullname = x.docs[0]['fullname'];
-      followers = x.docs[0]['followers'];
-      following = x.docs[0]['following'];
-      phoneNumber = x.docs[0]['phoneNumber'];
-      photoUrl = x.docs[0]['photoUrl'];
-      description = x.docs[0]['description'];
-      profType = x.docs[0]['profType'];
-      uid = x.docs[0]['uid'];
-      activation = x.docs[0]['activation'];
-      var profPosts = await FirebaseFirestore.instance
-          .collection('posts')
-          .where('userid', isEqualTo: uid)
-          .get();
-      postsSize = profPosts.size;
-      profPosts.docs.forEach((doc) =>
-      {
-        posts.add(
-            Post(
-                pid: doc['pid'],
-                username: doc['username'],
-                userid: doc['userid'],
-                userPhotoUrl: doc['userPhotoURL'],
-                photoUrl: doc['postPhotoURL'],
-                location: doc['location'],
-                title: doc['title'],
-                content: doc['content'],
-                date: DateTime.fromMillisecondsSinceEpoch(
-                    doc['date'].seconds * 1000),
-                likes: doc['likes'],
-                comments: doc['comments'],
-                topics: doc['topics'],
-                isLiked: doc['likes'].contains(uid) ? true : false
-            )
-        )
-      });
-
-      posts..sort((a, b) => b.date.compareTo(a.date));
-      setState(() {
-        print("its in");
-        feedLoading = false;
-      });
-    }
 
   @override
   void initState() {
     super.initState();
-    _loadUserInfo();
+    //_loadUserInfo();
     _loadUserProf();
   }
 
@@ -231,21 +221,21 @@ class _ProfileState extends State<Profile> {
                   Column(
                     children: <Widget>[
                       TextButton(
-                        child: Text('Following',
-                          style: TextStyle(
-                            fontFamily: 'BrandonText',
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textColor,
+                          child: Text('Following',
+                            style: TextStyle(
+                              fontFamily: 'BrandonText',
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Following(currentUser: currentUser)));
-                        }
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Following(currentUser: currentUser)));
+                          }
                       ),
                       Text(
                         '${following.length}',
@@ -324,7 +314,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             side:
-                                BorderSide(width: 2, color: AppColors.primary),
+                            BorderSide(width: 2, color: AppColors.primary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -381,13 +371,13 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             side:
-                                BorderSide(width: 2, color: AppColors.primary),
+                            BorderSide(width: 2, color: AppColors.primary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 2),
                             child: Text(
-                              'Edit Profile',
+                              'Follow',
                               style: TextStyle(
                                 fontFamily: 'BrandonText',
                                 fontSize: 12.0,
@@ -398,11 +388,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditProfile(currentUser: currentUser)));
+                            // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
                           },
                         ),
                       ),
@@ -506,12 +492,12 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             children: posts
                                 .map((post) => PostCard(
-                                    post: post,
-                                    delete: () {
-                                      setState(() {
-                                        posts.remove(post);
-                                      });
-                                    }))
+                                post: post,
+                                delete: () {
+                                  setState(() {
+                                    posts.remove(post);
+                                  });
+                                }))
                                 .toList(),
                           ),
                         ),
