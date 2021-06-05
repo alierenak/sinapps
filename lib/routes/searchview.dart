@@ -112,6 +112,7 @@ class _SearchPageState extends State<SearchPage> {
     var users = await FirebaseFirestore.instance
         .collection("users")
         .where('username', isGreaterThanOrEqualTo: query,
+
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
     )
@@ -119,6 +120,7 @@ class _SearchPageState extends State<SearchPage> {
     users.docs.forEach((doc) => {
       userResults.add(
           SearchResult(identifier: doc['username'], description: doc['description'], itemID: doc['uid'], photoUrl: doc['photoUrl'])
+
       )
     });
 
@@ -128,10 +130,12 @@ class _SearchPageState extends State<SearchPage> {
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
     ).get();
+
     print(posts.docs.length+1);
     posts.docs.forEach((doc) => {
       postResults.add(
           SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['photoUrl'])
+
       )
     });
 
@@ -292,7 +296,7 @@ class SearchResultsListView extends StatelessWidget {
 
   noResultsFound(context) {
     return [
-      Center(
+       Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -345,8 +349,8 @@ class SearchResultsListView extends StatelessWidget {
           Column(
             children: (userResults == null || userResults.isEmpty) ? noResultsFound(context) : userResults
                 .map((element) => SearchResultCard(
-              sr: element,
-            )).toList(),
+                      sr: element,
+                    )).toList(),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
