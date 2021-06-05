@@ -130,11 +130,11 @@ class _SearchPageState extends State<SearchPage> {
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
     ).get();
-
-    print(posts.docs.length+1);
+    print("postsin");
+    print(posts.docs.length);
     posts.docs.forEach((doc) => {
       postResults.add(
-          SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['photoUrl'])
+          SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['postPhotoURL'])
 
       )
     });

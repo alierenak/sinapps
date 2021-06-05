@@ -79,7 +79,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
     var x = await FirebaseFirestore.instance
         .collection('users')
-        .where('uid', isEqualTo: widget.otherUser.uid)
+        .where('uid', isEqualTo: _user.uid)
         .get();
 
     username = x.docs[0]['username'];
@@ -95,7 +95,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
     var profPosts = await FirebaseFirestore.instance
         .collection('posts')
-        .where('userid', isEqualTo: uid)
+        .where('userid', isEqualTo: widget.otherUser.uid)
         .get();
     postsSize = profPosts.size;
     profPosts.docs.forEach((doc) =>
@@ -122,7 +122,6 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
     posts..sort((a, b) => b.date.compareTo(a.date));
     setState(() {
-      print("its in");
       feedLoading = false;
     });
   }
@@ -148,6 +147,15 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         uid: uid,
         activation: activation
     );
+    String followSit = "";
+    if (currentUser.following.contains(widget.otherUser.uid)) {
+      followSit = "Unfollow";
+    }
+    else {
+      followSit = "Follow";
+    }
+
+
     //_loadUserInfo();
     return MaterialApp(
       home: Scaffold(
@@ -155,7 +163,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         appBar: AppBar(
             toolbarHeight: 48.0,
             title: Text(
-              username,
+              widget.otherUser.username,
               style: TextStyle(
                 fontFamily: 'BrandonText',
                 fontSize: 24.0,
@@ -200,11 +208,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        Followers(currentUser: currentUser)));
+                                        Followers(currentUser: widget.otherUser)));
                           }
                       ),
                       Text(
-                        '${followers.length}',
+                        '${widget.otherUser.followers.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -215,7 +223,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                     ],
                   ),
                   CircleAvatar(
-                    backgroundImage: NetworkImage(photoUrl),
+                    backgroundImage: NetworkImage(widget.otherUser.photoUrl),
                     radius: 56.0,
                   ),
                   Column(
@@ -234,11 +242,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        Following(currentUser: currentUser)));
+                                        Following(currentUser: widget.otherUser)));
                           }
                       ),
                       Text(
-                        '${following.length}',
+                        '${widget.otherUser.following.length}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -260,7 +268,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   Column(
                     children: <Widget>[
                       Text(
-                        '${fullname}',
+                        '${widget.otherUser.fullname}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -283,7 +291,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   Column(
                     children: <Widget>[
                       Text(
-                        '${description}',
+                        '${widget.otherUser.description}',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 16.0,
@@ -377,7 +385,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 2),
                             child: Text(
-                              'Follow',
+                              currentUser.following.contains(widget.otherUser.uid) ? 'Unfollow' :'Follow',
                               style: TextStyle(
                                 fontFamily: 'BrandonText',
                                 fontSize: 12.0,
@@ -387,7 +395,50 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+
+                            if (followSit == "Unfollow") {
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(currentUser.uid)
+                                  .update({
+                                "following": FieldValue.arrayRemove(
+                                    [widget.otherUser.uid])
+                              });
+
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(widget.otherUser.uid)
+                                  .update({
+                                "followers": FieldValue.arrayRemove(
+                                    [currentUser.uid])
+                              });
+                              setState(() {
+                                followSit = "Follow";
+                              });
+
+                            }
+                            else {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(currentUser.uid)
+                                  .update({
+                                "following": FieldValue.arrayUnion(
+                                    [widget.otherUser.uid])
+                              });
+
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(widget.otherUser.uid)
+                                  .update({
+                                "followers": FieldValue.arrayUnion(
+                                    [currentUser.uid])
+                              });
+                              setState(() {
+                                followSit = "Unfollow";
+                              });
+
+                            }
                             // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
                           },
                         ),
