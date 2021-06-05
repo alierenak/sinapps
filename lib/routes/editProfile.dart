@@ -8,6 +8,7 @@ import 'package:sinapps/routes/profilepage.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path/path.dart' as Path;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:sinapps/routes/welcome.dart';
 
 class EditProfile extends StatefulWidget {
   //List <bool> _selections = List.generate(2, (_) => false);
@@ -300,12 +301,83 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget> [
+                    TextButton(
+                    onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(widget.currentUser.uid)
+                            .update({
+                            "activation": "deactivated",
+                        })
+                            .then((value) => print("User Deactivated"))
+                            .catchError((error) => print("Failed to deactivate user: $error"));
+
+                        SnackBar successSnackBar =
+                        SnackBar(content: Text("Profile has been deactivated."));
+                        _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
+
+
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      minimumSize: Size(115,10),
+                    ),
+                    child: Text(
+                      "Deactivate",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                    SizedBox(width: 20,),
+
+                    TextButton(
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(widget.currentUser.uid)
+                            .delete()
+                            .then((value) => print("User Deleted"))
+                            .catchError((error) => print("Failed to delete user: $error"));
+
+                        SnackBar successSnackBar =
+                        SnackBar(content: Text("Profile has been deleted."));
+                        _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
+
+                        MaterialPageRoute(builder: (context) => Welcome());
+
+
+
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.grey[800],
+                        minimumSize: Size(115,10),
+                      ),
+                      child: Text(
+                        "Delete",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => BottomBar()));
+
                     updateUserData();
                   },
                   style: TextButton.styleFrom(

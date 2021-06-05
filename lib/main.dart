@@ -119,7 +119,7 @@ class AppFlow extends StatelessWidget {
         "/welcome": (context) =>
             Welcome(analytics: analytics, observer: observer),
         '/profile': (context) =>
-            Profile(),
+            Profile(analytics: analytics, observer: observer),
       },
     );
   }

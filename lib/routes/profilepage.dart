@@ -3,7 +3,7 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/models/post.dart';
-import 'package:sinapps/models/PostCard.dart';
+import 'package:sinapps/models/postCard.dart';
 import 'package:sinapps/routes/editProfile.dart';
 import 'package:sinapps/models/location.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -19,7 +19,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/net/firestore_methods.dart';
-
+//import 'package:sinapps/utils/post_templates.dart';
+import 'package:sinapps/routes/following.dart';
+import 'package:sinapps/routes/followers.dart';
 class Profile extends StatefulWidget {
   const Profile({Key key, this.analytics, this.observer}) : super(key: key);
 
@@ -43,6 +45,7 @@ class _ProfileState extends State<Profile> {
       uid = "";
   List<dynamic> postsUser = [];
   bool profType;
+  List<dynamic> posts = [];
   //var userInff;
   user currentUser;
   void _loadUserInfo() async {
@@ -74,155 +77,69 @@ class _ProfileState extends State<Profile> {
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
     });
-    //print(username);
-
-/*
-  user _currentUser = user(
-      username: username,
-      fullname: fullname,
-      followers: followers,
-      following: following,
-      posts: postsUser,
-      description: description,
-      photoUrl: photoUrl,
-      phoneNumber: phoneNumber);*/
-    //print(x.docs[0]['username']);
-    //print(x);
-    //return _currentUser;
   }
+    bool feedLoading = true;
+    int postsSize = 0;
+    void _loadUserProf() async {
+      FirebaseAuth _auth;
+      User _user;
+      _auth = FirebaseAuth.instance;
+      _user = _auth.currentUser;
 
-  //user profUser = user(username: 'm', fullname: 'Mert Türe',
-  //  followers: 0, following: 0, posts: 3, description: 'Orthopedics in Acıbadem', photoUrl: 'lib/images/mert.jpeg');
-  //final String currentUserId = profUser.username;
-  List<Post> posts = [
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post1.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Rhinoplasty journal',
-        date: '23 April 2021',
-        likes: 83,
-        dislikes: 7,
-        comments: 38),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post2.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Surgery vibes',
-        date: '12 February 2021',
-        likes: 52,
-        dislikes: 5,
-        comments: 17),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post3.jpeg",
-        location: Location(country: "Turkey", city: 'Koç'),
-        text: 'Blood samples are carring everything that we need.',
-        date: '2 January 2021',
-        likes: 31,
-        dislikes: 4,
-        comments: 7),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post4.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text:
-            '"The good physician treats the disease; the great physician treats the patient who has the disease." - William Osler',
-        date: '23 April 2020',
-        likes: 99,
-        dislikes: 8,
-        comments: 14),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post5.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'MR, MR and MR...',
-        date: '28 December 2020',
-        likes: 37,
-        dislikes: 2,
-        comments: 24),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post6.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Guys... Do not smoke',
-        date: '23 December 2020',
-        likes: 42,
-        dislikes: 9,
-        comments: 19),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post7.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'ER nights...',
-        date: '22 June 2020',
-        likes: 93,
-        dislikes: 5,
-        comments: 21),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post8.png",
-        location: Location(country: "Germany", city: 'Munich'),
-        text: 'Hallo aus Deutschland',
-        date: '17 April 2020',
-        likes: 35,
-        dislikes: 6,
-        comments: 15),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post9.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'The structural points of chest',
-        date: '15 April 2020',
-        likes: 57,
-        dislikes: 3,
-        comments: 17),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post10.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'Some tips of foot rontgens',
-        date: '2 April 2020',
-        likes: 87,
-        dislikes: 5,
-        comments: 32),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post11.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'What could be more miracle than newbornie?',
-        date: '7 March 2020',
-        likes: 78,
-        dislikes: 7,
-        comments: 13),
-    Post(
-        username: 'mertture0',
-        userUrl: "lib/images/mert.jpeg",
-        photoUrl: "lib/images/post12.jpeg",
-        location: Location(country: "Turkey", city: 'Acıbadem'),
-        text: 'We have empty beds in ER tonight.',
-        date: '9 January 2020',
-        likes: 132,
-        dislikes: 8,
-        comments: 23),
-  ];
+      var x = await FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: _user.uid)
+          .get();
+
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
+
+      var profPosts = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('userid', isEqualTo: uid)
+          .get();
+      postsSize = profPosts.size;
+      profPosts.docs.forEach((doc) =>
+      {
+        posts.add(
+            Post(
+                pid: doc['pid'],
+                username: doc['username'],
+                userid: doc['userid'],
+                userPhotoUrl: doc['userPhotoURL'],
+                photoUrl: doc['postPhotoURL'],
+                location: doc['location'],
+                title: doc['title'],
+                content: doc['content'],
+                date: DateTime.fromMillisecondsSinceEpoch(
+                    doc['date'].seconds * 1000),
+                likes: doc['likes'],
+                comments: doc['comments'],
+                topics: doc['topics'],
+                isLiked: doc['likes'].contains(uid) ? true : false
+            )
+        )
+      });
+
+      posts..sort((a, b) => b.date.compareTo(a.date));
+      setState(() {
+        print("its in");
+        feedLoading = false;
+      });
+    }
+
   @override
   void initState() {
     super.initState();
-    //print(x.docs[0]['username']);
     _loadUserInfo();
-    //print("AAAAAAAAAAAAAAAA");
+    _loadUserProf();
   }
 
   Widget build(BuildContext context) {
@@ -236,7 +153,8 @@ class _ProfileState extends State<Profile> {
         photoUrl: photoUrl,
         phoneNumber: phoneNumber,
         profType: profType,
-        uid: uid);
+        uid: uid
+    );
     //_loadUserInfo();
     return MaterialApp(
       home: Scaffold(
@@ -275,14 +193,22 @@ class _ProfileState extends State<Profile> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Text(
-                        'Followers',
-                        style: TextStyle(
-                          color: AppColors.textColor,
-                          fontFamily: 'BrandonText',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      TextButton(
+                          child: Text('Followers',
+                            style: TextStyle(
+                              fontFamily: 'BrandonText',
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Followers(currentUser: currentUser)));
+                          }
                       ),
                       Text(
                         '${followers.length}',
@@ -301,14 +227,22 @@ class _ProfileState extends State<Profile> {
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
-                        'Following',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor,
+                      TextButton(
+                        child: Text('Following',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
                         ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Following(currentUser: currentUser)));
+                        }
                       ),
                       Text(
                         '${following.length}',
@@ -422,7 +356,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '${postsUser.length}',
+                        '$postsSize',
                         style: TextStyle(
                           fontFamily: 'BrandonText',
                           fontSize: 24.0,
@@ -510,7 +444,7 @@ class _ProfileState extends State<Profile> {
                               size: 9,
                             ),
                           ]),
-                      //SizedBox(height: 20.0),
+                      SizedBox(height: 20.0),
                       /*Container(
                             padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             width:double.infinity,
@@ -536,7 +470,7 @@ class _ProfileState extends State<Profile> {
                               decoration: BoxDecoration(
                                 //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 image: DecorationImage(
-                                  image: AssetImage(post.photoUrl),
+                                  image: NetworkImage(post.photoUrl),
                                   fit: BoxFit.fill,
                                 ),
                               ),

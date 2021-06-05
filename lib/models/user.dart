@@ -9,7 +9,7 @@ class user {
   String description;
   bool profType;
   String uid;
-
+  String activation;
   user(
       {this.username,
       this.fullname,
@@ -20,7 +20,8 @@ class user {
       this.photoUrl,
       this.phoneNumber,
       this.profType,
-      this.uid});
+      this.uid,
+      this.activation});
 
   user.fromData(Map<String, dynamic> data)
       : username = data['username'],
@@ -32,7 +33,8 @@ class user {
         photoUrl = data['photoUrl'],
         phoneNumber = data['phoneNumber'],
         profType = data['prof_type'],
-        uid = data['uid'];
+        uid = data['uid'],
+        activation = data['activation'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -46,6 +48,7 @@ class user {
       'phoneNumber': phoneNumber,
       'profType': profType,
       'uid': uid,
+      'activation': activation
     };
   }
 
