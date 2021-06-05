@@ -2,7 +2,8 @@ class SearchResult{
 
   String identifier;
   String description;
-
-  SearchResult({ this.identifier, this.description});
+  String itemID;
+  String photoUrl;
+  SearchResult({ this.identifier, this.description, this.itemID, this.photoUrl});
 
 }
