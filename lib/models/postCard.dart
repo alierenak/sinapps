@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/postView.dart';
+import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/otherProfilePage.dart';
+import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'post.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +21,37 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  user otherUser;
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "",
+      fullname = "",
+      phoneNumber = "",
+      photoUrl = "",
+      description = "",
+      uid = "";
+  List<dynamic> postsUser = [];
+  bool profType;
+  List<dynamic> posts = [];
+  void otherUserProf() async {
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: widget.post.userid)
+        .get();
+    setState(() {
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      profType = x.docs[0]['profType'];
+      uid = x.docs[0]['uid'];
+    });
+
+  }
+
 
   void goToComments(
       {BuildContext context, String postId, String ownerId, String mediaUrl}) {
@@ -57,10 +91,27 @@ class _PostCardState extends State<PostCard> {
       widget.post.likes = currLikes;
     });
   }
-
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
 
+    otherUserProf();
+  }
+
+
+  Widget build(BuildContext context) {
+    otherUser = user(
+        username: username,
+        fullname: fullname,
+        followers: followers,
+        following: following,
+        posts: postsUser,
+        description: description,
+        photoUrl: photoUrl,
+        phoneNumber: phoneNumber,
+        profType: profType,
+        uid: uid
+    );
     return Card(
       margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: Padding(
@@ -78,13 +129,32 @@ class _PostCardState extends State<PostCard> {
                       backgroundImage: NetworkImage(widget.post.userPhotoUrl),
                       radius: 32.0,
                     ),
-                    Text(
-                      widget.post.username,
+                    TextButton(
+                      child: Text(widget.post.username,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                       overflow: TextOverflow.clip,
+                      ),
+                      onPressed : () {
+                        FirebaseAuth _auth;
+                        User _user;
+                        _auth = FirebaseAuth.instance;
+                        _user = _auth.currentUser;
+                        print(otherUser.uid + " mm" + _user.uid);
+                        if (otherUser.uid == _user.uid) {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()));
+                        }
+                        else {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OtherProfilePage(otherUser: otherUser)));
+                        }
+                      }
                     ),
                   ],
                 ),

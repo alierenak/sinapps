@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class user {
   String username;
   String fullname;
@@ -32,9 +34,28 @@ class user {
         description = data['description'],
         photoUrl = data['photoUrl'],
         phoneNumber = data['phoneNumber'],
-        profType = data['prof_type'],
+        profType = data['profType'],
         uid = data['uid'],
         activation = data['activation'];
+
+  factory user.fromDocument(DocumentSnapshot doc) {
+      return user(
+       username: doc['username'],
+        fullname: doc['fullname'],
+        followers: doc['followers'],
+        following: doc['following'],
+        posts: doc['posts'],
+        description: doc['description'],
+        photoUrl: doc['photoUrl'],
+        phoneNumber: doc['phoneNumber'],
+        profType: doc['profType'],
+        uid: doc['uid'],
+        activation: doc['activation'],
+    );
+  }
+
+
+
 
   Map<String, dynamic> toJson() {
     return {
@@ -57,4 +78,4 @@ class user {
   // }
 }
 
-List<user> allUsers;
+//List<user> allUsers;
