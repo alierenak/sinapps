@@ -1,3 +1,4 @@
+import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
@@ -23,8 +24,10 @@ class OtherProfilePage extends StatefulWidget {
 }
 
 class _OtherProfilePageState extends State<OtherProfilePage> {
-  final controller = PageController(initialPage: 0);
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  final controller = PageController(initialPage: 0);
+  String followSit = "";
   List<dynamic> followers = [];
   List<dynamic> following = [];
   String username = "",
@@ -147,345 +150,360 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         uid: uid,
         activation: activation
     );
-    String followSit = "";
-    if (currentUser.following.contains(widget.otherUser.uid)) {
+
+    if (currentUser.following.contains(widget.otherUser.uid) && followSit != "Request sent") {
       followSit = "Unfollow";
     }
-    else {
+    else if (!currentUser.following.contains(widget.otherUser.uid) && followSit != "Request sent"){
       followSit = "Follow";
     }
 
 
+
     //_loadUserInfo();
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-            toolbarHeight: 48.0,
-            title: Text(
-              widget.otherUser.username,
-              style: TextStyle(
-                fontFamily: 'BrandonText',
-                fontSize: 24.0,
-                fontWeight: FontWeight.w600,
+    if (widget.otherUser.profType == true) {
+      return MaterialApp(
+        home: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.grey[200],
+          appBar: AppBar(
+              toolbarHeight: 48.0,
+              title: Text(
+                widget.otherUser.username,
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.grey[800],
-            elevation: 0.0,
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
-              IconButton(
-                color: Colors.grey[300],
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SettingsPage()));
-                },
-              ),
-            ]),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      TextButton(
-                          child: Text('Followers',
-                            style: TextStyle(
-                              fontFamily: 'BrandonText',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Followers(currentUser: widget.otherUser)));
-                          }
-                      ),
-                      Text(
-                        '${widget.otherUser.followers.length}',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(widget.otherUser.photoUrl),
-                    radius: 56.0,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      TextButton(
-                          child: Text('Following',
-                            style: TextStyle(
-                              fontFamily: 'BrandonText',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Following(currentUser: widget.otherUser)));
-                          }
-                      ),
-                      Text(
-                        '${widget.otherUser.following.length}',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 3.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        '${widget.otherUser.fullname}',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              SizedBox(
-                height: 3.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        '${widget.otherUser.description}',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 3.0),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 40,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.grey[750],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            side:
-                            BorderSide(width: 2, color: AppColors.primary),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 2),
-                            child: Text(
-                              'Subcribed Topics',
+              centerTitle: true,
+              backgroundColor: Colors.grey[800],
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  color: Colors.grey[300],
+                  icon: Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => BottomBar()));
+                  },
+                ),
+              ]),
+          body: Container(
+            padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Followers',
                               style: TextStyle(
                                 fontFamily: 'BrandonText',
-                                fontSize: 12.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.textColor,
                               ),
-                              textAlign: TextAlign.center,
                             ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Followers(
+                                              currentUser: widget.otherUser)));
+                            }
+                        ),
+                        Text(
+                          '${widget.otherUser.followers.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
                           ),
-                          onPressed: () {
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Topics()));
-                          },
                         ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        'Posts',
-                        style: TextStyle(
-                          color: AppColors.textColor,
-                          fontFamily: 'BrandonText',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        '$postsSize',
-                        style: TextStyle(
-                          fontFamily: 'BrandonText',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 40,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.grey[750],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            side:
-                            BorderSide(width: 2, color: AppColors.primary),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 2),
-                            child: Text(
-                              currentUser.following.contains(widget.otherUser.uid) ? 'Unfollow' :'Follow',
+                      ],
+                    ),
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(widget.otherUser.photoUrl),
+                      radius: 56.0,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Following',
                               style: TextStyle(
                                 fontFamily: 'BrandonText',
-                                fontSize: 12.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.textColor,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          onPressed: () async {
-
-                            if (followSit == "Unfollow") {
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(currentUser.uid)
-                                  .update({
-                                "following": FieldValue.arrayRemove(
-                                    [widget.otherUser.uid])
-                              });
-
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(widget.otherUser.uid)
-                                  .update({
-                                "followers": FieldValue.arrayRemove(
-                                    [currentUser.uid])
-                              });
-                              setState(() {
-                                followSit = "Follow";
-                              });
-
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Following(
+                                              currentUser: widget.otherUser)));
                             }
-                            else {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(currentUser.uid)
-                                  .update({
-                                "following": FieldValue.arrayUnion(
-                                    [widget.otherUser.uid])
-                              });
-
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(widget.otherUser.uid)
-                                  .update({
-                                "followers": FieldValue.arrayUnion(
-                                    [currentUser.uid])
-                              });
-                              setState(() {
-                                followSit = "Unfollow";
-                              });
-
-                            }
-                            // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
-                          },
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        Text(
+                          '${widget.otherUser.following.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.fullname}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
 
-              Divider(
-                color: Colors.grey[800],
-                height: 20,
-                thickness: 2.0,
-              ),
-              //PageView(
-              //controller: controller,
-              //scrollDirection: Axis.horizontal,
-              //children: <Widget>[
-              //Column(
-              //children: <Widget>[
-              //SizedBox(height: 8.0,),
-              Expanded(
-                //crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.description}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
 
-                child: PageView(
-                  controller: controller,
-                  scrollDirection: Axis.horizontal,
+                SizedBox(height: 3.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // First View
-                    Stack(children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              color: Colors.grey[700],
-                              size: 12,
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
                             ),
-                            Icon(
-                              Icons.circle,
-                              color: Colors.grey[350],
-                              size: 9,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                'Subcribed Topics',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                          ]),
-                      SizedBox(height: 20.0),
-                      /*Container(
+                            onPressed: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => Topics()));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Posts',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontFamily: 'BrandonText',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          '$postsSize',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                '$followSit',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (followSit == "Unfollow") {
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayRemove(
+                                      [widget.otherUser.uid])
+                                });
+
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayRemove(
+                                      [currentUser.uid])
+                                });
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content: Text(
+                                    'User unfollowed!',
+                                  ),
+                                  duration: Duration(seconds: 2),
+                                ));
+                                //setState(() {
+                                  followSit = "Follow";
+                                //});
+                              }
+                              else {
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayUnion(
+                                      [widget.otherUser.uid])
+                                });
+
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayUnion(
+                                      [currentUser.uid])
+                                });
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content: Text(
+                                    'User followed!',
+                                  ),
+                                  duration: Duration(seconds: 2),
+                                ));
+                                //setState(() {
+                                  followSit = "Unfollow";
+                                //});
+                              }
+                              // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                Divider(
+                  color: Colors.grey[800],
+                  height: 20,
+                  thickness: 2.0,
+                ),
+                //PageView(
+                //controller: controller,
+                //scrollDirection: Axis.horizontal,
+                //children: <Widget>[
+                //Column(
+                //children: <Widget>[
+                //SizedBox(height: 8.0,),
+                Expanded(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+
+                  child: PageView(
+                    controller: controller,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      // First View
+                      Stack(children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[700],
+                                size: 12,
+                              ),
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[350],
+                                size: 9,
+                              ),
+                            ]),
+                        SizedBox(height: 20.0),
+                        /*Container(
                             padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             width:double.infinity,
                             child: SingleChildScrollView(
@@ -499,71 +517,841 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                             ),
 
                           ),*/
-                      //padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                      //SizedBox(height: 20.0),
-                      GridView.count(
-                        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                        crossAxisCount: 3,
-                        children: posts.map((post) {
-                          return Container(
-                              margin: EdgeInsets.all(2.0),
-                              decoration: BoxDecoration(
-                                //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                image: DecorationImage(
-                                  image: NetworkImage(post.photoUrl),
-                                  fit: BoxFit.fill,
+                        //padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        //SizedBox(height: 20.0),
+                        GridView.count(
+                          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          crossAxisCount: 3,
+                          children: posts.map((post) {
+                            return Container(
+                                margin: EdgeInsets.all(2.0),
+                                decoration: BoxDecoration(
+                                  //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  image: DecorationImage(
+                                    image: NetworkImage(post.photoUrl),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                              ),
-                              height: 150.0);
-                        }).toList(),
-                      ),
-                    ]),
+                                height: 150.0);
+                          }).toList(),
+                        ),
+                      ]),
 
-                    // Second View
-                    Stack(children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              color: Colors.grey[350],
-                              size: 9,
+                      // Second View
+                      Stack(children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[350],
+                                size: 9,
+                              ),
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[700],
+                                size: 12,
+                              ),
+                            ]),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          width: double.infinity,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: posts
+                                  .map((post) =>
+                                  PostCard(
+                                      post: post,
+                                      delete: () {
+                                        setState(() {
+                                          posts.remove(post);
+                                        });
+                                      }))
+                                  .toList(),
                             ),
-                            Icon(
-                              Icons.circle,
-                              color: Colors.grey[700],
-                              size: 12,
-                            ),
-                          ]),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                        width: double.infinity,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: posts
-                                .map((post) => PostCard(
-                                post: post,
-                                delete: () {
-                                  setState(() {
-                                    posts.remove(post);
-                                  });
-                                }))
-                                .toList(),
                           ),
                         ),
-                      ),
-                    ]),
-                  ],
+                      ]),
+                    ],
+                  ),
                 ),
-              ),
-              //],
-              //),
-              //],
-            ],
+                //],
+                //),
+                //],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+
+      );
+    }
+    else if (!currentUser.following.contains(widget.otherUser.uid) && widget.otherUser.profType == false) {
+      return MaterialApp(
+        home: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.grey[200],
+          appBar: AppBar(
+              toolbarHeight: 48.0,
+              title: Text(
+                widget.otherUser.username,
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.grey[800],
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  color: Colors.grey[300],
+                  icon: Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => BottomBar()));
+                  },
+                ),
+              ]),
+          body: Container(
+            padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Followers',
+                              style: TextStyle(
+                                fontFamily: 'BrandonText',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor,
+                              ),
+                            ),
+                            /*onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Followers(
+                                              currentUser: widget.otherUser)));
+                            }*/
+                        ),
+                        Text(
+                          '${widget.otherUser.followers.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(widget.otherUser.photoUrl),
+                      radius: 56.0,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Following',
+                              style: TextStyle(
+                                fontFamily: 'BrandonText',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor,
+                              ),
+                            ),
+                            /*onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Following(
+                                              currentUser: widget.otherUser)));
+                            }*/
+                        ),
+                        Text(
+                          '${widget.otherUser.following.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.fullname}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.description}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 3.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                'Subscribed Topics',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onPressed: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => Topics()));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Posts',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontFamily: 'BrandonText',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          '$postsSize',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                '$followSit',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (followSit == "Unfollow") {
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayRemove(
+                                      [widget.otherUser.uid])
+                                });
+
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayRemove(
+                                      [currentUser.uid])
+                                });
+                                setState(() {
+                                  followSit = "Follow";
+                                });
+                              }
+                              else if (followSit == "Follow"){
+                                /*FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayUnion(
+                                      [widget.otherUser.uid])
+                                });
+
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayUnion(
+                                      [currentUser.uid])
+                                });*/
+
+                                /*setState(() {
+                                  followSit = "Request sent";
+                                });*/
+
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Follow request is sent!',
+                                  ),
+                                  duration: Duration(seconds: 2),
+                                ));
+                              }
+                              // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                Divider(
+                  color: Colors.grey[800],
+                  height: 20,
+                  thickness: 2.0,
+                ),
+                SizedBox(height: 20.0),
+
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'This account is private \n',
+                        style: TextStyle(
+                        color: AppColors.textColor,
+                          fontFamily: 'BrandonText',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.lock,
+                        size: 100.0,
+                        color: Colors.grey[1000],
+                      ),
+                    ],
+                  ),
+                ),
+
+
+
+                //PageView(
+                //controller: controller,
+                //scrollDirection: Axis.horizontal,
+                //children: <Widget>[
+                //Column(
+                //children: <Widget>[
+                //SizedBox(height: 8.0,),
+
+                //],
+                //),
+                //],
+              ],
+            ),
+          ),
+        ),
+
+      );
+    }
+
+    else if (widget.otherUser.profType == false && currentUser.following.contains(widget.otherUser.uid)) {
+      return MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.grey[200],
+          appBar: AppBar(
+              toolbarHeight: 48.0,
+              title: Text(
+                widget.otherUser.username,
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.grey[800],
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  color: Colors.grey[300],
+                  icon: Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => BottomBar()));
+                  },
+                ),
+              ]),
+          body: Container(
+            padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Followers',
+                              style: TextStyle(
+                                fontFamily: 'BrandonText',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Followers(
+                                              currentUser: widget.otherUser)));
+                            }
+                        ),
+                        Text(
+                          '${widget.otherUser.followers.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(widget.otherUser.photoUrl),
+                      radius: 56.0,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        TextButton(
+                            child: Text('Following',
+                              style: TextStyle(
+                                fontFamily: 'BrandonText',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Following(
+                                              currentUser: widget.otherUser)));
+                            }
+                        ),
+                        Text(
+                          '${widget.otherUser.following.length}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.fullname}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 3.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          '${widget.otherUser.description}',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 3.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                'Subcribed Topics',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onPressed: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => Topics()));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Posts',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontFamily: 'BrandonText',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          '$postsSize',
+                          style: TextStyle(
+                            fontFamily: 'BrandonText',
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[750],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              side:
+                              BorderSide(width: 2, color: AppColors.primary),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                              child: Text(
+                                currentUser.following.contains(
+                                    widget.otherUser.uid)
+                                    ? 'Unfollow'
+                                    : 'Follow',
+                                style: TextStyle(
+                                  fontFamily: 'BrandonText',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (followSit == "Unfollow") {
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayRemove(
+                                      [widget.otherUser.uid])
+                                });
+
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayRemove(
+                                      [currentUser.uid])
+                                });
+                                setState(() {
+                                  followSit = "Follow";
+                                });
+                              }
+                              else {
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(currentUser.uid)
+                                    .update({
+                                  "following": FieldValue.arrayUnion(
+                                      [widget.otherUser.uid])
+                                });
+
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.otherUser.uid)
+                                    .update({
+                                  "followers": FieldValue.arrayUnion(
+                                      [currentUser.uid])
+                                });
+                                setState(() {
+                                  followSit = "Unfollow";
+                                });
+                              }
+                              // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                Divider(
+                  color: Colors.grey[800],
+                  height: 20,
+                  thickness: 2.0,
+                ),
+                //PageView(
+                //controller: controller,
+                //scrollDirection: Axis.horizontal,
+                //children: <Widget>[
+                //Column(
+                //children: <Widget>[
+                //SizedBox(height: 8.0,),
+                Expanded(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+
+                  child: PageView(
+                    controller: controller,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      // First View
+                      Stack(children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[700],
+                                size: 12,
+                              ),
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[350],
+                                size: 9,
+                              ),
+                            ]),
+                        SizedBox(height: 20.0),
+                        /*Container(
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                            width:double.infinity,
+                            child: SingleChildScrollView(
+                              child: Column(
+
+                                children: posts.map((post) => littlePostCard(
+                                    post: post,
+                                )).toList(),
+
+                              ),
+                            ),
+
+                          ),*/
+                        //padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        //SizedBox(height: 20.0),
+                        GridView.count(
+                          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          crossAxisCount: 3,
+                          children: posts.map((post) {
+                            return Container(
+                                margin: EdgeInsets.all(2.0),
+                                decoration: BoxDecoration(
+                                  //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  image: DecorationImage(
+                                    image: NetworkImage(post.photoUrl),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                height: 150.0);
+                          }).toList(),
+                        ),
+                      ]),
+
+                      // Second View
+                      Stack(children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[350],
+                                size: 9,
+                              ),
+                              Icon(
+                                Icons.circle,
+                                color: Colors.grey[700],
+                                size: 12,
+                              ),
+                            ]),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          width: double.infinity,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: posts
+                                  .map((post) =>
+                                  PostCard(
+                                      post: post,
+                                      delete: () {
+                                        setState(() {
+                                          posts.remove(post);
+                                        });
+                                      }))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ],
+                  ),
+                ),
+                //],
+                //),
+                //],
+              ],
+            ),
+          ),
+        ),
+
+      );
+    }
   }
 }

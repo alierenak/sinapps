@@ -105,8 +105,7 @@ class _AddPostState extends State<AddPost> {
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
     });
-    //print(x.docs[0]['username']);
-    //print(x);
+
 
 
 
