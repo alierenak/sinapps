@@ -193,7 +193,8 @@ class _AddPostState extends State<AddPost> {
       profType: profType,
       uid: uid,
     );
-    print(photoUrl);
+    //print(_uploadedFileURL);
+    //print("fotofoto");
     final CollectionReference posts = FirebaseFirestore.instance.collection('posts');
     FirebaseAuth _auth;
     User _user;
@@ -209,7 +210,7 @@ class _AddPostState extends State<AddPost> {
           "content": textf,
           "date": DateTime.now(),
           "likes": [],
-          "location": GeoPoint(loc.latitude, loc.longitude),
+          "location": GeoPoint(41.122543, 29.006332),
           "title": caption,
           "topics": [],
           "userid": currentUser.uid,
@@ -220,6 +221,7 @@ class _AddPostState extends State<AddPost> {
         });
       } catch (e) {
         print(e);
+        print("error");
       }
     }
 
@@ -465,6 +467,7 @@ class _AddPostState extends State<AddPost> {
                               onPressed: () async {
 
                                 await addPost();
+                                print("added");
                                 print(caption);
                                 print(textf);
                                 //AddPostCrash();

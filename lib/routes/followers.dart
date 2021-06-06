@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sinapps/routes/otherProfilePage.dart';
 import 'package:sinapps/utils/colors.dart';
 
 import 'package:sinapps/models/user.dart';
@@ -26,7 +28,10 @@ class _FollowersState extends State<Followers> {
   Widget build(BuildContext context) {
     userId = widget.currentUser.uid;
     var otherUserIds = widget.currentUser.following;
-
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -73,25 +78,18 @@ class _FollowersState extends State<Followers> {
                     ),
                   ),
                   onTap: () {
-                    /*String otherUsername;
-                if (doc["otherUsername"] ==
-                    widget.currentUser.username) {
-                  otherUsername = doc["secondUsername"];
-                } else {
-                  otherUsername = doc["otherUsername"];
-                }
-
-                /*Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Profile(
-                          currUser: widget.currentUser,
-                          conversationId: doc["conversationID"],
-                          members: doc["members"],
-                          otherUsername: otherUsername,
-                          photoUrl: doc["photoUrl"],
-                          otherPhotoUrl: doc["otherPhotoUrl"],
-                        )));*/*/
+                    if (doc['uid'] == _user.uid) {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Profile()));
+                    }
+                    else {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OtherProfilePage(otherUser: user.fromDocument(doc))));
+                    }
                   },
                 )))
                 .toList(),
