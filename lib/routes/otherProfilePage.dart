@@ -1,3 +1,4 @@
+import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
@@ -14,7 +15,6 @@ import 'package:sinapps/routes/followers.dart';
 
 class OtherProfilePage extends StatefulWidget {
   const OtherProfilePage({Key key, this.otherUser}) : super(key: key);
-
 
   final user otherUser;
 
@@ -98,10 +98,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         .where('userid', isEqualTo: uid)
         .get();
     postsSize = profPosts.size;
-    profPosts.docs.forEach((doc) =>
-    {
-      posts.add(
-          Post(
+    profPosts.docs.forEach((doc) => {
+          posts.add(Post(
               pid: doc['pid'],
               username: doc['username'],
               userid: doc['userid'],
@@ -115,10 +113,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
               likes: doc['likes'],
               comments: doc['comments'],
               topics: doc['topics'],
-              isLiked: doc['likes'].contains(uid) ? true : false
-          )
-      )
-    });
+              isLiked: doc['likes'].contains(uid) ? true : false))
+        });
 
     posts..sort((a, b) => b.date.compareTo(a.date));
     setState(() {
@@ -146,8 +142,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         phoneNumber: phoneNumber,
         profType: profType,
         uid: uid,
-        activation: activation
-    );
+        activation: activation);
     //_loadUserInfo();
     return MaterialApp(
       home: Scaffold(
@@ -169,10 +164,10 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
             actions: <Widget>[
               IconButton(
                 color: Colors.grey[300],
-                icon: Icon(Icons.settings),
+                icon: Icon(Icons.home),
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SettingsPage()));
+                      MaterialPageRoute(builder: (context) => BottomBar()));
                 },
               ),
             ]),
@@ -187,7 +182,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   Column(
                     children: <Widget>[
                       TextButton(
-                          child: Text('Followers',
+                          child: Text(
+                            'Followers',
                             style: TextStyle(
                               fontFamily: 'BrandonText',
                               fontSize: 18.0,
@@ -201,8 +197,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         Followers(currentUser: currentUser)));
-                          }
-                      ),
+                          }),
                       Text(
                         '${followers.length}',
                         style: TextStyle(
@@ -221,7 +216,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   Column(
                     children: <Widget>[
                       TextButton(
-                          child: Text('Following',
+                          child: Text(
+                            'Following',
                             style: TextStyle(
                               fontFamily: 'BrandonText',
                               fontSize: 18.0,
@@ -235,8 +231,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         Following(currentUser: currentUser)));
-                          }
-                      ),
+                          }),
                       Text(
                         '${following.length}',
                         style: TextStyle(
@@ -314,7 +309,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             side:
-                            BorderSide(width: 2, color: AppColors.primary),
+                                BorderSide(width: 2, color: AppColors.primary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -371,7 +366,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             side:
-                            BorderSide(width: 2, color: AppColors.primary),
+                                BorderSide(width: 2, color: AppColors.primary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -492,12 +487,12 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                           child: Column(
                             children: posts
                                 .map((post) => PostCard(
-                                post: post,
-                                delete: () {
-                                  setState(() {
-                                    posts.remove(post);
-                                  });
-                                }))
+                                    post: post,
+                                    delete: () {
+                                      setState(() {
+                                        posts.remove(post);
+                                      });
+                                    }))
                                 .toList(),
                           ),
                         ),

@@ -29,10 +29,10 @@ import 'package:sinapps/routes/geopoint/network.dart';
 import 'package:sinapps/routes/geopoint/locationclass.dart';
 
 //class AddPost extends StatefulWidget {
-  //const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
+//const AddPost({Key key, this.analytics, this.observer}) : super(key: key);
 
-  //final FirebaseAnalytics analytics;
-  //final FirebaseAnalyticsObserver observer;
+//final FirebaseAnalytics analytics;
+//final FirebaseAnalyticsObserver observer;
 
 class AddPost extends StatefulWidget {
   //const AddPost({Key key, this.currentUser}) : super(key: key);
@@ -46,7 +46,7 @@ class _AddPostState extends State<AddPost> {
   user currentUser;
   final picker = ImagePicker();
   File _imageFile = null;
-  String _uploadedFileURL =null;
+  String _uploadedFileURL = null;
   final _formKey = GlobalKey<FormState>();
 
   Future pickImage(source) async {
@@ -62,7 +62,7 @@ class _AddPostState extends State<AddPost> {
   Future uploadFile(BuildContext context) async {
     String fileName = Path.basename(_imageFile.path);
     Reference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('post_pictures/$fileName');
+        FirebaseStorage.instance.ref().child('post_pictures/$fileName');
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     setState(() {
@@ -72,7 +72,12 @@ class _AddPostState extends State<AddPost> {
 
   List<dynamic> followers = [];
   List<dynamic> following = [];
-  String username = "", fullname = "", phoneNumber = "", photoUrlUser = "", description = "", uid = "";
+  String username = "",
+      fullname = "",
+      phoneNumber = "",
+      photoUrlUser = "",
+      description = "",
+      uid = "";
   bool profType;
   List<dynamic> postsUser = [];
   //var userInff;
@@ -90,7 +95,6 @@ class _AddPostState extends State<AddPost> {
     //print(doc['username'] + " " + doc['fullname']);
     //print(doc.data()['username'])
 
-
     //});
     //});
     //print(x.docs[0]['username']);
@@ -107,9 +111,6 @@ class _AddPostState extends State<AddPost> {
     });
     //print(x.docs[0]['username']);
     //print(x);
-
-
-
   }
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
@@ -121,16 +122,18 @@ class _AddPostState extends State<AddPost> {
     crashlytics.crash();
   }
 
-    Future _addPost(List<Post> posts) async {
-
-    final CollectionReference collection = FirebaseFirestore.instance.collection('posts');
+  Future _addPost(List<Post> posts) async {
+    final CollectionReference collection =
+        FirebaseFirestore.instance.collection('posts');
     for (var i = 0; i < posts.length; i++) {
-
-      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
 
       File _imageFile = File(pickedFile.path);
-      String refID = "${posts[i].userid}_${Timestamp.fromDate(DateTime.now()).nanoseconds}";
-      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('post_pictures/$refID');
+      String refID =
+          "${posts[i].userid}_${Timestamp.fromDate(DateTime.now()).nanoseconds}";
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('post_pictures/$refID');
       UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
       var imageUrl = await (await uploadTask).ref.getDownloadURL();
 
@@ -150,10 +153,11 @@ class _AddPostState extends State<AddPost> {
           "postPhotoURL": imageUrl,
           "username": posts[i].username,
           "topics": posts[i].topics
-        }).then((value) => print("${posts[i].date}\t${posts[i].userid}\t${posts[i].username}\t${imageUrl}\t${posts[i].userPhotoUrl}\t${posts[i].title}"));
+        }).then((value) => print(
+            "${posts[i].date}\t${posts[i].userid}\t${posts[i].username}\t${imageUrl}\t${posts[i].userPhotoUrl}\t${posts[i].title}"));
         //.catchError((error) => print("Failed to add user: $error"));
       } catch (e) {
-      print(e);
+        print(e);
       }
     }
   }
@@ -173,12 +177,9 @@ class _AddPostState extends State<AddPost> {
 
   Location loc = Location();
 
-
   void getLocationData() async {
-   await loc.getCurrentLocation();
-
+    await loc.getCurrentLocation();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +196,8 @@ class _AddPostState extends State<AddPost> {
       uid: uid,
     );
     print(photoUrl);
-    final CollectionReference posts = FirebaseFirestore.instance.collection('posts');
+    final CollectionReference posts =
+        FirebaseFirestore.instance.collection('posts');
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
@@ -281,11 +283,11 @@ class _AddPostState extends State<AddPost> {
                       Expanded(
                         flex: 1,
                         child: TextField(
-                          onChanged: (value){
+                          onChanged: (value) {
                             setState(() {
                               caption = value;
                             });
-                          } ,
+                          },
                           style: TextStyle(
                             color: AppColors.textColor,
                             fontSize: 14,
@@ -318,11 +320,11 @@ class _AddPostState extends State<AddPost> {
                       Expanded(
                         flex: 1,
                         child: TextField(
-                          onChanged: (value){
+                          onChanged: (value) {
                             setState(() {
                               textf = value;
                             });
-                          } ,
+                          },
                           style: TextStyle(
                             color: AppColors.textColor,
                             fontSize: 14,
@@ -464,7 +466,6 @@ class _AddPostState extends State<AddPost> {
                                 color: Colors.black54,
                               ),
                               onPressed: () async {
-
                                 await addPost();
                                 print(caption);
                                 print(textf);
