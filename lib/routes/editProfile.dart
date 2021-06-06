@@ -77,9 +77,9 @@ class _EditProfileState extends State<EditProfile> {
       bioValid = true;
     }
     if (_selections[0] == true) {
-      priv = true;
-    } else {
       priv = false;
+    } else {
+      priv = true;
     }
 
     if (bioValid && phoneNumberValid) {
@@ -182,13 +182,13 @@ class _EditProfileState extends State<EditProfile> {
 
   Column buildPrivateField() {
     if (widget.currentUser.profType == true && idx == 0) {
-      _selections[0] = true;
-      _selections[1] = false;
+      _selections[0] = false;
+      _selections[1] = true;
       idx++;
     } else if (idx == 0) {
       idx++;
-      _selections[1] = true;
-      _selections[0] = false;
+      _selections[1] = false;
+      _selections[0] = true;
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,7 @@ class OtherProfilePage extends StatefulWidget {
 
 class _OtherProfilePageState extends State<OtherProfilePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  int count = 0;
   final controller = PageController(initialPage: 0);
   String followSit = "";
   List<dynamic> followers = [];
@@ -137,6 +137,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   }
 
   Widget build(BuildContext context) {
+
     currentUser = user(
         username: username,
         fullname: fullname,
@@ -151,13 +152,15 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         activation: activation
     );
 
-    if (currentUser.following.contains(widget.otherUser.uid) && followSit != "Request sent") {
+    if (currentUser.following.contains(widget.otherUser.uid) && count == 1) {
       followSit = "Unfollow";
+      count++;
     }
-    else if (!currentUser.following.contains(widget.otherUser.uid) && followSit != "Request sent"){
+    else if (!currentUser.following.contains(widget.otherUser.uid) && count == 1){
       followSit = "Follow";
+      count++;
     }
-
+    count++;
 
 
     //_loadUserInfo();
@@ -427,12 +430,12 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                   ),
                                   duration: Duration(seconds: 2),
                                 ));
-                                //setState(() {
+                                setState(() {
                                   followSit = "Follow";
-                                //});
+                                });
                               }
                               else {
-                                FirebaseFirestore.instance
+                                await FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(currentUser.uid)
                                     .update({
@@ -440,7 +443,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                       [widget.otherUser.uid])
                                 });
 
-                                FirebaseFirestore.instance
+                                await FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(widget.otherUser.uid)
                                     .update({
@@ -453,9 +456,9 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                   ),
                                   duration: Duration(seconds: 2),
                                 ));
-                                //setState(() {
+                                setState(() {
                                   followSit = "Unfollow";
-                                //});
+                                });
                               }
                               // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
                             },
