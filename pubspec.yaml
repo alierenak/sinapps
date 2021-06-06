@@ -42,13 +42,16 @@ dependencies:
   #cached_network_image: ^3.0.0
   flutter_svg: ^0.18.0
   pin_code_fields: ^7.1.0
+
   #pic
   image_picker: ^0.7.5
   firebase_storage: ^8.1.0
   provider: ^4.0.5
   get_it: ^4.0.1
-  geolocator: ^3.0.1
-
+  geolocator: ^5.1.1
+  geocoder: ^0.2.1
+  page_transition: ^2.0.2
+  sliding_sheet: ^0.5.0
   flutter_spinkit: ^3.1.0
 
 

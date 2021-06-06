@@ -69,5 +69,11 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>Sinapps needs to access your local photos</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Sinapps needs access to location when open.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Sinapps needs access to location when in the background.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Sinapps needs access to location when open and in the background.</string>
 </dict>
 </plist>

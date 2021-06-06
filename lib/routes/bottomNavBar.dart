@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sinapps/routes/notificationpage.dart';
 import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/routes/searchview.dart';
@@ -68,18 +69,11 @@ class _BottomBarState extends State<BottomBar> {
   void changePage(int index) {
     setState(() {
       FirebaseAnalytics().logEvent(name: views[index],parameters:null);
-      /*_loadUserInfo();
-      currentUser = user(
-          username: username,
-          fullname: fullname,
-          followers: followers,
-          following: following,
-          posts: postsUser,
-          description: description,
-          photoUrl: photoUrl,
-          phoneNumber: phoneNumber);
-*/
-      currentPage = index;
+      if (index == 2) {
+        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: AddPost()));
+      } else {
+        currentPage = index;
+      }
     });
   }
 
