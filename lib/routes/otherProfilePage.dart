@@ -42,38 +42,10 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   List<dynamic> posts = [];
   //var userInff;
   user currentUser;
-  /*void _loadUserInfo() async {
-    FirebaseAuth _auth;
-    User _user;
-    _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
-    var x = await FirebaseFirestore.instance
-        .collection('users')
-        .where('uid', isEqualTo: _user.uid)
-        .get();
-
-    //.then((QuerySnapshot querySnapshot) {
-    // querySnapshot.docs.forEach((doc) async {
-    //print(doc['username'] + " " + doc['fullname']);
-    //print(doc.data()['username'])
-
-    //});
-    //});
-    setState(() {
-      username = x.docs[0]['username'];
-      fullname = x.docs[0]['fullname'];
-      followers = x.docs[0]['followers'];
-      following = x.docs[0]['following'];
-      phoneNumber = x.docs[0]['phoneNumber'];
-      photoUrl = x.docs[0]['photoUrl'];
-      description = x.docs[0]['description'];
-      postsUser = x.docs[0]['posts'];
-      profType = x.docs[0]['profType'];
-      uid = x.docs[0]['uid'];
-    });
-  }*/
   bool feedLoading = true;
   int postsSize = 0;
+
+
   void _loadUserProf() async {
     FirebaseAuth _auth;
     User _user;
@@ -101,8 +73,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         .where('userid', isEqualTo: widget.otherUser.uid)
         .get();
     postsSize = profPosts.size;
-    profPosts.docs.forEach((doc) =>
-    {
+
+    profPosts.docs.forEach((doc) => {
       posts.add(
           Post(
               pid: doc['pid'],
@@ -170,30 +142,32 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
           key: _scaffoldKey,
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
-              toolbarHeight: 48.0,
-              title: Text(
-                widget.otherUser.username,
-                style: TextStyle(
-                  fontFamily: 'BrandonText',
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.grey[800],
-              elevation: 0.0,
-              automaticallyImplyLeading: false,
-              actions: <Widget>[
-                IconButton(
-                  color: Colors.grey[300],
-                  icon: Icon(Icons.home),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => BottomBar()));
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
                   },
-                ),
-              ]),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 30.0,
+                    color: Colors.grey[300],
+                  )
+              ),
+            ),
+            toolbarHeight: 48.0,
+            title: Text(
+              widget.otherUser.username,
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
+          ),
           body: Container(
             padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
             child: Column(

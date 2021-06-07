@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sinapps/models/searchResult.dart';
 import 'package:sinapps/models/searchResultCard.dart';
 import 'package:sinapps/models/user.dart';
@@ -21,12 +22,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   static const historyLength = 5;
   var results = [];
-  List<String> _searchHistory = [
-    'doctor',
-    'acibadem',
-    'dr mert',
-    'atmacaa',
-  ];
+  List<String> _searchHistory = [];
+  SharedPreferences prefs;
 
   List<String> filteredSearchHistory;
 
@@ -36,6 +33,7 @@ class _SearchPageState extends State<SearchPage> {
   List<String> filteredSearchTerms({
     @required String filter,
   }) {
+
     // Filtering among search history to make search easy
     if (filter != null && filter.isNotEmpty) {
       return _searchHistory.reversed
@@ -63,6 +61,7 @@ class _SearchPageState extends State<SearchPage> {
       }
       filteredSearchHistory = filteredSearchTerms(filter: null);
     }
+    prefs.setStringList("search_history", _searchHistory);
   }
 
   void deleteSearchTerm(String element) {
@@ -83,14 +82,30 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    loadSearchHistory();
     // We are displaying this variable in screen and
     // we need to be sure it is filtered from scratch
     controller = FloatingSearchBarController();
-    filteredSearchHistory = filteredSearchTerms(filter: null);
+  }
+
+  void loadSearchHistory() async {
+    prefs = await SharedPreferences.getInstance();
+    var _sh = prefs.getStringList("search_history");
+    if (_sh == null) {
+      prefs.setStringList("search_history", []);
+    } else {
+      // safe to get
+      _searchHistory = _sh;
+    }
+  }
+
+  void saveHistory() {
+    prefs.setStringList("search_history", _searchHistory);
   }
 
   @override
   void dispose() {
+    saveHistory();
     controller.dispose();
     super.dispose();
   }
@@ -130,12 +145,9 @@ class _SearchPageState extends State<SearchPage> {
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
     ).get();
-    print("postsin");
-    print(posts.docs.length);
     posts.docs.forEach((doc) => {
       postResults.add(
           SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['postPhotoURL'])
-
       )
     });
 
@@ -203,6 +215,7 @@ class _SearchPageState extends State<SearchPage> {
                 color: Colors.white,
                 elevation: 4,
                 child: Builder(builder: (context) {
+                  filteredSearchHistory = filteredSearchTerms(filter: null);
                   if (filteredSearchHistory.isEmpty &&
                       controller.query.isEmpty) {
                     return Container(
@@ -296,17 +309,20 @@ class SearchResultsListView extends StatelessWidget {
 
   noResultsFound(context) {
     return [
-       Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'SEARCH NOT FOUND',
-              style: Theme.of(context).textTheme.headline5,
-            )
-          ],
-        ),
-      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+                "No results found!"
+            ),
+          ),
+          Container(
+            width: double.infinity,
+          )
+        ],
+      )
     ];
   }
 
@@ -352,6 +368,7 @@ class SearchResultsListView extends StatelessWidget {
                       sr: element,
                     )).toList(),
           ),
+          Divider(),
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: Text(

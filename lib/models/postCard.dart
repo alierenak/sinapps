@@ -21,37 +21,64 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  user otherUser;
-  List<dynamic> followers = [];
-  List<dynamic> following = [];
-  String username = "",
-      fullname = "",
-      phoneNumber = "",
-      photoUrl = "",
-      description = "",
-      uid = "";
-  List<dynamic> postsUser = [];
-  bool profType;
-  List<dynamic> posts = [];
+  user otherUser, currentUser;
+  bool isLoaded = false;
+
   void otherUserProf() async {
     var x = await FirebaseFirestore.instance
         .collection('users')
         .where('uid', isEqualTo: widget.post.userid)
         .get();
-    setState(() {
-      username = x.docs[0]['username'];
-      fullname = x.docs[0]['fullname'];
-      followers = x.docs[0]['followers'];
-      following = x.docs[0]['following'];
-      phoneNumber = x.docs[0]['phoneNumber'];
-      photoUrl = x.docs[0]['photoUrl'];
-      description = x.docs[0]['description'];
-      profType = x.docs[0]['profType'];
-      uid = x.docs[0]['uid'];
-    });
+
+    otherUser = user(
+        username:  x.docs[0]['username'],
+        fullname: x.docs[0]['fullname'],
+        followers: x.docs[0]['followers'],
+        following: x.docs[0]['following'],
+        posts: [], // TODO: IS IT IMPORTANT?
+        description: x.docs[0]['description'],
+        photoUrl: x.docs[0]['photoUrl'],
+        phoneNumber: x.docs[0]['phoneNumber'],
+        profType: x.docs[0]['profType'],
+        uid: x.docs[0]['uid'],
+    );
+
+    if (currentUser != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
 
   }
 
+  void loadUserInfo() async {
+
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User _user = _auth.currentUser;
+
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+
+    currentUser = user(
+        followers: x.docs[0]['followers'],
+        following: x.docs[0]['following'],
+        username: x.docs[0]['username'],
+        fullname: x.docs[0]['fullname'],
+        phoneNumber: x.docs[0]['phoneNumber'],
+        photoUrl: x.docs[0]['photoUrl'],
+        description: x.docs[0]['description'],
+        profType: x.docs[0]['profType'],
+        uid: x.docs[0]['uid']
+    );
+
+    if (otherUser != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
 
   void goToComments(
       {BuildContext context, String postId, String ownerId, String mediaUrl}) {
@@ -63,26 +90,20 @@ class _PostCardState extends State<PostCard> {
     }));
   }
 
-
   void likeAction(String postid) async {
 
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    User _user = _auth.currentUser;
-
-    print(postid);
     var currPost = await FirebaseFirestore.instance
         .collection('posts')
         .where('pid', isEqualTo: postid)
         .get();
 
     var currLikes = currPost.docs[0]['likes'];
-
     bool flag;
-    if (currLikes.contains(_user.uid)) {
-      currLikes.remove(_user.uid);
+    if (currLikes.contains(currentUser.uid)) {
+      currLikes.remove(currentUser.uid);
       flag = false;
     } else {
-      currLikes.add(_user.uid);
+      currLikes.add(currentUser.uid);
       flag = true;
     }
     await FirebaseFirestore.instance.collection('posts')
@@ -92,27 +113,15 @@ class _PostCardState extends State<PostCard> {
       widget.post.likes = currLikes;
     });
   }
+
   @override
   void initState() {
-    super.initState();
-
+    loadUserInfo();
     otherUserProf();
+    super.initState();
   }
 
-
   Widget build(BuildContext context) {
-    otherUser = user(
-        username: username,
-        fullname: fullname,
-        followers: followers,
-        following: following,
-        posts: postsUser,
-        description: description,
-        photoUrl: photoUrl,
-        phoneNumber: phoneNumber,
-        profType: profType,
-        uid: uid
-    );
     return Card(
       margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: Padding(
@@ -130,6 +139,7 @@ class _PostCardState extends State<PostCard> {
                       backgroundImage: NetworkImage(widget.post.userPhotoUrl),
                       radius: 32.0,
                     ),
+                    (isLoaded && otherUser.uid != currentUser.uid) ?
                     TextButton(
                       child: Text(widget.post.username,
                       style: TextStyle(
@@ -139,12 +149,8 @@ class _PostCardState extends State<PostCard> {
                       overflow: TextOverflow.clip,
                       ),
                       onPressed : () {
-                        FirebaseAuth _auth;
-                        User _user;
-                        _auth = FirebaseAuth.instance;
-                        _user = _auth.currentUser;
-                        print(otherUser.uid + " mm" + _user.uid);
-                        if (otherUser.uid == _user.uid) {
+                        print(otherUser.uid + " mm" + currentUser.uid);
+                        if (otherUser.uid == currentUser.uid) {
                           Navigator.push(context,
                               MaterialPageRoute(
                                   builder: (context) => Profile()));
@@ -156,7 +162,7 @@ class _PostCardState extends State<PostCard> {
                                       OtherProfilePage(otherUser: otherUser)));
                         }
                       }
-                    ),
+                    ) : Container(),
                   ],
                 ),
                 Column(
