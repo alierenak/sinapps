@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sinapps/routes/notificationpage.dart';
 import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/routes/searchview.dart';
@@ -68,18 +69,11 @@ class _BottomBarState extends State<BottomBar> {
   void changePage(int index) {
     setState(() {
       FirebaseAnalytics().logEvent(name: views[index],parameters:null);
-      /*_loadUserInfo();
-      currentUser = user(
-          username: username,
-          fullname: fullname,
-          followers: followers,
-          following: following,
-          posts: postsUser,
-          description: description,
-          photoUrl: photoUrl,
-          phoneNumber: phoneNumber);
-*/
-      currentPage = index;
+      if (index == 2) {
+        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: AddPost()));
+      } else {
+        currentPage = index;
+      }
     });
   }
 
@@ -99,36 +93,54 @@ class _BottomBarState extends State<BottomBar> {
     return new Scaffold(
       body: bodyView[currentPage],
       bottomNavigationBar: BottomNavigationBar(
-        //backgroundColor: AppColors.secondary,
-        fixedColor: Colors.grey[800],
+        backgroundColor: Colors.grey[800],
+        fixedColor: AppColors.primary,
+        unselectedItemColor: Colors.grey[300],
         type: BottomNavigationBarType.fixed,
         currentIndex: currentPage,
         iconSize: 35,
         onTap: changePage,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            backgroundColor: Colors.grey[600],
-            icon: Icon(Icons.home),
+            backgroundColor: Colors.white,
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.home),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.grey[600],
-            icon: Icon(Icons.search),
+            backgroundColor: Colors.white,
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.search),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.grey[600],
-            icon: Icon(Icons.add),
+            backgroundColor: Colors.white,
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.add),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.grey[600],
-            icon: Icon(Icons.notifications),
+            backgroundColor: Colors.white,
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.notifications),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.grey[600],
-            icon: Icon(Icons.person),
+            backgroundColor: Colors.white,
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(
+                  Icons.person
+              ),
+            ),
             label: '',
           ),
         ],
