@@ -51,7 +51,8 @@ dependencies:
   geolocator: ^5.1.1
   geocoder: ^0.2.1
   page_transition: ^2.0.2
-  sliding_sheet: ^0.5.0
+  keyboard_visibility: any
+  sliding_up_panel: ^2.0.0+1
   flutter_spinkit: ^3.1.0
 
 

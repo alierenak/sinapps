@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -6,12 +7,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/crashlytics.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:path/path.dart' as Path;
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AddPost extends StatefulWidget {
   @override
@@ -19,11 +22,30 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
+
+  // User properties
   user currentUser;
   String postContent, postTitle;
   var pickedFile;
   Position userPosition;
+  var photoUrl = "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2FScreen%20Shot%202021-06-06%20at%2023.43.18.png?alt=media&token=6c28fb47-2924-4b74-a3d6-b47a3844fea0";
+
+  // Controller error about post
   String error = "";
+  String contentHint = 'Explain your case and include all necessary information.\n'
+      'e.g. I encountered an very rare that and wanted to share my idea about that...';
+  String titleHint = "Be spesific and give insight about your case.";
+  bool errorHint = false;
+
+  //Flags
+  bool locationSetted = false;
+
+  // Bottom sheet controller (close/open)
+  double dynamicPadding = 100;
+  double dynamicHeight = 100;
+  ScrollPhysics scrollPhysics = BouncingScrollPhysics();
+
+  PanelController sheetController = new PanelController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,6 +70,10 @@ class _AddPostState extends State<AddPost> {
       profType: x.docs[0]['profType'],
       uid: x.docs[0]['uid']
     );
+
+    setState(() {
+      photoUrl = currentUser.photoUrl;
+    });
   }
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
@@ -59,12 +85,35 @@ class _AddPostState extends State<AddPost> {
   }
 
   Future<void> getDeviceCurrentLocation() async {
+
+    // TO DELETE
+    if (userPosition != null) {
+      userPosition = null;
+      setState(() {
+        locationSetted = false;
+      });
+      return;
+    }
+
+    // TO ADD
     Position position;
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     position = await geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userPosition = position;
-    print("Location: ${position.longitude}");
+
+    setState(() {
+      locationSetted = true;
+    });
+
+  }
+
+  Future<void> loadPhoto() async  {
+    var _pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      error = "";
+      pickedFile = _pickedFile;
+    });
   }
 
   Future<void> addPost() async {
@@ -78,12 +127,25 @@ class _AddPostState extends State<AddPost> {
     print(first.subLocality);
      */
 
-    if (pickedFile == null) {
+    // Check title and content
+    if (postContent == "" || postContent == null || postTitle == "" || postTitle == null) {
       setState(() {
-        error = "You need to add picture!";
+        errorHint = true;
+        contentHint = "Do you mind to write something here?";
+        titleHint = "Do you mind to write something here?";
       });
       return;
     }
+
+    if (pickedFile == null) {
+      sheetController.open();
+      setState(() {
+        error = "* You need to add a photo!";
+      });
+      return;
+    }
+
+    // Check location
 
     File _imageFile = File(pickedFile.path);
     String refID = "${currentUser.uid}_${Timestamp.fromDate(DateTime.now()).nanoseconds}";
@@ -100,7 +162,7 @@ class _AddPostState extends State<AddPost> {
         "content": postContent,
         "date": DateTime.now(),
         "likes": [],
-        "location": GeoPoint(userPosition.latitude, userPosition.longitude),
+        "location": userPosition!=null ? GeoPoint(userPosition.latitude, userPosition.longitude) : null,
         "title": postTitle,
         "topics": [],
         "userid": currentUser.uid,
@@ -108,6 +170,8 @@ class _AddPostState extends State<AddPost> {
         "postPhotoURL": imageUrl,
         "username": currentUser.username,
       });
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("Succesfully posted"), duration: Duration(milliseconds: 300), ), );
+      Navigator.pop(context);
     } catch (e) {
       print(e);
     }
@@ -115,8 +179,8 @@ class _AddPostState extends State<AddPost> {
 
   @override
   void initState() {
-    super.initState();
     loadUserInfo();
+    super.initState();
   }
 
   @override
@@ -158,7 +222,7 @@ class _AddPostState extends State<AddPost> {
             width: 90.0,
             child: TextButton(
               onPressed: () {
-                print("Hello");
+                addPost();
               },
               child: Text(
                   'Post',
@@ -172,210 +236,342 @@ class _AddPostState extends State<AddPost> {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 50.0,
-                      width: double.infinity,
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Hello");
-                        },
-                        child: Container(
-                          height: 36.0,
-                          width: 36.0,
-                          child: Row(
-                            children: [
-                             Icon(
-                                  Icons.photo_outlined,
-                                  size: 18.0,
-                             ),
-                              SizedBox(width: 5,),
-                              Text(
-                                "Add photo"
-                              )
-                            ],
-                          ),
-                        ),
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  margin: EdgeInsets.fromLTRB(15, 10, 5, 10),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment(-1, 0),
-                      child: Container(
-                          child: Text(
-                            "Title",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500
-                            ),
-                          )
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextField(
-                            onChanged: (value){
-                              setState(() {
-                                postTitle = value;
-                              });
-                            } ,
-                            style: TextStyle(
-                              color: AppColors.textColor,
-                              fontSize: 13,
-                              fontFamily: 'BrandonText',
-                              fontWeight: FontWeight.w600,
-                            ),
-                            minLines: 1,
-                            maxLines: 1,
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              fillColor: AppColors.captionColor,
-                              filled: true,
-                              hintText: 'Be spesific and give insight about your post.',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment(-1, 0),
-                      child: Container(
-                          child: Text(
-                            "Content",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500
-                            ),
-                          )
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      color: AppColors.captionColor,
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            flex: 1,
-                            child: TextField(
-                              onChanged: (value){
-                                setState(() {
-                                  postContent = value;
-                                });
-                              } ,
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(photoUrl),
+                            radius: 35.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  child: Text(
+                                    "What happened?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  )
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                height: 30,
+                                width: MediaQuery.of(context).size.width * 3/4,
+                                child: Focus(
+                                  onFocusChange: (c) async {
+                                    await Future.delayed(Duration(milliseconds: 100));
+                                    if (MediaQuery.of(context).viewInsets.bottom == 0) {
+                                      setState(() {
+                                        dynamicHeight = 100;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        sheetController.animatePanelToPosition(0, duration: Duration(milliseconds: 300));
+                                        dynamicHeight = 50;
+                                      });
+                                    }
+                                  },
+                                  child: TextField(
+                                    onChanged: (value){
+                                      setState(() {
+                                        postTitle = value;
+                                      });
+                                    } ,
+                                    style: TextStyle(
+                                      color: AppColors.textColor,
+                                      fontSize: 14,
+                                      fontFamily: 'BrandonText',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    minLines: 1,
+                                    maxLines: 1,
+                                    autocorrect: false,
+                                    decoration: InputDecoration(
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 0),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: titleHint,
+                                      hintStyle: TextStyle(
+                                          color: errorHint ? Colors.redAccent : Colors.grey[500]
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        // borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Align(
+                        alignment: Alignment(-1, 0),
+                        child: Container(
+                            child: Text(
+                              "Details",
                               style: TextStyle(
-                                color: AppColors.textColor,
-                                fontSize: 13,
-                                fontFamily: 'BrandonText',
-                                fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500
                               ),
-                              autocorrect: false,
-                              maxLength: 260,
-                              minLines: 8,
-                              maxLines: 16,
-                              decoration: InputDecoration(
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10.0
-                                ),
-                                hintText: 'Explain your case and include all necessary information.\n'
-                                    'e.g. I encountered an very rare that and wanted to share my idea about that...',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                ),
-                              ),
-                              keyboardType: TextInputType.text,
                             ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      height: 60,
-                      color: Colors.black54,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child: Container(
-                              height: 36.0,
-                              width: 36.0,
-                              color: Colors.black26,
-                              child: IconButton(
-                                color: Colors.grey[300],
-                                icon: Icon(
-                                  Icons.add_location,
-                                  size: 18.0,
-                                ),
-                                onPressed: () async {
-                                  getDeviceCurrentLocation();
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.fromLTRB(0, 0, 20, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Focus(
+                                onFocusChange: (c) async {
+                                  await Future.delayed(Duration(milliseconds: 100));
+                                  if (MediaQuery.of(context).viewInsets.bottom == 0) {
+                                    setState(() {
+                                      dynamicHeight = 100;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      sheetController.animatePanelToPosition(0, duration: Duration(milliseconds: 300));
+                                      dynamicHeight = 50;
+                                    });
+                                  }
                                 },
+                                child: TextField(
+                                  onChanged: (value){
+                                    setState(() {
+                                      postContent = value;
+                                    });
+                                  } ,
+                                  style: TextStyle(
+                                    color: AppColors.textColor,
+                                    fontSize: 14,
+                                    fontFamily: 'BrandonText',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  autocorrect: false,
+                                  maxLength: 260,
+                                  minLines: 8,
+                                  maxLines: 16,
+                                  decoration: InputDecoration(
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 0
+                                    ),
+                                    hintText: contentHint,
+                                    hintStyle: TextStyle(
+                                        color: errorHint ? Colors.redAccent : Colors.grey[500]
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      // borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SlidingUpPanel(
+            controller: sheetController,
+            panel: Container(
+              padding: EdgeInsets.only(left: 20.0, top: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius:  BorderRadius.only( topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0),),
+              ),
+              child: ListView(
+                physics: scrollPhysics,
+                children: [
+                  SizedBox(
+                    height: dynamicPadding,
+                  ),
+                  error != "" ? Align(
+                    alignment: Alignment(-1.0, 0),
+                    child: Container(
+                        child: Text(
+                          error,
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
                           ),
-                        ],
+                        )
+                    ),
+                  ) : Container(),
+                  pickedFile == null ? Container(
+                    height: 50.0,
+                    width: double.infinity,
+                    child: GestureDetector(
+                      onTap: () {
+                        loadPhoto();
+                      },
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add_photo_alternate,
+                              size: 30.0,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 5,),
+                            Text(
+                              "Add a photo",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
+                  ) : Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    padding: EdgeInsets.only(right: 20),
+                    child: Stack(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            decoration: new BoxDecoration(
+                                image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  alignment: FractionalOffset.topCenter,
+                                  image: AssetImage(pickedFile.path),
+                                )
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                            top: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: (){
+                                setState((){
+                                  pickedFile = null;
+                                });
+                              },
+                              child: Icon(
+                                Icons.close_outlined,
+                                size: 40,
+                              ),
+                            ),
+                        ),
+                      ]
+                    ),
+                  ),
+                  Container(
+                    height: 50.0,
+                    width: double.infinity,
+                    child: GestureDetector(
+                      onTap: () {
+                        getDeviceCurrentLocation();
+                      },
+                      child: Container(
+                        child: Row(
+                          children: [
+                            !locationSetted ? Icon(
+                              Icons.add_location,
+                              size: 30.0,
+                              color: Colors.white,
+                            ) : Icon(
+                              Icons.done,
+                              size: 30.0,
+                              color: AppColors.primary,
+                            ),
+                            SizedBox(width: 5,),
+                            Text(
+                              "State the location",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            borderRadius:  BorderRadius.only( topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0),),
+            minHeight: dynamicHeight,
+            onPanelOpened: () {
+              setState(() {
+                dynamicPadding = 20;
+                scrollPhysics = BouncingScrollPhysics();
+              });
+            },
+            onPanelClosed: () {
+              setState(() {
+                dynamicPadding = 100;
+                scrollPhysics = NeverScrollableScrollPhysics();
+              });
+            },
+            onPanelSlide: (height) {
+              setState(() {
+                if (height > 0.10) {
+                  dynamicPadding = 100 - 80 * height;
+                }
+              });
+            },
+            collapsed: Container(
+              child: Container(
+                padding: EdgeInsets.only(bottom: 50.0),
+                child: Icon(
+                  Icons.arrow_drop_up,
+                  color: Colors.white,
+                  size: 40,
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment(-0.85, 0),
-              child: Container(
-                child: Text(
-                  error,
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500
-                  ),
-                )
-              ),
+            body: Center(
+              child: Text(""),
             ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )
     );
   }
 }
