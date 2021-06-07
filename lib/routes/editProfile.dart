@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sinapps/routes/bottomNavBar.dart';
 import 'package:sinapps/routes/profilepage.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path/path.dart' as Path;
@@ -76,9 +77,9 @@ class _EditProfileState extends State<EditProfile> {
       bioValid = true;
     }
     if (_selections[0] == true) {
-      priv = true;
-    } else {
       priv = false;
+    } else {
+      priv = true;
     }
 
     if (bioValid && phoneNumberValid) {
@@ -181,13 +182,13 @@ class _EditProfileState extends State<EditProfile> {
 
   Column buildPrivateField() {
     if (widget.currentUser.profType == true && idx == 0) {
-      _selections[0] = true;
-      _selections[1] = false;
+      _selections[0] = false;
+      _selections[1] = true;
       idx++;
     } else if (idx == 0) {
       idx++;
-      _selections[1] = true;
-      _selections[0] = false;
+      _selections[1] = false;
+      _selections[0] = true;
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,6 +375,9 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 TextButton(
                   onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BottomBar()));
+
                     updateUserData();
                   },
                   style: TextButton.styleFrom(

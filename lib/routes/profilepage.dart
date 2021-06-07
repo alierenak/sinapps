@@ -48,6 +48,7 @@ class _ProfileState extends State<Profile> {
   List<dynamic> posts = [];
   //var userInff;
   user currentUser;
+  String activation = "";
   void _loadUserInfo() async {
     FirebaseAuth _auth;
     User _user;
@@ -76,6 +77,7 @@ class _ProfileState extends State<Profile> {
       postsUser = x.docs[0]['posts'];
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
+      activation = x.docs[0]['activation'];
     });
   }
     bool feedLoading = true;
@@ -100,7 +102,7 @@ class _ProfileState extends State<Profile> {
       description = x.docs[0]['description'];
       profType = x.docs[0]['profType'];
       uid = x.docs[0]['uid'];
-
+      activation = x.docs[0]['activation'];
       var profPosts = await FirebaseFirestore.instance
           .collection('posts')
           .where('userid', isEqualTo: uid)
@@ -153,7 +155,8 @@ class _ProfileState extends State<Profile> {
         photoUrl: photoUrl,
         phoneNumber: phoneNumber,
         profType: profType,
-        uid: uid
+        uid: uid,
+        activation: activation
     );
     //_loadUserInfo();
     return MaterialApp(

@@ -74,6 +74,7 @@ class _AddPostState extends State<AddPost> {
     setState(() {
       photoUrl = currentUser.photoUrl;
     });
+    
   }
 
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;

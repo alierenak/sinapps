@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void addSearchTerm(String element) {
     // What we want to do is if the added search term is already exist
-    // We dont neeed to duplicate it
+    // We dont need to duplicate it
     if (_searchHistory.contains(element)) {
       putSearchTermFirst(element);
       return;
@@ -112,13 +112,15 @@ class _SearchPageState extends State<SearchPage> {
     var users = await FirebaseFirestore.instance
         .collection("users")
         .where('username', isGreaterThanOrEqualTo: query,
-            isLessThan: query.substring(0, query.length - 1) +
-                String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
-          )
+
+      isLessThan: query.substring(0, query.length - 1) +
+          String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
+    )
         .get();
     users.docs.forEach((doc) => {
       userResults.add(
-          SearchResult(identifier: doc['username'], description: doc['description'])
+          SearchResult(identifier: doc['username'], description: doc['description'], itemID: doc['uid'], photoUrl: doc['photoUrl'])
+
       )
     });
 
@@ -128,9 +130,12 @@ class _SearchPageState extends State<SearchPage> {
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
     ).get();
+    print("postsin");
+    print(posts.docs.length);
     posts.docs.forEach((doc) => {
       postResults.add(
-          SearchResult(identifier: doc['title'], description: doc['content'])
+          SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['postPhotoURL'])
+
       )
     });
 
@@ -230,28 +235,28 @@ class _SearchPageState extends State<SearchPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: filteredSearchHistory
                           .map((e) => ListTile(
-                                title: Text(
-                                  e,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                leading: const Icon(Icons.history),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () {
-                                    setState(() {
-                                      deleteSearchTerm(e);
-                                    });
-                                  },
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    putSearchTermFirst(e);
-                                    selectedTerm = e;
-                                  });
-                                  controller.close();
-                                },
-                              ))
+                        title: Text(
+                          e,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: const Icon(Icons.history),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            setState(() {
+                              deleteSearchTerm(e);
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          setState(() {
+                            putSearchTermFirst(e);
+                            selectedTerm = e;
+                          });
+                          controller.close();
+                        },
+                      ))
                           .toList(),
                     );
                   }
@@ -291,7 +296,7 @@ class SearchResultsListView extends StatelessWidget {
 
   noResultsFound(context) {
     return [
-        Center(
+       Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
