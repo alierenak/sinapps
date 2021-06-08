@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:sinapps/models/postView.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/routes/otherProfilePage.dart';
@@ -10,7 +11,8 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:intl/intl.dart';
 import 'package:sinapps/routes/likes.dart';
-
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
 class PostPage extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
@@ -113,6 +115,16 @@ class _PostPageState extends State<PostPage> {
       widget.post.likes = currLikes;
     });
   }
+  var first;
+  _getLocation() async
+  {
+    final coordinates = new Coordinates(widget.post.location.latitude, widget.post.location.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    setState(() {
+      first = addresses.first;
+    });
+    //print("${first.featureName} : ${first.addressLine}");
+  }
 
   @override
   void initState() {
@@ -122,6 +134,8 @@ class _PostPageState extends State<PostPage> {
   }
 
   Widget build(BuildContext context) {
+
+    _getLocation();
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -222,7 +236,7 @@ class _PostPageState extends State<PostPage> {
                             color: Colors.red[800],
                           ),
                           Text(
-                            "istinye üniversitesi",
+                            "${first.adminArea} : ${first.subAdminArea}",
                             style: TextStyle(
                               fontFamily: 'BrandonText',
                               fontSize: 16.0,

@@ -10,6 +10,8 @@ import 'package:sinapps/utils/colors.dart';
 import 'post.dart';
 import 'package:intl/intl.dart';
 import 'package:sinapps/routes/likes.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
 
 class PostCard extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
@@ -91,6 +93,18 @@ class _PostCardState extends State<PostCard> {
     }));
   }
 
+  var first;
+  _getLocation() async
+  {
+    final coordinates = new Coordinates(widget.post.location.latitude, widget.post.location.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    setState(() {
+      first = addresses.first;
+    });
+    //print("${first.featureName} : ${first.addressLine}");
+  }
+
+
   void likeAction(String postid) async {
 
     var currPost = await FirebaseFirestore.instance
@@ -123,6 +137,7 @@ class _PostCardState extends State<PostCard> {
   }
 
   Widget build(BuildContext context) {
+    _getLocation();
     return Card(
       margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: Padding(
@@ -194,7 +209,7 @@ class _PostCardState extends State<PostCard> {
                           color: Colors.red[800],
                         ),
                         Text(
-                          "istinye üniversitesi",
+                          "${first.adminArea} : ${first.subAdminArea}",
                           style: TextStyle(
                             fontFamily: 'BrandonText',
                             fontSize: 16.0,

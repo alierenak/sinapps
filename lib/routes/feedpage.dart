@@ -11,7 +11,6 @@ import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 
 
 _sendAnalyticsEvent() async {
@@ -44,6 +43,9 @@ class _FeedPageState extends State<FeedPage> {
   bool profType;
   user currentUser;
   bool feedLoading = true;
+
+
+
 
   void _loadUserFeed() async {
     FirebaseAuth _auth;
