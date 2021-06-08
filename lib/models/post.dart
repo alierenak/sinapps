@@ -5,13 +5,13 @@ import 'package:sinapps/models/location.dart';
 class Post {
   String pid;
   String username;
-  String photoUrl;
   String userid;
   String userPhotoUrl;
   String content;
   GeoPoint location;
   String title;
   DateTime date;
+  String postPhotoURL;
   List<dynamic> comments;
   List<dynamic> likes;
   List<dynamic> topics;
@@ -19,7 +19,26 @@ class Post {
   // ABOUT UI
   bool isLiked;
 
-  Post({this.pid, this.username, this. photoUrl, this.userid, this.userPhotoUrl, this.content, this.location, this.title, this.date, this.comments, this.likes, this.topics, this.isLiked=false});
+  factory Post.fromDocument(DocumentSnapshot doc) {
+    return Post(
+      username: doc['username'],
+      location: doc['location'],
+      date: DateTime.fromMillisecondsSinceEpoch(doc['date'].seconds * 1000),
+      title: doc['title'],
+      userPhotoUrl: doc['userPhotoURL'],
+      content: doc['content'],
+      pid: doc['pid'],
+      userid: doc['userid'],
+      comments: doc['comments'],
+      likes: doc['likes'],
+      topics: doc['topics'],
+      postPhotoURL: doc['postPhotoURL'],
+    );
+  }
+
+
+
+  Post({this.pid, this.username, this.userid, this.userPhotoUrl, this.content, this.location, this.title, this.date, this.comments, this.likes, this.topics, this.isLiked=false, this.postPhotoURL});
 }
 
 class Comment {
@@ -28,3 +47,6 @@ class Comment {
   DateTime date;
   Comment({this.userid, this.content, this.date});
 }
+
+
+

@@ -127,7 +127,7 @@ class littlePostCard extends StatelessWidget {
                       border: Border.all(width: 1,),
                       color: Colors.grey[200],
                       image: DecorationImage(
-                          image: AssetImage(post.photoUrl),
+                          image: AssetImage(post.postPhotoURL),
                           fit: BoxFit.fill
                       ),
                     ),

@@ -78,7 +78,7 @@ class _FeedPageState extends State<FeedPage> {
               username: doc['username'],
               userid: doc['userid'],
               userPhotoUrl: doc['userPhotoURL'],
-              photoUrl: doc['postPhotoURL'],
+              postPhotoURL: doc['postPhotoURL'],
               location: doc['location'],
               title: doc['title'],
               content: doc['content'],

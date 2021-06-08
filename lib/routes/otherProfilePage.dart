@@ -81,7 +81,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
               username: doc['username'],
               userid: doc['userid'],
               userPhotoUrl: doc['userPhotoURL'],
-              photoUrl: doc['postPhotoURL'],
+              postPhotoURL: doc['postPhotoURL'],
               location: doc['location'],
               title: doc['title'],
               content: doc['content'],
@@ -569,30 +569,32 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
           key: _scaffoldKey,
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
-              toolbarHeight: 48.0,
-              title: Text(
-                widget.otherUser.username,
-                style: TextStyle(
-                  fontFamily: 'BrandonText',
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.grey[800],
-              elevation: 0.0,
-              automaticallyImplyLeading: false,
-              actions: <Widget>[
-                IconButton(
-                  color: Colors.grey[300],
-                  icon: Icon(Icons.home),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => BottomBar()));
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
                   },
-                ),
-              ]),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 30.0,
+                    color: Colors.grey[300],
+                  )
+              ),
+            ),
+            toolbarHeight: 48.0,
+            title: Text(
+              widget.otherUser.username,
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
+          ),
           body: Container(
             padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
             child: Column(
@@ -920,30 +922,32 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         home: Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
-              toolbarHeight: 48.0,
-              title: Text(
-                widget.otherUser.username,
-                style: TextStyle(
-                  fontFamily: 'BrandonText',
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.grey[800],
-              elevation: 0.0,
-              automaticallyImplyLeading: false,
-              actions: <Widget>[
-                IconButton(
-                  color: Colors.grey[300],
-                  icon: Icon(Icons.home),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => BottomBar()));
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
                   },
-                ),
-              ]),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 30.0,
+                    color: Colors.grey[300],
+                  )
+              ),
+            ),
+            toolbarHeight: 48.0,
+            title: Text(
+              widget.otherUser.username,
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
+          ),
           body: Container(
             padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
             child: Column(
@@ -1272,7 +1276,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 decoration: BoxDecoration(
                                   //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                   image: DecorationImage(
-                                    image: NetworkImage(post.photoUrl),
+                                    image: NetworkImage(post.postPhotoURL),
                                     fit: BoxFit.fill,
                                   ),
                                 ),

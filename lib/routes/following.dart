@@ -24,6 +24,34 @@ class _FollowingState extends State<Following> {
   String name;
   String message;
 
+
+  noResultsFound(context) {
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              "No Following found!",
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+          )
+        ],
+      ),
+    );
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     userId = widget.currentUser.uid;
@@ -46,7 +74,7 @@ class _FollowingState extends State<Following> {
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
       ),
-      body: StreamBuilder(
+      body: (widget.currentUser.following.length == 0) ? noResultsFound(context) : StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")
             .where("uid", whereIn: widget.currentUser.following)

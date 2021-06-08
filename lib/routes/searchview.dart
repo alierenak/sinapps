@@ -365,7 +365,7 @@ class SearchResultsListView extends StatelessWidget {
           Column(
             children: (userResults == null || userResults.isEmpty) ? noResultsFound(context) : userResults
                 .map((element) => SearchResultCard(
-                      sr: element,
+                      sr: element, itType: "user",
                     )).toList(),
           ),
           Divider(),
@@ -384,7 +384,7 @@ class SearchResultsListView extends StatelessWidget {
           Column(
             children: (postResults == null || postResults.isEmpty) ? noResultsFound(context) : postResults
                 .map((element) => SearchResultCard(
-              sr: element,
+              sr: element, itType: "post",
             )).toList(),
           ),
         ]);

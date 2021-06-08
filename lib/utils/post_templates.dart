@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/models/post.dart';
 
 List<Post> posts = [
@@ -159,4 +159,4 @@ List<Post> posts = [
       comments: [""],
       topics: ["1", "2", "3"]
   ),
-];
+];*/

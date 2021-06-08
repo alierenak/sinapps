@@ -9,6 +9,7 @@ import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'post.dart';
 import 'package:intl/intl.dart';
+import 'package:sinapps/routes/likes.dart';
 
 class PostCard extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
@@ -273,7 +274,7 @@ class _PostCardState extends State<PostCard> {
                       ),
                       color: Colors.grey[200],
                       image: DecorationImage(
-                          image: NetworkImage(widget.post.photoUrl), fit: BoxFit.fill),
+                          image: NetworkImage(widget.post.postPhotoURL), fit: BoxFit.fill),
                     ),
                   ),
                 ],
@@ -287,6 +288,9 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 IconButton(
+                  splashRadius: 15,
+                  iconSize: 5,
+                  padding: EdgeInsets.all(0),
                   icon: Icon(
                     widget.post.isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
                     size: 26.0,
@@ -296,14 +300,28 @@ class _PostCardState extends State<PostCard> {
                     likeAction(widget.post.pid);
                   },
                 ),
-                Text(
-                  "${widget.post.likes.length}",
-                  style: TextStyle(
-                    fontFamily: 'BrandonText',
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor,
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(0),
+                    minimumSize: Size(5,5),
                   ),
+                  child: Text(
+                    "${widget.post.likes.length}",
+                    style: TextStyle(
+                      fontFamily: 'BrandonText',
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Likes(currentPost: widget.post)));
+                  },
                 ),
                 SizedBox(width: 20.0),
                 IconButton(

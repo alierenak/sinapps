@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sinapps/models/post.dart';
 import 'package:sinapps/routes/otherProfilePage.dart';
 import 'package:sinapps/utils/colors.dart';
 
@@ -11,50 +12,49 @@ import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/routes/bottomNavBar.dart';
 
-class Followers extends StatefulWidget {
-  const Followers({Key key, this.currentUser}) : super(key: key);
-  final user currentUser;
+class Likes extends StatefulWidget {
+  const Likes({Key key, this.currentPost}) : super(key: key);
+  final Post currentPost;
 
   @override
-  _FollowersState createState() => _FollowersState();
+  _LikesState createState() => _LikesState();
 }
 
-class _FollowersState extends State<Followers> {
-  String userId;
+class _LikesState extends State<Likes> {
+  String postId;
   String name;
   String message;
 
-
   noResultsFound(context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              "No Followers found!",
-              style: TextStyle(
-                fontFamily: 'BrandonText',
-                fontSize: 24.0,
-                fontWeight: FontWeight.w600,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Text(
+                  "No Likes found!",
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-          Container(
-            width: double.infinity,
-          )
-        ],
-      ),
-    );
+            Container(
+              width: double.infinity,
+            )
+          ],
+        ),
+      );
   }
 
 
 
   @override
   Widget build(BuildContext context) {
-    userId = widget.currentUser.uid;
-    var otherUserIds = widget.currentUser.following;
+    postId = widget.currentPost.pid;
+    var otherUserIds = widget.currentPost.likes;
     FirebaseAuth _auth;
     User _user;
     _auth = FirebaseAuth.instance;
@@ -62,7 +62,7 @@ class _FollowersState extends State<Followers> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Followers",
+          "Post Likes",
           style: TextStyle(
             fontFamily: 'BrandonText',
             fontSize: 24.0,
@@ -73,12 +73,13 @@ class _FollowersState extends State<Followers> {
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
       ),
-      body: (widget.currentUser.followers.length == 0) ? noResultsFound(context) : StreamBuilder(
+      body: (widget.currentPost.likes.length == 0) ? noResultsFound(context): StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")
-            .where("uid", whereIn: widget.currentUser.followers)
+            .where("uid", whereIn: widget.currentPost.likes)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print("iii");
           if (snapshot.hasError) {
             //crashlytics
             return Text("Error: ${snapshot.error}");
@@ -86,11 +87,12 @@ class _FollowersState extends State<Followers> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             //crashlytics
             return Text("Loading...");
+
           }
           // ListView
-
+          print("im in");
           return ListView(
-            children: snapshot.data.docs
+            children: (snapshot.data.docs.isEmpty || !snapshot.hasData) ? noResultsFound(context): snapshot.data.docs
                 .map((doc) => Card(
                 child: ListTile(
                   leading: CircleAvatar(

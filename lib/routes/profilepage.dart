@@ -1,4 +1,5 @@
 import 'package:sinapps/routes/feedpage.dart';
+import 'package:sinapps/routes/postPage.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/user.dart';
@@ -116,7 +117,7 @@ class _ProfileState extends State<Profile> {
                 username: doc['username'],
                 userid: doc['userid'],
                 userPhotoUrl: doc['userPhotoURL'],
-                photoUrl: doc['postPhotoURL'],
+                postPhotoURL: doc['postPhotoURL'],
                 location: doc['location'],
                 title: doc['title'],
                 content: doc['content'],
@@ -164,6 +165,16 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
             toolbarHeight: 48.0,
+            leading: IconButton(
+              color: Colors.grey[300],
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => BottomBar()));
+              },
+            ),
+
             title: Text(
               username,
               style: TextStyle(
@@ -468,16 +479,25 @@ class _ProfileState extends State<Profile> {
                         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                         crossAxisCount: 3,
                         children: posts.map((post) {
-                          return Container(
-                              margin: EdgeInsets.all(2.0),
-                              decoration: BoxDecoration(
-                                //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                image: DecorationImage(
-                                  image: NetworkImage(post.photoUrl),
-                                  fit: BoxFit.fill,
+                          return GestureDetector(
+                            onTap: () async{
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PostPage(
+                                              post: post)));
+                            },
+                            child: Container(
+                                margin: EdgeInsets.all(2.0),
+                                decoration: BoxDecoration(
+                                  //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  image: DecorationImage(
+                                    image: NetworkImage(post.postPhotoURL),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                              ),
-                              height: 150.0);
+                                height: 150.0),
+                          );
                         }).toList(),
                       ),
                     ]),
