@@ -75,7 +75,7 @@ class EditPost extends StatelessWidget {
             icon: Icon(Icons.arrow_back_ios_rounded),
             onPressed: () {
               Navigator.pop(
-                  context, MaterialPageRoute(builder: (context) => Profile()));
+                  context);
             }),
       ),
       body: Form(

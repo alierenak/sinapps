@@ -44,12 +44,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final controller = PageController(initialPage: 0);
 
-  Future<void> PostOptions() async {
+  Future<void> PostOptions(String pid,String title, String content) async {
+    print(pid);
 
-    var currPost = await FirebaseFirestore.instance
-        .collection('posts')
-        .where('pid')
-        .get();
 
     showCupertinoModalPopup(
       context: context,
@@ -71,9 +68,17 @@ class _ProfileState extends State<Profile> {
           CupertinoActionSheetAction(
             child: const Text('Edit'),
             onPressed: () async {
-              Navigator.of(context).push(
+              List<String> newPost = await Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => EditPost()));
+                      builder: (context) => EditPost( caption: title,text: content)));
+              
+              if(newPost != null){
+                await FirebaseFirestore.instance
+                    .collection('posts')
+                    .doc(pid) //find this
+                    .update({'title':newPost[0],'content':newPost[1]});
+              }
+              Navigator.pop(context);
             },
           ),
           CupertinoActionSheetAction(
@@ -85,8 +90,14 @@ class _ProfileState extends State<Profile> {
 
     await FirebaseFirestore.instance
         .collection('posts')
-        .doc(widget.post.pid) //find this
+        .doc(pid) //find this
         .delete();
+
+    Navigator.pop(context);
+    setState(() {
+
+    });
+
             },
           )
         ],
@@ -539,7 +550,7 @@ class _ProfileState extends State<Profile> {
                         children: posts.map((post) {
                           return GestureDetector(
                             onLongPress: () async {
-                              PostOptions();
+                              PostOptions(post.pid,post.title,post.content);
                             },
                             onTap: () async{
                               Navigator.push(context,
