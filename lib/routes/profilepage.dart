@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:sinapps/models/editpost.dart';
 import 'package:sinapps/routes/feedpage.dart';
 import 'package:sinapps/routes/postPage.dart';
 import 'package:sinapps/utils/colors.dart';
@@ -23,11 +27,15 @@ import 'package:sinapps/net/firestore_methods.dart';
 //import 'package:sinapps/utils/post_templates.dart';
 import 'package:sinapps/routes/following.dart';
 import 'package:sinapps/routes/followers.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+
 class Profile extends StatefulWidget {
-  const Profile({Key key, this.analytics, this.observer}) : super(key: key);
+  const Profile({Key key, this.analytics, this.observer, this.post}) : super(key: key);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
+  final Post post;
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -35,6 +43,56 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final controller = PageController(initialPage: 0);
+
+  Future<void> PostOptions() async {
+
+    var currPost = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('pid')
+        .get();
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('Cancel'),
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context, 'Cancel');
+          },
+        ),
+        title: const Text(
+          'Post Options',
+          style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+       // message: const Text('',
+           // style: TextStyle(color: Colors.black, fontSize: 15)),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            child: const Text('Edit'),
+            onPressed: () async {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => EditPost()));
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
+            ),
+            onPressed: () async {
+
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.post.pid) //find this
+        .delete();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   List<dynamic> followers = [];
   List<dynamic> following = [];
@@ -480,6 +538,9 @@ class _ProfileState extends State<Profile> {
                         crossAxisCount: 3,
                         children: posts.map((post) {
                           return GestureDetector(
+                            onLongPress: () async {
+                              PostOptions();
+                            },
                             onTap: () async{
                               Navigator.push(context,
                                   MaterialPageRoute(
