@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sinapps/models/postView.dart';
 import 'package:sinapps/models/user.dart';
 import 'package:sinapps/routes/commentview.dart';
@@ -347,7 +348,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                   onPressed: () {
                     print("Comment pressed!");
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => CommentPage(post: widget.post)));
+                    Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: CommentPage(post: widget.post)));
                   },
                 ),
                 Text(

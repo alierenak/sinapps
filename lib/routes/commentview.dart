@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sinapps/models/comment.dart';
 import 'package:sinapps/models/commentCard.dart';
 import 'package:sinapps/models/post.dart';
 import 'package:sinapps/models/postCard.dart';
@@ -86,11 +87,78 @@ class _CommentPageState extends State<CommentPage> {
 
   }
 
+  void loadComments() async {
+    var post = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.post.pid).get();
+
+    List<String> listOfcids = post['comments'];
+
+    for(int i=0; i< listOfcids.length; i++) {
+
+      var comment = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(listOfcids[i]).get();
+
+      setState(() {
+        comments.add(
+          Comment(
+              postid: comment['postid'],
+              userid: comment['userid'],
+              userPhotoURL: comment['userPhotoURL'],
+              content: comment['content'],
+              likes: comment['likes'],
+          )
+        );
+      });
+    }
+
+  }
+
+  void addComment() async {
+
+    Comment c = Comment(
+        userid: currentUser.uid,
+        userPhotoURL: currentUserPhoto,
+        content: newComment,
+        likes: []
+    );
+
+    final CollectionReference comments = FirebaseFirestore.instance.collection('comments');
+    try {
+      var com_ref = comments.doc();
+      await com_ref.set({
+        "postid": widget.post.pid,
+        "cid": com_ref.id,
+        "userid": currentUser.uid,
+        "userPhotoURL": currentUserPhoto,
+        "content": newComment,
+        "likes": []
+      });
+
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.post.pid).update({
+        "comments": FieldValue.arrayUnion([com_ref.id]),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("Comment added!"), duration: Duration(milliseconds: 300), ), );
+      Navigator.push(context,MaterialPageRoute(builder: (context) => CommentPage(post: widget.post)));
+
+    } catch (e) {
+      print(e);
+      return;
+    }
+
+
+
+  }
+
   void initState() {
     super.initState();
     // LOAD CURRENT USER
     loadUserInfo();
-
+    loadComments();
     // LOAD COMMENTS
 
   }
@@ -115,8 +183,8 @@ class _CommentPageState extends State<CommentPage> {
                     centerTitle: true,
                     backgroundColor: Colors.grey[800],
                     elevation: 0.0,
-                    automaticallyImplyLeading: false,
-                    actions: <Widget>[
+                    actions: <Widget> [
+
 
                     ]),
                 body: Stack(
@@ -126,70 +194,86 @@ class _CommentPageState extends State<CommentPage> {
                           children: [
                             // POST
                             PostCard(post: widget.post,),
-
                             // COMMENTS
                             Column(
                               children: comments.map((comment) => CommentCard(
                                   comment: comment,
                                   delete: () {
                                     setState(() {
+                                      print("Hello");
                                       comments.remove(comment);
                                     });
                                   }
                               )).toList(),
                             ),
-
-                            // WRITE A COMMENT VIEW
                           ],
                         )
                     ),
-                    Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(currentUserPhoto),
-                              radius: 35.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 30,
-                                  width: MediaQuery.of(context).size.width * 3/4,
-                                  child: TextField(
-                                    onChanged: (value){
-                                      setState(() {
-                                        newComment = value;
-                                      });
-                                    } ,
-                                    style: TextStyle(
-                                      color: AppColors.textColor,
-                                      fontSize: 14,
-                                      fontFamily: 'BrandonText',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    minLines: 1,
-                                    maxLines: 1,
-                                    autocorrect: false,
-                                    decoration: InputDecoration(
-                                      contentPadding: new EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 0),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: "What are you thinking?",
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        // borderRadius: BorderRadius.all(Radius.circular(12.0)),
+
+                    // WRITE A COMMENT VIEW
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        color: Colors.grey[300],
+                        height: 70,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(currentUserPhoto),
+                                radius: 35.0,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width * 6/10,
+                                    child: TextField(
+                                      onChanged: (value){
+                                        setState(() {
+                                          newComment = value;
+                                        });
+                                      } ,
+                                      style: TextStyle(
+                                        color: AppColors.textColor,
+                                        fontSize: 14,
+                                        fontFamily: 'BrandonText',
+                                        fontWeight: FontWeight.w600,
                                       ),
+                                      minLines: 1,
+                                      maxLines: 2,
+                                      autocorrect: false,
+                                      decoration: InputDecoration(
+                                        contentPadding: new EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 10),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        hintText: "What are you thinking?",
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          // borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.text,
                                     ),
-                                    keyboardType: TextInputType.text,
                                   ),
+                                ],
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                    Icons.add_comment,
+                                  color: AppColors.primary,
                                 ),
-                              ],
-                            )
-                          ],
-                        )
+                                onPressed: () => {
+                                  addComment()
+                                },
+                              )
+                            ],
+                          )
+                      ),
                     )
                   ],
                 )
