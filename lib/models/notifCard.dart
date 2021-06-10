@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/notif.dart';
 import 'package:sinapps/utils/colors.dart';
 
 class NotifCard extends StatelessWidget {
-  final NotifPost notification;
-  NotifCard({this.notification});
+  final String photo;
+  final String name;
+  final String text;
+  //final String date;
 
-
+  NotifCard({this.photo, this.name, this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -16,32 +19,33 @@ class NotifCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(15.0),
         child: Row(
-          children: <Widget> [
+          children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
               child: Container(
                 height: 50.0,
                 width: 50.0,
                 color: AppColors.textColor1,
-                child: Image.asset(notification.photo),
+                child: Image.asset(photo),
               ),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Expanded(
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 child: Column(
-
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget> [
+                  children: <Widget>[
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          notification.name,
+                          name,
                           style: TextStyle(
                             color: AppColors.textColor1,
                             fontSize: 16,
@@ -49,9 +53,11 @@ class NotifCard extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Text(
-                          notification.text,
+                          text,
                           style: TextStyle(
                             color: AppColors.textColor1,
                             fontSize: 13,
@@ -63,14 +69,17 @@ class NotifCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
               ),
             ),
+            /*
             Row(
               children: [
-                SizedBox(width: 25,),
+                SizedBox(
+                  width: 25,
+                ),
                 Text(
-                  notification.date,
+                  // date,
+                  "date",
                   style: TextStyle(
                     color: Colors.black38,
                     fontSize: 13,
@@ -80,11 +89,10 @@ class NotifCard extends StatelessWidget {
                 ),
               ],
             )
+            */
           ],
         ),
       ),
     );
   }
 }
-
-

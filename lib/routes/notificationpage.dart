@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sinapps/models/notif.dart';
@@ -5,8 +7,13 @@ import 'package:sinapps/models/notifCard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:sinapps/models/post.dart';
+import 'package:sinapps/models/postCard.dart';
+import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/utils/crashlytics.dart';
 import 'package:sinapps/models/user.dart';
+
+import 'chats/chatspage.dart';
 
 class Noti extends StatefulWidget {
   //const Noti({Key key, this.analytics, this.observer}) : super(key: key);
@@ -22,99 +29,165 @@ class Noti extends StatefulWidget {
   _NotiState createState() => _NotiState();
 }
 
-List<NotifPost> notifs = [
-  NotifPost(
-      name: "Berfin Sürücü",
-      photo: "lib/images/berf.jpeg",
-      date: "5m",
-      text: "liked your photo."),
-  NotifPost(
-      name: "Ali Eren Ak",
-      photo: "lib/images/ali.jpeg",
-      date: " 15h",
-      text: "started to following you!"),
-  NotifPost(
-      name: "Mert Türe",
-      photo: "lib/images/mert.jpeg",
-      date: "2d",
-      text: "liked your comment."),
-  NotifPost(
-      name: "Kaan Atmaca",
-      photo: "lib/images/kaan.jpeg",
-      date: "5d",
-      text: "commented on your post."),
-  NotifPost(
-      name: "Kaan Atmaca",
-      photo: "lib/images/kaan.jpeg",
-      date: "2m",
-      text: "sent a message"),
-  NotifPost(
-      name: "Berfin Sürücü",
-      photo: "lib/images/berf.jpeg",
-      date: "6m",
-      text: "sent a message"),
-  NotifPost(
-      name: "Ali Eren Ak",
-      photo: "lib/images/ali.jpeg",
-      date: "8m",
-      text: "sent following request"),
-  NotifPost(
-      name: "Mert Türe",
-      photo: "lib/images/mert.jpeg",
-      date: "1y",
-      text: "liked your photo"),
-];
-
 class _NotiState extends State<Noti> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
   void MessageCrash() {
     crashlytics.setCustomKey('isNotificationIconPressed', true);
     crashlytics.setCustomKey('error: ', "notification icon not working");
-    crashlytics.crash();
+    // crashlytics.crash();
+  }
+
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "",
+      fullname = "",
+      phoneNumber = "",
+      photoUrl = "",
+      description = "",
+      uid = "";
+  List<dynamic> posts = [];
+  bool profType;
+  user currentUser;
+  bool feedLoading = true;
+
+  void _loadUserFeed() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+    print("X:");
+    print(x.docs[0]["uid"]);
+
+    username = x.docs[0]['username'];
+    fullname = x.docs[0]['fullname'];
+    followers = x.docs[0]['followers'];
+    following = x.docs[0]['following'];
+    phoneNumber = x.docs[0]['phoneNumber'];
+    photoUrl = x.docs[0]['photoUrl'];
+    description = x.docs[0]['description'];
+    profType = x.docs[0]['profType'];
+    uid = x.docs[0]['uid'];
+
+    var notif_posts = await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('userid', whereIn: following)
+        .get();
+
+    print(notif_posts.size);
+    notif_posts.docs.forEach((doc) => {
+          posts.add(NotifPost(
+            name: doc["fromUsername"],
+            text: doc["actionsTaken"],
+            photo: doc["fromPP"],
+            //date: doc["date"],
+          )),
+        });
+
+    posts..sort((a, b) => b.date.compareTo(a.date));
+    setState(() {
+      print("its in");
+      feedLoading = false;
+    });
+  }
+
+  loadingScreen(context) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 120.0,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: Container(
+                      width: 75,
+                      height: 75,
+                      child: new CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            AppColors.primary),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text("Your notifications is getting ready...",
+                style: TextStyle(color: AppColors.textColor))
+          ],
+        ),
+      )
+    ];
+  }
+
+  void initState() {
+    super.initState();
+    _loadUserFeed();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[350],
-      appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.grey[800],
-          elevation: 0.0,
-          title: Text(
-            'Notifications',
-            style: TextStyle(
-              color: Colors.grey[300],
-              fontSize: 24,
-              fontFamily: 'BrandonText',
-              fontWeight: FontWeight.w600,
+    currentUser = user(
+        username: username,
+        fullname: fullname,
+        followers: followers,
+        following: following,
+        description: description,
+        photoUrl: photoUrl,
+        phoneNumber: phoneNumber,
+        profType: profType,
+        uid: uid);
+
+    FirebaseAnalytics().logEvent(name: 'Notification Page', parameters: null);
+    return new MaterialApp(
+      home: SafeArea(
+        top: false,
+        minimum: EdgeInsets.zero,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Notifications",
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
             ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+              IconButton(
+                color: Colors.grey[300],
+                icon: Icon(
+                  Icons.refresh_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  print(username);
+                },
+              ),
+            ],
           ),
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            IconButton(
-              color: Colors.grey[300],
-              icon: Icon(Icons.refresh_sharp),
-              onPressed: () {
-                MessageCrash();
-              },
-            ),
-          ]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
+          body: Container(
+            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+            width: double.infinity,
             child: SingleChildScrollView(
               child: Column(
-                children: notifs
-                    .map((notification) => NotifCard(
-                          notification: notification,
-                        ))
-                    .toList(),
+                children: feedLoading
+                    ? loadingScreen(context)
+                    : posts.map((post) => NotifCard()).toList(),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

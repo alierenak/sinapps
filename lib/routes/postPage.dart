@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:sinapps/routes/likes.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
+
 class PostPage extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
@@ -33,7 +34,7 @@ class _PostPageState extends State<PostPage> {
         .get();
 
     otherUser = user(
-      username:  x.docs[0]['username'],
+      username: x.docs[0]['username'],
       fullname: x.docs[0]['fullname'],
       followers: x.docs[0]['followers'],
       following: x.docs[0]['following'],
@@ -50,11 +51,9 @@ class _PostPageState extends State<PostPage> {
         isLoaded = true;
       });
     }
-
   }
 
   void loadUserInfo() async {
-
     FirebaseAuth _auth = FirebaseAuth.instance;
     User _user = _auth.currentUser;
 
@@ -72,8 +71,7 @@ class _PostPageState extends State<PostPage> {
         photoUrl: x.docs[0]['photoUrl'],
         description: x.docs[0]['description'],
         profType: x.docs[0]['profType'],
-        uid: x.docs[0]['uid']
-    );
+        uid: x.docs[0]['uid']);
 
     if (otherUser != null) {
       setState(() {
@@ -93,7 +91,6 @@ class _PostPageState extends State<PostPage> {
   }
 
   void likeAction(String postid) async {
-
     var currPost = await FirebaseFirestore.instance
         .collection('posts')
         .where('pid', isEqualTo: postid)
@@ -108,18 +105,22 @@ class _PostPageState extends State<PostPage> {
       currLikes.add(currentUser.uid);
       flag = true;
     }
-    await FirebaseFirestore.instance.collection('posts')
-        .doc(postid).update({"likes": currLikes});
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postid)
+        .update({"likes": currLikes});
     setState(() {
       widget.post.isLiked = flag;
       widget.post.likes = currLikes;
     });
   }
+
   var first;
-  _getLocation() async
-  {
-    final coordinates = new Coordinates(widget.post.location.latitude, widget.post.location.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  _getLocation() async {
+    final coordinates = new Coordinates(
+        widget.post.location.latitude, widget.post.location.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     setState(() {
       first = addresses.first;
     });
@@ -134,7 +135,6 @@ class _PostPageState extends State<PostPage> {
   }
 
   Widget build(BuildContext context) {
-
     _getLocation();
     return Scaffold(
       appBar: AppBar(
@@ -148,8 +148,7 @@ class _PostPageState extends State<PostPage> {
                 Icons.arrow_back_ios,
                 size: 30.0,
                 color: Colors.grey[300],
-              )
-          ),
+              )),
         ),
         toolbarHeight: 48.0,
         title: Text(
@@ -164,7 +163,6 @@ class _PostPageState extends State<PostPage> {
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
       ),
-
       body: Card(
         margin: EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
         child: Padding(
@@ -182,30 +180,33 @@ class _PostPageState extends State<PostPage> {
                         backgroundImage: NetworkImage(widget.post.userPhotoUrl),
                         radius: 32.0,
                       ),
-                      (isLoaded && otherUser.uid != currentUser.uid) ?
-                      TextButton(
-                          child: Text(widget.post.username,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                            overflow: TextOverflow.clip,
-                          ),
-                          onPressed : () {
-                            print(otherUser.uid + " mm" + currentUser.uid);
-                            if (otherUser.uid == currentUser.uid) {
-                              Navigator.push(context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Profile()));
-                            }
-                            else {
-                              Navigator.push(context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          OtherProfilePage(otherUser: otherUser)));
-                            }
-                          }
-                      ) : Container(),
+                      (isLoaded && otherUser.uid != currentUser.uid)
+                          ? TextButton(
+                              child: Text(
+                                widget.post.username,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                                overflow: TextOverflow.clip,
+                              ),
+                              onPressed: () {
+                                print(otherUser.uid + " mm" + currentUser.uid);
+                                if (otherUser.uid == currentUser.uid) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Profile()));
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OtherProfilePage(
+                                                  otherUser: otherUser)));
+                                }
+                              })
+                          : Container(),
                     ],
                   ),
                   Column(
@@ -316,7 +317,8 @@ class _PostPageState extends State<PostPage> {
                         ),
                         color: Colors.grey[200],
                         image: DecorationImage(
-                            image: NetworkImage(widget.post.postPhotoURL), fit: BoxFit.fill),
+                            image: NetworkImage(widget.post.postPhotoURL),
+                            fit: BoxFit.fill),
                       ),
                     ),
                   ],
@@ -334,7 +336,9 @@ class _PostPageState extends State<PostPage> {
                     iconSize: 5,
                     padding: EdgeInsets.all(0),
                     icon: Icon(
-                      widget.post.isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
+                      widget.post.isLiked
+                          ? Icons.thumb_up
+                          : Icons.thumb_up_alt_outlined,
                       size: 26.0,
                       color: AppColors.primary,
                     ),
@@ -342,11 +346,10 @@ class _PostPageState extends State<PostPage> {
                       likeAction(widget.post.pid);
                     },
                   ),
-
                   TextButton(
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.all(0),
-                      minimumSize: Size(5,5),
+                      minimumSize: Size(5, 5),
                     ),
                     child: Text(
                       "${widget.post.likes.length}",
