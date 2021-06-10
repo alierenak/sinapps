@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinapps/models/postView.dart';
 import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/commentview.dart';
 import 'package:sinapps/routes/otherProfilePage.dart';
 import 'package:sinapps/routes/profilepage.dart';
 import 'package:sinapps/utils/colors.dart';
@@ -200,7 +201,7 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ],
                     ),
-                    Row(
+                    first != null ? Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -218,7 +219,7 @@ class _PostCardState extends State<PostCard> {
                           ),
                         ),
                       ],
-                    ),
+                    ) : Container(),
                   ],
                 ),
               ],
@@ -345,7 +346,8 @@ class _PostCardState extends State<PostCard> {
                     size: 26.0,
                   ),
                   onPressed: () {
-                    //goToComments(postId: widget.post.pid);
+                    print("Comment pressed!");
+                    Navigator.push(context,MaterialPageRoute(builder: (context) => CommentPage(post: widget.post)));
                   },
                 ),
                 Text(

@@ -395,6 +395,9 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - image_picker (0.0.1):
     - Flutter
+  - keyboard_visibility (0.5.0):
+    - Flutter
+    - Reachability
   - leveldb-library (1.22.1)
   - libphonenumber (0.0.1):
     - Flutter
@@ -414,6 +417,7 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - PromisesObjC (1.2.12)
+  - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
 
@@ -428,6 +432,7 @@ DEPENDENCIES:
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
@@ -457,6 +462,7 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - nanopb
     - PromisesObjC
+    - Reachability
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -479,6 +485,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  keyboard_visibility:
+    :path: ".symlinks/plugins/keyboard_visibility/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   libphonenumber_plugin:
@@ -518,6 +526,7 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
@@ -526,6 +535,7 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
 PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048

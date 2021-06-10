@@ -505,7 +505,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 decoration: BoxDecoration(
                                   //padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                   image: DecorationImage(
-                                    image: NetworkImage(post.photoUrl),
+                                    image: NetworkImage(post.postPhotoURL),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
