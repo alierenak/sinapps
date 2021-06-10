@@ -33,7 +33,10 @@ class _CommentCardState extends State<CommentCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Hello World!"),
+            Container(
+              height: 80,
+              color: Colors.red,
+            )
           ],
         ),
       ),

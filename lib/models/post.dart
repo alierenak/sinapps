@@ -40,13 +40,3 @@ class Post {
 
   Post({this.pid, this.username, this.userid, this.userPhotoUrl, this.content, this.location, this.title, this.date, this.comments, this.likes, this.topics, this.isLiked=false, this.postPhotoURL});
 }
-
-class Comment {
-  String userid;
-  String content;
-  DateTime date;
-  Comment({this.userid, this.content, this.date});
-}
-
-
-
