@@ -308,7 +308,7 @@ class _EditProfileState extends State<EditProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
                     TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Welcome()));
                       
@@ -320,7 +320,20 @@ class _EditProfileState extends State<EditProfile> {
                         })
                             .then((value) => print("User Deactivated"))
                             .catchError((error) => print("Failed to deactivate user: $error"));
+                        var posts_deact =  await FirebaseFirestore.instance
+                            .collection('posts')
+                            .where('userid', isEqualTo: widget.currentUser.uid)
+                            .get();
 
+                      posts_deact.docs.forEach((doc) =>
+                      {
+                        FirebaseFirestore.instance
+                            .collection('posts')
+                            .doc(doc['pid'])
+                            .update({
+                          "activation": "deactivated",
+                        })
+                      });
                         SnackBar successSnackBar =
                         SnackBar(content: Text("Profile has been deactivated."));
                         _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);

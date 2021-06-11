@@ -70,10 +70,27 @@ class _LoginState extends State<Login> {
               .collection('users')
               .doc(result.docs[0]['uid'])
               .update({
-            "activation": "activate",
+            "activation": "active",
           });
+
+          var postAct = await FirebaseFirestore.instance
+              .collection('posts')
+              .where('userid', isEqualTo: result.docs[0]['uid'])
+              .get();
+
+          postAct.docs.forEach((doc) => {
+            FirebaseFirestore.instance
+                .collection('posts')
+                .doc(doc['pid'])
+                .update({
+                  "activation": "active",
+            })
+          });
+
+
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => BottomBar()));
+
 
           SnackBar successSnackBar =
           SnackBar(content: Text("Profile has been activated."));
