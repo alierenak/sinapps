@@ -29,7 +29,7 @@ class _AddPostState extends State<AddPost> {
   var pickedFile;
   Position userPosition;
   var photoUrl = "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2FScreen%20Shot%202021-06-06%20at%2023.43.18.png?alt=media&token=6c28fb47-2924-4b74-a3d6-b47a3844fea0";
-
+  String activation;
   // Controller error about post
   String error = "";
   String contentHint = 'Explain your case and include all necessary information.\n'
@@ -68,7 +68,8 @@ class _AddPostState extends State<AddPost> {
       photoUrl: x.docs[0]['photoUrl'],
       description: x.docs[0]['description'],
       profType: x.docs[0]['profType'],
-      uid: x.docs[0]['uid']
+      uid: x.docs[0]['uid'],
+      activation: x.docs[0]['activation'],
     );
 
     setState(() {
@@ -170,6 +171,7 @@ class _AddPostState extends State<AddPost> {
         "userPhotoURL": currentUser.photoUrl,
         "postPhotoURL": imageUrl,
         "username": currentUser.username,
+        "activation": currentUser.activation,
       });
       ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("Succesfully posted"), duration: Duration(milliseconds: 300), ), );
       Navigator.pop(context);
@@ -478,7 +480,7 @@ class _AddPostState extends State<AddPost> {
                                 image: new DecorationImage(
                                   fit: BoxFit.fill,
                                   alignment: FractionalOffset.topCenter,
-                                  image: AssetImage(pickedFile.path),
+                                  image: NetworkImage(pickedFile.path),
                                 )
                             ),
                           ),

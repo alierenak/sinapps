@@ -433,6 +433,19 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 setState(() {
                                   followSit = "Unfollow";
                                 });
+
+                                final CollectionReference notifs = FirebaseFirestore.instance.collection('notifications');
+                                var notif_ref = notifs.doc();
+                                await notif_ref.set({
+                                  "uid": currentUser.uid,
+                                  "otherUid": widget.otherUser.uid,
+                                  "notifType": "follow",
+                                  "userPhotoURL": widget.otherUser.photoUrl,
+                                  "pid": "",
+                                  "username": widget.otherUser.username,
+                                  "notifID": notif_ref.id,
+                                  "postPhotoURL": "",
+                                });
                               }
                               // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...
                             },
@@ -850,6 +863,20 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                   followSit = "Request sent";
                                 });*/
 
+                                final CollectionReference notifs = FirebaseFirestore.instance.collection('notifications');
+                                var notif_ref = notifs.doc();
+                                await notif_ref.set({
+                                  "uid": currentUser.uid,
+                                  "otherUid": widget.otherUser.uid,
+                                  "notifType": "followRequest",
+                                  "userPhotoURL": widget.otherUser.photoUrl,
+                                  "pid": "",
+                                  "username": widget.otherUser.username,
+                                  "notifID": notif_ref.id,
+                                  "postPhotoURL": "",
+                                });
+
+
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
                                     'Follow request is sent!',
@@ -1203,6 +1230,19 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 });
                                 setState(() {
                                   followSit = "Unfollow";
+                                });
+
+                                final CollectionReference notifs = FirebaseFirestore.instance.collection('notifications');
+                                var notif_ref = notifs.doc();
+                                await notif_ref.set({
+                                  "uid": currentUser.uid,
+                                  "otherUid": widget.otherUser.uid,
+                                  "notifType": "follow",
+                                  "userPhotoURL": widget.otherUser.photoUrl,
+                                  "pid": "",
+                                  "username": widget.otherUser.username,
+                                  "notifID": notif_ref.id,
+                                  "postPhotoURL": "",
                                 });
                               }
                               // TO-DO FOLLOW BUTTON, IF FOLLOWING OR NOT FOLLOWING, PRIVATE, PUBLIC...

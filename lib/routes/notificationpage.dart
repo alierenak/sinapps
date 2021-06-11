@@ -1,54 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:sinapps/models/post.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
+import 'package:sinapps/models/postCard.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:sinapps/utils/crashlytics.dart';
+import 'package:sinapps/utils/colors.dart';
+import 'package:sinapps/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sinapps/models/notif.dart';
 import 'package:sinapps/models/notifCard.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:sinapps/models/post.dart';
-import 'package:sinapps/models/postCard.dart';
-import 'package:sinapps/utils/colors.dart';
-import 'package:sinapps/utils/crashlytics.dart';
-import 'package:sinapps/models/user.dart';
 
-import 'chats/chatspage.dart';
-
-class Noti extends StatefulWidget {
-  //const Noti({Key key, this.analytics, this.observer}) : super(key: key);
-
-  //final FirebaseAnalytics analytics;
-  //final FirebaseAnalyticsObserver observer;
-
-  const Noti({Key key, this.currentUser}) : super(key: key);
-
-  final user currentUser;
-
+class NotifPage extends StatefulWidget {
   @override
-  _NotiState createState() => _NotiState();
+  _NotifPageState createState() => _NotifPageState();
 }
 
-class _NotiState extends State<Noti> {
+class _NotifPageState extends State<NotifPage> {
   FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
-  void MessageCrash() {
-    crashlytics.setCustomKey('isNotificationIconPressed', true);
-    crashlytics.setCustomKey('error: ', "notification icon not working");
-    // crashlytics.crash();
-  }
 
   List<dynamic> followers = [];
   List<dynamic> following = [];
-  String username = "",
-      fullname = "",
-      phoneNumber = "",
-      photoUrl = "",
-      description = "",
-      uid = "";
-  List<dynamic> posts = [];
+  String username = "", fullname = "", phoneNumber = "", photoUrl = "", description = "", uid = "";
+  List<dynamic> notifications = [];
   bool profType;
   user currentUser;
-  bool feedLoading = true;
+  bool notifLoading = true;
+  String activation;
+
+
 
   void _loadUserFeed() async {
     FirebaseAuth _auth;
@@ -60,8 +43,6 @@ class _NotiState extends State<Noti> {
         .collection('users')
         .where('uid', isEqualTo: _user.uid)
         .get();
-    print("X:");
-    print(x.docs[0]["uid"]);
 
     username = x.docs[0]['username'];
     fullname = x.docs[0]['fullname'];
@@ -72,33 +53,62 @@ class _NotiState extends State<Noti> {
     description = x.docs[0]['description'];
     profType = x.docs[0]['profType'];
     uid = x.docs[0]['uid'];
+    activation = x.docs[0]['activation'];
 
-    var notif_posts = await FirebaseFirestore.instance
+    var notifs = await FirebaseFirestore.instance
         .collection('notifications')
-        .where('userid', whereIn: following)
+        .where('uid', isEqualTo: uid)
+        .get();
+    var notifs_opp = await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('otherUid', isEqualTo: uid)
         .get();
 
-    print(notif_posts.size);
-    notif_posts.docs.forEach((doc) => {
-          posts.add(NotifPost(
-            name: doc["fromUsername"],
-            text: doc["actionsTaken"],
-            photo: doc["fromPP"],
-            //date: doc["date"],
-          )),
-        });
-
-    posts..sort((a, b) => b.date.compareTo(a.date));
-    setState(() {
-      print("its in");
-      feedLoading = false;
+    notifs.docs.forEach((doc) => {
+      if (doc['notifType'] == "like") {
+        notifications.add(
+            Notif(
+              pid: doc['pid'],
+              username: doc['username'],
+              uid: doc['uid'],
+              userPhotoURL: doc['userPhotoURL'],
+              postPhotoURL: doc['postPhotoURL'],
+              notifType: doc['notifType'],
+              otherUid: doc['otherUid'],
+              notifID: doc['notifID'],
+            )
+        )
+      }
     });
+
+    notifs_opp.docs.forEach((doc) => {
+      if (doc['notifType'] == "follow" || doc['notifType'] == "followRequest") {
+        notifications.add(
+            Notif(
+              pid: doc['pid'],
+              username: doc['username'],
+              uid: doc['uid'],
+              userPhotoURL: doc['userPhotoURL'],
+              postPhotoURL: doc['postPhotoURL'],
+              notifType: doc['notifType'],
+              otherUid: doc['otherUid'],
+              notifID: doc['notifID'],
+            )
+        )
+      }
+    });
+
+    //notifications..sort((a,b) => b.date.compareTo(a.date));
+    setState(() {
+      notifLoading = false;
+    });
+
   }
 
   loadingScreen(context) {
     return [
       Padding(
-        padding: const EdgeInsets.only(top: 100),
+        padding: const EdgeInsets.only(top:100),
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -110,19 +120,23 @@ class _NotiState extends State<Noti> {
                       width: 75,
                       height: 75,
                       child: new CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                            AppColors.primary),
+                        valueColor: new AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            Text("Your notifications is getting ready...",
-                style: TextStyle(color: AppColors.textColor))
+            Text(
+                "Your notifications are getting ready...",
+                style: TextStyle(
+                    color: AppColors.textColor
+                )
+            )
           ],
         ),
       )
+
     ];
   }
 
@@ -133,6 +147,7 @@ class _NotiState extends State<Noti> {
 
   @override
   Widget build(BuildContext context) {
+
     currentUser = user(
         username: username,
         fullname: fullname,
@@ -142,49 +157,40 @@ class _NotiState extends State<Noti> {
         photoUrl: photoUrl,
         phoneNumber: phoneNumber,
         profType: profType,
-        uid: uid);
+        uid: uid
+    );
 
-    FirebaseAnalytics().logEvent(name: 'Notification Page', parameters: null);
+    FirebaseAnalytics().logEvent(name: 'NotifPage', parameters: null);
     return new MaterialApp(
       home: SafeArea(
         top: false,
         minimum: EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Notifications",
-              style: TextStyle(
-                fontFamily: 'BrandonText',
-                fontSize: 24.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.grey[800],
-            elevation: 0.0,
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
-              IconButton(
-                color: Colors.grey[300],
-                icon: Icon(
-                  Icons.refresh_rounded,
-                  color: Colors.white,
+              title: Text(
+                "Home",
+                style: TextStyle(
+                  fontFamily: 'BrandonText',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
                 ),
-                onPressed: () {
-                  print(username);
-                },
               ),
-            ],
-          ),
+              centerTitle: true,
+              backgroundColor: Colors.grey[800],
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              ),
           body: Container(
             padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
             width: double.infinity,
             child: SingleChildScrollView(
               child: Column(
-                children: feedLoading
-                    ? loadingScreen(context)
-                    : posts.map((post) => NotifCard()).toList(),
+                children: notifLoading ? loadingScreen(context) : notifications.map((notification) => NotifCard(
+                    nt: notification,
+                    ))
+                    .toList(),
               ),
+
             ),
           ),
         ),

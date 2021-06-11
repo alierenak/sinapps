@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
       MobileVerificationState.PHONE_VIEW_STATE;
 
   final _formKey = GlobalKey<FormState>();
-
+  final _scaffoldGlobalKey = GlobalKey<ScaffoldState>();
   String userPhone;
   String authCode;
   String verificationID;
@@ -65,11 +65,27 @@ class _LoginState extends State<Login> {
         if (result.size == 0) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Setprofile()));
-        } else {
+        } else if (result.docs[0]['activation'] == "deactivated"){
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(result.docs[0]['uid'])
+              .update({
+            "activation": "activate",
+          });
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => BottomBar()));
+
+          SnackBar successSnackBar =
+          SnackBar(content: Text("Profile has been activated."));
+          _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
+
+        }
+
+        else {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => BottomBar()));
         }
-        ;
+
         //Navigator.push(context, MaterialPageRoute(builder: (context) => BottomBar()));
       }
     } on FirebaseAuthException catch (e) {

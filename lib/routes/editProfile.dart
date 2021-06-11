@@ -309,6 +309,9 @@ class _EditProfileState extends State<EditProfile> {
                   children: <Widget> [
                     TextButton(
                     onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Welcome()));
+                      
                         FirebaseFirestore.instance
                             .collection('users')
                             .doc(widget.currentUser.uid)
@@ -321,6 +324,7 @@ class _EditProfileState extends State<EditProfile> {
                         SnackBar successSnackBar =
                         SnackBar(content: Text("Profile has been deactivated."));
                         _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
+
 
 
                     },

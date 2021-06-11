@@ -1,10 +1,15 @@
 import 'package:sinapps/models/notif.dart';
 
-class NotifPost {
-  String photo;
-  String name;
-  String text;
+class Notif {
+  String userPhotoURL;
+  String username;
+  String notifType;
+  String pid;
+  String uid;
+  String otherUid;
+  String postPhotoURL;
+  String notifID;
 //String date;
 
-  NotifPost({this.name, this.photo, this.text});
+  Notif({this.userPhotoURL, this.username, this.notifType, this.pid = "", this.uid, this.otherUid, this.postPhotoURL = "", this.notifID});
 }

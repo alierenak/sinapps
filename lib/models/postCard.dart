@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:sinapps/routes/likes.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
-
+import 'package:sinapps/models/notif.dart';
 class PostCard extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
@@ -113,15 +113,55 @@ class _PostCardState extends State<PostCard> {
         .collection('posts')
         .where('pid', isEqualTo: postid)
         .get();
+    final CollectionReference notifs = FirebaseFirestore.instance.collection('notifications');
 
     var currLikes = currPost.docs[0]['likes'];
     bool flag;
+    String notID;
     if (currLikes.contains(currentUser.uid)) {
       currLikes.remove(currentUser.uid);
       flag = false;
+
+      var removeLike = await FirebaseFirestore.instance
+          .collection('notifications')
+          .where('pid', isEqualTo: postid)
+          .get();
+
+      removeLike.docs.forEach((doc) => {
+        if (doc['uid'] == currentUser.uid && doc['otherUid'] == widget.post.userid && doc['notifType'] == "like") {
+          notID = doc['notifID'],
+          FirebaseFirestore.instance
+              .collection('notifications')
+              .doc(notID)
+              .delete()
+              .then((value) => print("Notif Deleted"))
+              .catchError((error) => print("Failed to delete notif: $error"))
+        }
+      });
+
     } else {
       currLikes.add(currentUser.uid);
       flag = true;
+
+      try {
+        var notif_ref = notifs.doc();
+        await notif_ref.set({
+          "uid": currentUser.uid,
+          "otherUid": otherUser.uid,
+          "notifType": "like",
+          "userPhotoURL": otherUser.photoUrl,
+          "pid": postid,
+          "username": otherUser.username,
+          "postPhotoURL": widget.post.postPhotoURL,
+          "notifID": notif_ref.id,
+        });
+      } catch (e) {
+        print(e);
+      }
+
+
+
+
     }
     await FirebaseFirestore.instance.collection('posts')
         .doc(postid).update({"likes": currLikes});

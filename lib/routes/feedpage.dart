@@ -43,7 +43,7 @@ class _FeedPageState extends State<FeedPage> {
   bool profType;
   user currentUser;
   bool feedLoading = true;
-
+  String activation;
 
 
 
@@ -67,6 +67,7 @@ class _FeedPageState extends State<FeedPage> {
     description = x.docs[0]['description'];
     profType = x.docs[0]['profType'];
     uid = x.docs[0]['uid'];
+    activation = x.docs[0]['activation'];
 
     var feed_posts = await FirebaseFirestore.instance
         .collection('posts')
@@ -74,8 +75,9 @@ class _FeedPageState extends State<FeedPage> {
         .get();
     print(feed_posts.size);
     feed_posts.docs.forEach((doc) => {
-      posts.add(
-          Post(
+      if (doc['activation'] == "active") {
+        posts.add(
+            Post(
               pid: doc['pid'],
               username: doc['username'],
               userid: doc['userid'],
@@ -84,13 +86,16 @@ class _FeedPageState extends State<FeedPage> {
               location: doc['location'],
               title: doc['title'],
               content: doc['content'],
-              date: DateTime.fromMillisecondsSinceEpoch(doc['date'].seconds * 1000),
+              date: DateTime.fromMillisecondsSinceEpoch(
+                  doc['date'].seconds * 1000),
               likes: doc['likes'],
               comments: doc['comments'],
               topics: doc['topics'],
-              isLiked: doc['likes'].contains(uid) ? true : false
-          )
-      )
+              isLiked: doc['likes'].contains(uid) ? true : false,
+              activation: doc['activation'],
+            )
+        )
+      }
     });
 
     posts..sort((a,b) => b.date.compareTo(a.date));

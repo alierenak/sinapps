@@ -15,7 +15,7 @@ class Post {
   List<dynamic> comments;
   List<dynamic> likes;
   List<dynamic> topics;
-
+  String activation;
   // ABOUT UI
   bool isLiked;
 
@@ -33,10 +33,11 @@ class Post {
       likes: doc['likes'],
       topics: doc['topics'],
       postPhotoURL: doc['postPhotoURL'],
+      activation: doc['activation'],
     );
   }
 
 
 
-  Post({this.pid, this.username, this.userid, this.userPhotoUrl, this.content, this.location, this.title, this.date, this.comments, this.likes, this.topics, this.isLiked=false, this.postPhotoURL});
+  Post({this.pid, this.username, this.userid, this.userPhotoUrl, this.content, this.location, this.title, this.date, this.comments, this.likes, this.topics, this.isLiked=false, this.postPhotoURL, this.activation});
 }

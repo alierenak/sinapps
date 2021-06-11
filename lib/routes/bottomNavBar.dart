@@ -58,7 +58,7 @@ class _BottomBarState extends State<BottomBar> {
     FeedPage(),
     SearchPage(),
     AddPost(),
-    Noti(),
+    NotifPage(),
     Profile(),
   ];
 

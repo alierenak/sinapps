@@ -130,13 +130,20 @@ class _SearchPageState extends State<SearchPage> {
 
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
+
     )
         .get();
+    //.where('activation', isEqualTo: "active")
     users.docs.forEach((doc) => {
-      userResults.add(
-          SearchResult(identifier: doc['username'], description: doc['description'], itemID: doc['uid'], photoUrl: doc['photoUrl'])
+      if (doc['activation'] == "active") {
+        userResults.add(
+            SearchResult(identifier: doc['username'],
+                description: doc['description'],
+                itemID: doc['uid'],
+                photoUrl: doc['photoUrl'])
 
-      )
+        )
+      }
     });
 
     var posts = await FirebaseFirestore.instance
@@ -144,11 +151,19 @@ class _SearchPageState extends State<SearchPage> {
         .where('title', isGreaterThanOrEqualTo: query,
       isLessThan: query.substring(0, query.length - 1) +
           String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
-    ).get();
+    )
+
+        .get();
+    //.where('activation', isEqualTo: "active")
     posts.docs.forEach((doc) => {
-      postResults.add(
-          SearchResult(identifier: doc['title'], description: doc['content'], itemID: doc['pid'], photoUrl: doc['postPhotoURL'])
-      )
+      if (doc["activation"] == "active") {
+        postResults.add(
+            SearchResult(identifier: doc['title'],
+                description: doc['content'],
+                itemID: doc['pid'],
+                photoUrl: doc['postPhotoURL'])
+        )
+      }
     });
 
     setState(() {
