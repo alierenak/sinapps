@@ -54,6 +54,7 @@ dependencies:
   keyboard_visibility: any
   sliding_up_panel: ^2.0.0+1
   flutter_spinkit: ^3.1.0
+  flutter_slidable: ^0.6.0
 
 
 dev_dependencies:
