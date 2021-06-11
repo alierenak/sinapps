@@ -6,6 +6,7 @@ import 'package:sinapps/models/post.dart';
 import 'package:sinapps/routes/chats/chatspage.dart';
 import 'package:sinapps/models/postCard.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:sinapps/routes/commentview.dart';
 import 'package:sinapps/utils/crashlytics.dart';
 import 'package:sinapps/utils/colors.dart';
 import 'package:sinapps/models/user.dart';
@@ -186,8 +187,7 @@ class _FeedPageState extends State<FeedPage> {
                   icon: Icon(Icons.messenger_rounded),
                   onPressed: () {
                     print(currentUser.uid);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatsPage(currentUser: currentUser)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(currentUser: currentUser)));
                     //MessageCrash();
                   },
                 ),
