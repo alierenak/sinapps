@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sinapps/models/postView.dart';
 import 'package:sinapps/models/user.dart';
+import 'package:sinapps/routes/chats/chatspage.dart';
 import 'package:sinapps/routes/commentview.dart';
 import 'package:sinapps/routes/otherProfilePage.dart';
 import 'package:sinapps/routes/profilepage.dart';
@@ -19,6 +20,7 @@ class PostCard extends StatefulWidget {
   final PageController controller = PageController(initialPage: 0);
   final Post post;
   final Function delete;
+
   PostCard({this.post, this.delete});
 
   @override
@@ -85,19 +87,8 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  void goToComments(
-      {BuildContext context, String postId, String ownerId, String mediaUrl}) {
-    Navigator.of(context)
-        .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
-      return PostView(
-        postId: postId,
-      );
-    }));
-  }
-
   var first;
-  _getLocation() async
-  {
+  _getLocation() async {
     final coordinates = new Coordinates(widget.post.location.latitude, widget.post.location.longitude);
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     setState(() {
@@ -347,7 +338,6 @@ class _PostCardState extends State<PostCard> {
                     size: 26.0,
                   ),
                   onPressed: () {
-                    print("Comment pressed!");
                     Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: CommentPage(post: widget.post)));
                   },
                 ),
@@ -370,19 +360,6 @@ class _PostCardState extends State<PostCard> {
                     //goToComments(postId: widget.post.pid);
                   },
                 )
-/*
-                IconButton(
-                  padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
-                  alignment: Alignment.bottomLeft,
-                  splashRadius: 4.0,
-                  icon: Icon(
-                    Icons.delete,
-                    size: 20.0,
-                    color: Colors.red,
-                  ),
-                  onPressed: delete,
-                )
-*/
               ],
             ),
           ],

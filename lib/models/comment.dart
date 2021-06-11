@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:sinapps/models/location.dart';
 
 class Comment {
+  String cid;
   String postid;
   String userid;
   String userPhotoURL;
   String content;
-  List<String> likes;
+  List<dynamic> likes;
 
-  Comment({this.postid, this.userid, this.userPhotoURL, this.content, this.likes});
+  Comment({this.cid, this.postid, this.userid, this.userPhotoURL, this.content, this.likes});
 }
 
 

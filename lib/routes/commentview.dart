@@ -92,17 +92,19 @@ class _CommentPageState extends State<CommentPage> {
         .collection('posts')
         .doc(widget.post.pid).get();
 
-    List<String> listOfcids = post['comments'];
+    List<dynamic> listOfcids = post['comments'];
 
     for(int i=0; i< listOfcids.length; i++) {
 
       var comment = await FirebaseFirestore.instance
-          .collection('posts')
+          .collection('comments')
           .doc(listOfcids[i]).get();
 
       setState(() {
+        print("Comment added!");
         comments.add(
           Comment(
+              cid: comment['cid'],
               postid: comment['postid'],
               userid: comment['userid'],
               userPhotoURL: comment['userPhotoURL'],
@@ -110,9 +112,9 @@ class _CommentPageState extends State<CommentPage> {
               likes: comment['likes'],
           )
         );
+        print("Hello");
       });
     }
-
   }
 
   void addComment() async {
@@ -149,9 +151,6 @@ class _CommentPageState extends State<CommentPage> {
       print(e);
       return;
     }
-
-
-
   }
 
   void initState() {
@@ -166,118 +165,109 @@ class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-        home: SafeArea(
-            top: false,
-            minimum: EdgeInsets.zero,
-            child: Scaffold(
-                appBar: AppBar(
-                    title: Text(
-                      "Home",
-                      style: TextStyle(
-                        fontFamily: 'BrandonText',
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    centerTitle: true,
-                    backgroundColor: Colors.grey[800],
-                    elevation: 0.0,
-                    actions: <Widget> [
+    return Scaffold(
+        appBar: AppBar(
+            title: Text(
+              "Home",
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.grey[800],
+            elevation: 0.0,
 
-
-                    ]),
-                body: Stack(
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+                child: Column(
                   children: [
-                    SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            // POST
-                            PostCard(post: widget.post,),
-                            // COMMENTS
-                            Column(
-                              children: comments.map((comment) => CommentCard(
-                                  comment: comment,
-                                  delete: () {
-                                    setState(() {
-                                      print("Hello");
-                                      comments.remove(comment);
-                                    });
-                                  }
-                              )).toList(),
-                            ),
-                          ],
-                        )
+                    // POST
+                    PostCard(post: widget.post,),
+                    // COMMENTS
+                    Column(
+                      children: comments.map((comment) => CommentCard(
+                          comment: comment,
+                          delete: () {
+                            setState(() {
+                              comments.remove(comment);
+                            });
+                          }
+                      )).toList(),
                     ),
-
-                    // WRITE A COMMENT VIEW
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: EdgeInsets.all(8.0),
-                        color: Colors.grey[300],
-                        height: 70,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(currentUserPhoto),
-                                radius: 35.0,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: MediaQuery.of(context).size.width * 6/10,
-                                    child: TextField(
-                                      onChanged: (value){
-                                        setState(() {
-                                          newComment = value;
-                                        });
-                                      } ,
-                                      style: TextStyle(
-                                        color: AppColors.textColor,
-                                        fontSize: 14,
-                                        fontFamily: 'BrandonText',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      minLines: 1,
-                                      maxLines: 2,
-                                      autocorrect: false,
-                                      decoration: InputDecoration(
-                                        contentPadding: new EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 10),
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        hintText: "What are you thinking?",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                        ),
-                                      ),
-                                      keyboardType: TextInputType.text,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                    Icons.add_comment,
-                                  color: AppColors.primary,
-                                ),
-                                onPressed: () => {
-                                  addComment()
-                                },
-                              )
-                            ],
-                          )
-                      ),
-                    )
                   ],
                 )
+            ),
+
+            // WRITE A COMMENT VIEW
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  color: Colors.grey[300],
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(currentUserPhoto),
+                        radius: 35.0,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 6/10,
+                            child: TextField(
+                              onChanged: (value){
+                                setState(() {
+                                  newComment = value;
+                                });
+                              } ,
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 14,
+                                fontFamily: 'BrandonText',
+                                fontWeight: FontWeight.w600,
+                              ),
+                              minLines: 1,
+                              maxLines: 2,
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10),
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: "What are you thinking?",
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  // borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.text,
+                            ),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.add_comment,
+                          color: AppColors.primary,
+                        ),
+                        onPressed: () => {
+                          addComment()
+                        },
+                      )
+                    ],
+                  )
+              ),
             )
+          ],
         )
     );
   }
