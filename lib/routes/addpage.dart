@@ -480,7 +480,7 @@ class _AddPostState extends State<AddPost> {
                                 image: new DecorationImage(
                                   fit: BoxFit.fill,
                                   alignment: FractionalOffset.topCenter,
-                                  image: NetworkImage(pickedFile.path),
+                                  image: AssetImage(pickedFile.path),
                                 )
                             ),
                           ),
